@@ -395,7 +395,7 @@ class Document(models.Model):
         ("confirmation", "Подтверждение"),
     ]
 
-    name = models.CharField(("Наименование документа"), max_length=50)
+    name = models.CharField(("Наименование документа"), max_length=150)
     docType = models.CharField(("Тип документа"), choices=DOC_TYPE_CHOICES, max_length=32)
     createdAt = models.DateField(("Дата добавления документа"), auto_now=False, auto_now_add=True)
     file = models.FileField(("Файл документа"), upload_to='documents/', blank=True, null=True, default=1)
