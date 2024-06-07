@@ -287,7 +287,7 @@ class Application(models.Model):
         ('rejected', 'Отклонена'),
     ]
 
-    title = models.CharField(("Заголовок заявки"), max_length=50)
+    title = models.CharField(("Заголовок заявки"), max_length=150)
     subject = models.CharField(("Предмет запроса"), max_length=300, blank=True, null=True)
     description = models.CharField(("Описание заявки"), max_length=300, blank=True, null=True)
     creator = models.ForeignKey("api.Employee", verbose_name=("Создатель заявки"), on_delete=models.CASCADE, blank=True, null=True, related_name='applicationCreator')
