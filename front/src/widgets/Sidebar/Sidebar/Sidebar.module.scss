@@ -1,0 +1,9 @@
+.sidebar {
+  min-width: var(--sidebar-width);
+  margin-right: 51px;
+
+  @media (max-width: 760px) {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}

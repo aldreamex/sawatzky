@@ -1,0 +1,44 @@
+.loginForm {
+  position: relative;
+  z-index: 10;
+  border-radius: 10px;
+  background: #FFF;
+  box-shadow: 0 4px 10px 0 rgb(0 0 0 / 15%);
+  padding: 32px 40px 57px;
+  display: flex;
+  flex-direction: column;
+  min-width: var(--login-form-width);
+}
+
+.input,
+.button {
+  align-self: stretch;
+}
+
+.input {
+  margin-bottom: 10px;
+}
+
+.title {
+  margin-bottom: 21px;
+  align-self: center;
+}
+
+.error {
+  margin-top: 10px;
+  color: var(--red-color);
+  font: var(--font-m);
+}
+
+.logo {
+  margin-bottom: 24px;
+  align-self: center;
+}
+
+.checkbox {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  gap: 14px;
+  margin-bottom: 32px;
+}

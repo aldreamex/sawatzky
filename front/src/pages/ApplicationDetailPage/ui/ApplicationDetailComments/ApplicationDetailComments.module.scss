@@ -1,0 +1,32 @@
+.collapse {
+  margin-bottom: 16px;
+
+  @media (max-width: 540px) {
+    padding: 16px;
+  }
+}
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.addComm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn {
+  align-self: flex-start;
+}
+
+.textarea {
+  background: var(--white-color);
+
+  @media (max-width: 760px) {
+    width: 100%;
+  }
+}

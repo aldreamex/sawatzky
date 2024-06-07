@@ -1,0 +1,33 @@
+.reportDocumentTable {
+  width: 100%;
+  padding: 0px 15px;
+  margin-bottom: 100px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+th,
+td {
+  padding: 2px;
+  text-align: center;
+  line-height: 17px;
+}
+
+.bigCell {
+  text-align: right;
+  padding-right: 15px;
+  font-weight: bold;
+}
+
+.total {
+  font-weight: bold;
+}

@@ -1,0 +1,22 @@
+.commentWrap {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  line-height: var(--font-line-s2);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font-size-s2);
+  gap: 3px;
+  width: 110px;
+}
+
+.name {
+  font-weight: var(--font-weight-xl);
+}
+
+.comment {
+  max-width: 600px;
+}

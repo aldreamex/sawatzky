@@ -1,0 +1,75 @@
+.collapse {
+  margin-bottom: 16px;
+
+  @media (max-width: 540px) {
+    padding: 16px;
+  }
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+
+  @media (max-width: 540px) {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.controlBtn:not(:last-child) {
+  margin: 0 24px 0 0;
+
+  @media (max-width: 540px) {
+    margin: 0;
+  }
+}
+
+.table {
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.tablesBlock {
+  margin-right: 100px;
+
+  @media (max-width: 1440px) {
+    margin-right: 0;
+  }
+}
+
+.priceInfo {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: flex-end;
+
+  @media (max-width: 760px) {
+    gap: 15px;
+    justify-content: space-between;
+  }
+}
+
+.total {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+
+  @media (max-width: 540px) {
+    flex-direction: column;
+    text-align: end;
+  }
+}
+
+.totalPrice {
+  font: var(--font-m);
+  font-weight: 700;
+}
+
+.price {
+  margin-bottom: 9px;
+}
+
+.docs {
+  margin-left: -25px;
+}

@@ -1,0 +1,45 @@
+.title {
+  margin-bottom: 24px;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.btns,
+.selects,
+.secondBtns {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.selectSearch {
+  width: 140px;
+  height: 35px;
+}
+
+.date {
+  width: 120px;
+  border-radius: 13px;
+}
+
+@media (max-width: 940px) {
+  .navigation {
+    flex-wrap: wrap;
+  }
+
+  .selects {
+    order: 3;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .selectSearch,
+  .date {
+    width: 100%;
+  }
+}

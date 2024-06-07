@@ -1,0 +1,12 @@
+.textarea {
+  background: var(--gray-bg-color);
+  padding: 12px 20px;
+  border-radius: 9px;
+  resize: none;
+  border: 1px solid transparent;
+  transition: border .2s ease-in-out;
+}
+
+.error {
+  border: 1px solid var(--red-color);
+}

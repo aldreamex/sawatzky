@@ -1,0 +1,34 @@
+.addWorkTaskToApplicationForm {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.title {
+  margin-bottom: 25px;
+}
+
+.input {
+  &:not(:last-child){
+    margin-bottom: 6px;
+  }
+}
+
+.inputWithLabel{
+  margin-top: 16px;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 28px;
+  gap: 30px;
+}
+
+.button {
+  flex: 1 1 auto;
+}
+
+
+.switch {
+  margin-top: 30px;
+}

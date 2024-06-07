@@ -1,0 +1,88 @@
+.modal {
+  display: block;
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  font: var(--font-s);
+  color: var(--black-color);
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba($color: #000, $alpha: 60%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  position: relative;
+  padding: 28px 40px 46px;
+  border-radius: 10px;
+  background: var(--white-color);
+  transition: 0.3s transform;
+  transform: scale(0.5);
+  max-width: 60%;
+  max-height: 90%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 23px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-button {
+    height: 10px;
+  }
+
+  @media (max-width: 760px) {
+    max-width: 90%;
+    padding: 20px 15px;
+  }
+
+}
+
+.btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.opened {
+  &.modal {
+    z-index: 100;
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .content {
+    transform: scale(1);
+  }
+}
+
+.isClosing {
+  .content {
+    transform: scale(0.2);
+  }
+}
