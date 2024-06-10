@@ -6,6 +6,7 @@ import { useAppDispatch } from 'shared/lib/hooks/useAppDispatch/useAppDispatch';
 import { FormType, useForm } from 'shared/lib/hooks/useForm/useForm';
 import { Text, TextAlign } from 'shared/ui/Text/Text';
 import { useUserData } from 'shared/lib/hooks/useUserData/useUserData';
+import { fetchApplicationDetail } from 'pages/ApplicationDetailPage/model/services/fetchApplicationDetail/fetchApplicationDetail';
 import {
   getFormApplication,
   getFormApplicationDescription,
@@ -84,6 +85,7 @@ export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (prop
         formData: form,
         applicationId,
       }));
+      dispatch(fetchApplicationDetail(applicationId));
       onCloseHandler();
     } else if (form) {
       dispatch(saveApplication(form));
