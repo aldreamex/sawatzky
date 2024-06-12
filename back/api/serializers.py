@@ -22,7 +22,7 @@ from .models import (
     ApplicationPerformer,
     Report,
     Comments,
-    Log
+    Log, GeneralJournal
 )
 
 
@@ -1103,7 +1103,6 @@ class ReportDetailSerializer(ModelSerializer):
                   'bank', 'legalEntityBik']
 
 
-
 '''Comments'''
 class CommentsCreateSerializer(ModelSerializer):
     # Сериализатор для создания комментария
@@ -1116,3 +1115,41 @@ class CommentsCreateSerializer(ModelSerializer):
         validated_data['creator'] = user
 
         return super().create(validated_data)
+
+
+'''GeneralJournal'''
+class GeneralJournalCreateSerializer(ModelSerializer):
+    # Сериализатор для создания генерального журнала
+    class Meta:
+        model = GeneralJournal
+        fields = ['paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount']
+
+
+class GeneralJournalListSerializer(ModelSerializer):
+    # Сериализатор для вывода списка генерального журнала
+    class Meta:
+        model = GeneralJournal
+        fields = ['id', 'paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount', 'amountByInvoices', 'status']
+
+
+
+
+
+class ApplicationGeneralJournalSerializer(serializers.ModelSerializer):
+    legalEntity = serializers.CharField(source='creator.legalEntity.name')
+    class Meta:
+        model = Application
+        fields = ['id', 'title', 'legalEntity', 'createdAt', 'totalSum']
+
+class GeneralJournalDetailSerializer(serializers.ModelSerializer):
+    applications = serializers.SerializerMethodField()
+    totalDebt = serializers.DecimalField(max_digits=15, decimal_places=2, required=False)
+    totalPayment = serializers.DecimalField(max_digits=15, decimal_places=2, required=False)
+
+    class Meta:
+        model = GeneralJournal
+        fields = ['paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount', 'amountByInvoices', 'applications', 'totalDebt', 'totalPayment']
+
+    def get_applications(self, obj):
+        applications = Application.objects.filter(generaljournal=obj)
+        return ApplicationSerializer(applications, many=True).data
