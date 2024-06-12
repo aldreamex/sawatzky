@@ -17,7 +17,7 @@ from .models import (
     WorkTask,
     WorkMaterialGroup,
     WorkMaterial,
-Document
+    Document, GeneralJournal
 ) 
 # Register your models here.
 
@@ -38,3 +38,4 @@ admin.site.register(WorkObjectsGroup)
 admin.site.register(WorkMaterialGroup)
 admin.site.register(WorkMaterial)
 admin.site.register(Document)
+admin.site.register(GeneralJournal)

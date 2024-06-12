@@ -71,7 +71,8 @@ from .serializers import (
     LegalEntityUpdateSerializer,
     WorkTaskUpdateSerializer,
     WorkMaterialUpdateSerializer,
-    WorkObjectUpdateSerializer, ApplicationListSerializer,
+    WorkObjectUpdateSerializer, ApplicationListSerializer, GeneralJournalCreateSerializer, GeneralJournalListSerializer,
+    GeneralJournalDetailSerializer,
 )
 
 from .models import (
@@ -89,7 +90,7 @@ from .models import (
     SawatzkyEmployee,
     Report,
     Comments,
-    Log
+    Log, GeneralJournal
 )
 
 
@@ -1100,4 +1101,34 @@ class CommentsListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
+"""GeneralJournal"""
+class GeneralJournalCreateView(generics.CreateAPIView):
+    # представление на создание комментария с привязкой к заявке
+    serializer_class = GeneralJournalCreateSerializer
+    queryset = GeneralJournal.objects.all()
+    # permission_classes = [permissions.IsAuthenticated]
 
+
+class GeneralJournalListView(generics.ListAPIView):
+    # представление на вывод списка счетов
+    queryset = GeneralJournal.objects.all()
+    serializer_class = GeneralJournalListSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class GeneralJournalDetailView(generics.RetrieveDestroyAPIView):
+    # представление на получение, обновление, удаление журналов по id
+    serializer_class = GeneralJournalDetailSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+    # filter_backends = (DjangoFilterBackend,)
+    # filterset_class = ReportFilter
+
+    def get_queryset(self):
+
+        try:
+            pk = self.kwargs['pk']
+            generalJournal = GeneralJournal.objects.filter(id=pk)
+            return generalJournal
+
+        except (KeyError, GeneralJournal.DoesNotExist):
+            return Response({'message': 'Генеральный журнал не найден'}, status=status.HTTP_404_NOT_FOUND)

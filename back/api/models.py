@@ -481,3 +481,30 @@ class Comments(models.Model):
 
     def __str__(self):
         return f"Комментарий от {self.creator.fio} - {self.created_at}"
+
+
+class GeneralJournal(models.Model):
+    """Генеральный журнал"""
+
+    STATUSES = [
+        ("fully", 'Полностью'),
+        ('partially', 'Частично'),
+        ('unpaid', 'Неоплаченная')
+    ]
+
+    paymentDocumentNumber = models.CharField(("Номер платежного документа"), max_length=100)
+    legalEntity = models.ForeignKey(LegalEntity, verbose_name=("Контрагент"), on_delete=models.CASCADE)
+    receiptDate = models.DateField(("Дата поступления"))
+    totalAmount = models.DecimalField(("Общая сумма"), max_digits=15, decimal_places=2)
+    amountByInvoices = models.DecimalField(("Сумма по счетам"), max_digits=15, decimal_places=2, blank=True, null=True)
+    status = models.CharField(("Статус оплаты"), max_length=50, blank=False, choices=STATUSES, default='unpaid')
+    application = models.ForeignKey(Application, verbose_name=("Заявка"), on_delete=models.CASCADE, blank=True, null=True)
+    totalDebt = models.DecimalField(("Сумма долга"), max_digits=15, decimal_places=2, blank=True, null=True)
+    totalPayment = models.DecimalField(("Сумма оплаты"), max_digits=15, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Генеральный журнал"
+        verbose_name_plural = "Генеральные журналы"
+
+    def __str__(self):
+        return f"{self.paymentDocumentNumber} - {self.legalEntity.name}"
