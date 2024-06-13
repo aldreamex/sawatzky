@@ -1126,7 +1126,8 @@ class GeneralJournalCreateSerializer(ModelSerializer):
 
 
 class GeneralJournalListSerializer(ModelSerializer):
-    # Сериализатор для вывода списка генерального журнала
+    """Сериализатор для вывода списка генерального журнала"""
+    legalEntity = serializers.CharField(source='legalEntity.name', read_only=True)
     class Meta:
         model = GeneralJournal
         fields = ['id', 'paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount', 'amountByInvoices', 'status']
@@ -1141,6 +1142,7 @@ class ApplicationGeneralJournalSerializer(serializers.ModelSerializer):
         model = Application
         fields = ['id', 'title', 'legalEntity', 'createdAt', 'totalSum']
 
+
 class GeneralJournalDetailSerializer(serializers.ModelSerializer):
     applications = serializers.SerializerMethodField()
     totalDebt = serializers.DecimalField(max_digits=15, decimal_places=2, required=False)
@@ -1153,3 +1155,30 @@ class GeneralJournalDetailSerializer(serializers.ModelSerializer):
     def get_applications(self, obj):
         applications = Application.objects.filter(generaljournal=obj)
         return ApplicationSerializer(applications, many=True).data
+
+
+class GeneralJournalUpdateSerializer(serializers.ModelSerializer):
+    """Сериализатор для обновления записи журнала"""
+
+    class Meta:
+        model = GeneralJournal
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        # Обновляем экземпляр через вызов super метода
+        instance = super().update(instance, validated_data)
+
+        # Производим вычисления (сумма по счетам = суммарной стоимости долгов по всем заявкам контрагента)
+        application = instance.application
+        if application:
+            totalSum = float(application.totalSum or 0)
+            totalPayment = float(instance.totalPayment or 0)
+            totalDebt = totalSum - totalPayment
+            amountByInvoices = totalDebt
+
+            instance.totalDebt = totalDebt
+            instance.amountByInvoices = amountByInvoices
+
+        # Сохраняем изменения
+        instance.save()
+        return instance

@@ -73,6 +73,7 @@ from .serializers import (
     WorkMaterialUpdateSerializer,
     WorkObjectUpdateSerializer, ApplicationListSerializer, GeneralJournalCreateSerializer, GeneralJournalListSerializer,
     GeneralJournalDetailSerializer,
+    GeneralJournalUpdateSerializer
 )
 
 from .models import (
@@ -1122,6 +1123,22 @@ class GeneralJournalDetailView(generics.RetrieveDestroyAPIView):
     # permission_classes = [permissions.IsAuthenticated]
     # filter_backends = (DjangoFilterBackend,)
     # filterset_class = ReportFilter
+
+    def get_queryset(self):
+
+        try:
+            pk = self.kwargs['pk']
+            generalJournal = GeneralJournal.objects.filter(id=pk)
+            return generalJournal
+
+        except (KeyError, GeneralJournal.DoesNotExist):
+            return Response({'message': 'Генеральный журнал не найден'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class GeneralJournalUpdateView(generics.UpdateAPIView):
+    """Представление на обновление записи журнала по id"""
+    serializer_class = GeneralJournalUpdateSerializer
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
 

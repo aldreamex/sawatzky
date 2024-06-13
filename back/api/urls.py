@@ -77,5 +77,5 @@ urlpatterns = [
     path('general_journal/', views.GeneralJournalListView.as_view()),
     path('general_journal/create/', views.GeneralJournalCreateView.as_view()),
     path('general_journal/<int:pk>/', views.GeneralJournalDetailView.as_view()),
-    # path('general_journal/update/<int:pk>/', views.LegalEntityUpdateView.as_view()),
+    path('general_journal/update/<int:pk>/', views.GeneralJournalUpdateView.as_view()),
 ]
