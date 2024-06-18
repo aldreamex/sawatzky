@@ -6,7 +6,9 @@ from .models import (
     WorkTask,
     WorkMaterial,
     LegalEntity,
-    SawatzkyEmployee, Report,
+    SawatzkyEmployee,
+    Report,
+    GeneralJournal,
 )
 
 
@@ -103,3 +105,14 @@ def filter_founded_applications(report_instance):
             Q(createdAt__lte=report_instance.periodEnd)
         )
         report_instance.foundedApllications.set(founded_applications)
+
+
+'''Фильтр для GeneralJournal'''
+class GeneralJournalFilter(filters.FilterSet):
+    periodStart = filters.DateFilter(field_name="receiptDate", lookup_expr="gte")
+    periodEnd = filters.DateFilter(field_name="receiptDate", lookup_expr="lte")
+    legalEntity = filters.CharFilter(field_name='legalEntity__name', lookup_expr='icontains')
+
+    class Meta:
+        model = GeneralJournal
+        fields = ['periodStart', 'periodEnd', 'legalEntity']

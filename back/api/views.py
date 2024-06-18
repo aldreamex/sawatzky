@@ -24,6 +24,7 @@ from .filters import (
     WorkMaterialFilter,
     LegalEntityFilter,
     SawatzkyEmployeeFilter, filter_founded_applications, ReportFilter,
+    GeneralJournalFilter,
 )
 
 
@@ -1115,6 +1116,8 @@ class GeneralJournalListView(generics.ListAPIView):
     queryset = GeneralJournal.objects.all()
     serializer_class = GeneralJournalListSerializer
     # permission_classes = [permissions.IsAuthenticated]
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = GeneralJournalFilter
 
 
 class GeneralJournalDetailView(generics.RetrieveDestroyAPIView):
