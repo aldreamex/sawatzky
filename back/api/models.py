@@ -24,16 +24,16 @@ class LegalEntity(models.Model):
     """Юр. лицо"""
 
     name = models.CharField(("Наименование юридиеского лица"), max_length=100)
-    head = models.CharField(("Руководитель"), max_length=100)
+    head = models.CharField(("Руководитель"), max_length=100, blank=True, null=True)
     legalAddress = models.CharField(("Юридический адрес"), max_length=255)
     actualAddress = models.CharField(("Фактический адрес"), max_length=255)
-    phone = models.CharField(("Телефон"), max_length=20)
-    mail = models.CharField(("E-mail"), max_length=30)
+    phone = models.CharField(("Телефон"), max_length=20, blank=True, null=True)
+    mail = models.CharField(("E-mail"), max_length=30, blank=True, null=True)
     INN = models.CharField(("ИНН/КПП"), max_length=50)
-    settlementAccount = models.CharField(("Расчётный счёт"), max_length=50)
+    settlementAccount = models.CharField(("Расчётный счёт"), max_length=50, blank=True, null=True)
     correspondentAccount = models.CharField(("Корреспондентский счёт"), max_length=50)
-    bank = models.CharField(("Банк"), max_length=50)
-    bik = models.CharField(("БИК"), max_length=50)
+    bank = models.CharField(("Банк"), max_length=50, blank=True, null=True)
+    bik = models.CharField(("БИК"), max_length=50, blank=True, null=True)
 
     balance = models.DecimalField(("Баланс"), max_digits=15, decimal_places=2, default=0)
     totalInvoicedSum = models.DecimalField(
