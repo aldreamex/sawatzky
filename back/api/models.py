@@ -31,7 +31,7 @@ class LegalEntity(models.Model):
     mail = models.CharField(("E-mail"), max_length=30, blank=True, null=True)
     INN = models.CharField(("ИНН/КПП"), max_length=50)
     settlementAccount = models.CharField(("Расчётный счёт"), max_length=50, blank=True, null=True)
-    correspondentAccount = models.CharField(("Корреспондентский счёт"), max_length=50)
+    correspondentAccount = models.CharField(("Корреспондентский счёт"), max_length=50, blank=True, null=True)
     bank = models.CharField(("Банк"), max_length=50, blank=True, null=True)
     bik = models.CharField(("БИК"), max_length=50, blank=True, null=True)
 
