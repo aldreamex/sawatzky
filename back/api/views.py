@@ -378,13 +378,13 @@ class LegalEntityCreateView(generics.CreateAPIView):
     # представление на создание Юр. лица
     queryset = LegalEntity.objects.all()
     serializer_class = LegalEntityOrClientLESerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
 class LegalEntityListView(generics.ListAPIView):
     # представление на создание и вывод списка Юр. лиц
     queryset = LegalEntity.objects.all()
     serializer_class = LegalEntityListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     filter_backends = (DjangoFilterBackend,)
     filterset_class = LegalEntityFilter
 
