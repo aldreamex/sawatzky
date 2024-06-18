@@ -214,7 +214,6 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         value: head,
         onChange: (value) => dispatch(createLegalEntityActions.setHead(value)),
         rules: {
-          required: true,
         },
       },
       {
@@ -247,7 +246,7 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         value: phone,
         onChange: (value) => dispatch(createLegalEntityActions.setPhone(value)),
         rules: {
-          required: true,
+          required: false,
           pattern: validationPatterns.PHONE,
         },
       },
@@ -259,7 +258,6 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         value: mail,
         onChange: (value) => dispatch(createLegalEntityActions.setMail(value)),
         rules: {
-          required: true,
           pattern: validationPatterns.EMAIL,
         },
       },
@@ -282,7 +280,6 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         value: settlementAccount,
         onChange: (value) => dispatch(createLegalEntityActions.setSettlementAccount(value)),
         rules: {
-          required: true,
         },
       },
       {
@@ -293,7 +290,6 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         value: correspondentAccount,
         onChange: (value) => dispatch(createLegalEntityActions.setCorrespondentAccount(value)),
         rules: {
-          required: true,
         },
       },
       {
@@ -304,7 +300,6 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         value: bank,
         onChange: (value) => dispatch(createLegalEntityActions.setBank(value)),
         rules: {
-          required: true,
         },
       },
       {
@@ -315,7 +310,6 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         value: bik,
         onChange: (value) => dispatch(createLegalEntityActions.setBik(value)),
         rules: {
-          required: true,
         },
       },
       {

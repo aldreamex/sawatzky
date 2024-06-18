@@ -13,7 +13,6 @@ export const useValidation = (field: FormField) => {
 
   const [isRequiredError, setIsRequiredError] = useState(false);
   const [requiredErrorText, setRequiredErrorText] = useState('');
-
   const validateField = useCallback((field: FormField) => {
     let isValid = true;
     let isEmpty = true;
@@ -38,7 +37,7 @@ export const useValidation = (field: FormField) => {
     field.rules && Object.keys(field.rules).forEach((validation) => {
       switch (validation) {
       case 'pattern':
-        if (!field.rules?.[validation]?.template.test(field.value)) {
+        if (!field.rules?.[validation]?.template.test(field.value) && (field.rules?.required || field.value?.length)) {
           isValid = false;
           errors = {
             ...errors,
