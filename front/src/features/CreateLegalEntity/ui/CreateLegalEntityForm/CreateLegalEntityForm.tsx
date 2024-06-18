@@ -158,6 +158,7 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         value: workObjectGroupOption,
         onChange: onChangeWorkObjectGroup,
         rules: {
+          required: true,
         },
       },
       {
@@ -169,6 +170,7 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         isHidden: Boolean(!workObjectGroupOption),
         onChange: onChangeWorkObject,
         rules: {
+          required: true,
         },
       },
       {
@@ -179,6 +181,7 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         value: selectedWorkTaskGroupOptions,
         onChange: onChangeWorkTaskGroups,
         rules: {
+          required: true,
         },
       },
       {
@@ -189,6 +192,7 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
         value: selectedWorkMaterialGroupOptions,
         onChange: onChangeWorkMaterialGroups,
         rules: {
+          required: true,
         },
       },
       {
