@@ -15,6 +15,8 @@ interface TableBodyProps {
   editable?: boolean;
   deleteble?: boolean
   checkable: boolean;
+  textAlignment?: 'left' | 'center' | 'right'
+
 }
 
 export const TableBody: React.FC<TableBodyProps> = (props) => {
@@ -31,6 +33,7 @@ export const TableBody: React.FC<TableBodyProps> = (props) => {
     deleteble,
     editable,
     checkable,
+    textAlignment = undefined,
   } = props;
 
   return (
@@ -50,6 +53,7 @@ export const TableBody: React.FC<TableBodyProps> = (props) => {
             isChecked={Boolean(selectedItems?.find((selectedItem) => item.id === selectedItem.id))}
             deleteble={deleteble}
             editable={editable}
+            textAlignment={textAlignment}
             checkable={checkable}
           />
         ))

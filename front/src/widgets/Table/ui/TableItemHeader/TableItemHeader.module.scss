@@ -1,12 +1,11 @@
 .tableItemHeader {
   display: flex;
-  align-items: flex-start;
+  // align-items: flex-start;
   justify-content: space-between;
   padding: 12px 43px;
   border-radius: 10px;
   border: 1px solid var(--table-border-color);
   background: var(--white-color);
-
   @media(max-width: 960px) {
     padding: 10px 15px;
   }
@@ -30,9 +29,18 @@
 .column {
   display: flex;
   flex-direction: column;
-
+}
+.text-center {
+  text-align: center;
+  align-items: center;
   &:first-child,
   &:nth-child(2) {
     align-items: flex-start;
   }
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
 }

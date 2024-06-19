@@ -102,6 +102,7 @@ export const ReportsPageContent: React.FC<ReportsPageContentProps> = (props) => 
     mod: TableItemsMod.CLICK,
     onDelete: onTableDeleteHandler,
     onClick: onReportDetailOpenHandler,
+    textAlignment: 'center',
   });
 
   const onButtonDeleteHandler = useCallback(() => {
