@@ -1127,13 +1127,26 @@ class GeneralJournalCreateSerializer(ModelSerializer):
         fields = ['id', 'paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount']
 
 
+class LegalEntityGeneralJournalSerializer(ModelSerializer):
+    # Сериализатор модели LegalEntity для вывода генеральных журналов
+    class Meta:
+        model = LegalEntity
+        fields = '__all__'
+
+
 class GeneralJournalListSerializer(ModelSerializer):
     """Сериализатор для вывода списка генерального журнала"""
-    legalEntity = serializers.CharField(source='legalEntity.name', read_only=True)
+    # legalEntity = serializers.CharField(source='legalEntity.name', read_only=True)
+    legalEntity = LegalEntityGeneralJournalSerializer()
+    application = serializers.SerializerMethodField()
     class Meta:
         model = GeneralJournal
-        fields = ['id', 'paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount', 'amountByInvoices', 'status']
+        fields = ['id', 'paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount', 'amountByInvoices', 'status', 'application']
 
+    def get_application(self, obj):
+        # applications = Application.objects.filter(generaljournal=obj)
+        applications = obj.application.all()
+        return ApplicationSerializer(applications, many=True).data
 
 class ApplicationGeneralJournalSerializer(serializers.ModelSerializer):
     legalEntity = serializers.CharField(source='creator.legalEntity.name')
