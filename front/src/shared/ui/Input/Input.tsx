@@ -1,5 +1,6 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import { InputHTMLAttributes, memo } from 'react';
+import { MaskProps, useMask } from '@react-input/mask';
 import cls from './Input.module.scss';
 
 type HTMLInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>
@@ -13,6 +14,7 @@ interface InputProps extends HTMLInputProps {
   theme?: InputThemes;
   isError?: boolean;
   isSuccess?: boolean;
+  mask?: MaskProps
 }
 
 export enum InputThemes {
@@ -32,18 +34,21 @@ export const Input: React.FC<InputProps> = memo((props) => {
     theme = InputThemes.GRAY,
     isError,
     isSuccess,
+    mask,
     ...otherProps
   } = props;
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.(e.target.value);
   };
+  const inputRef = useMask(mask);
 
   return (
     <div className={classNames(cls.inputWrapper, {}, [className])}>
       {label && <label className={cls.label} htmlFor={id}>{label}</label>}
       <div className={classNames(cls.inputContainer, { [cls.error]: isError, [cls.success]: isSuccess }, [className, cls[theme]])}>
         <input
+          ref={mask ? inputRef : undefined}
           id={id}
           className={cls.input}
           type={type}

@@ -23,7 +23,7 @@ export const FormInput: FC<FormInputProps> = ({
   field, setIsValid, isDirty, onBlur,
 }) => {
   const {
-    type, defaultValue, options, placeholder, value, id, label, otherProps,
+    type, defaultValue, options, placeholder, value, id, label, otherProps, mask,
   } = field;
 
   const {
@@ -60,9 +60,11 @@ export const FormInput: FC<FormInputProps> = ({
       validateField({ ...field, value }); // Передаем обновленное значение в validateField
     }
   }, [field, id, setIsValid, validateField]);
+
   if (!field.isHidden) {
     switch (type) {
     case FormType.TEXT:
+
       return (
         <div className={cls.inputRow}>
           <Input
@@ -71,6 +73,7 @@ export const FormInput: FC<FormInputProps> = ({
             placeholder={placeholder}
             onBlur={onBlurHandler}
             label={label}
+            mask={mask}
             onChange={onChangeHandler}
             isError={isDirty && !checkValidation()}
             {...otherProps}

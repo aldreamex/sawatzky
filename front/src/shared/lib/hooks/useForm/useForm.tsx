@@ -1,3 +1,4 @@
+import { MaskProps } from '@react-input/mask/types';
 import {
   FormEvent,
   ReactElement, useCallback, useEffect, useMemo, useRef,
@@ -21,14 +22,20 @@ export enum FormType {
 
 type FromFieldValue = any;
 
-interface PatternRule {
+export interface PatternRule {
   template: RegExp;
+  message?: string;
+}
+
+export interface MaskRule {
+  mask: MaskProps;
   message?: string;
 }
 
 export interface FormRules {
   required?: boolean,
   pattern?: PatternRule,
+  mask?: MaskRule
 }
 
 export interface FormField {
@@ -43,6 +50,7 @@ export interface FormField {
   rules?: FormRules;
   otherProps?: any;
   isHidden?: boolean;
+  mask?: MaskProps;
 }
 
 interface FromProps {

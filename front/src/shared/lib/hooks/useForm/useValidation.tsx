@@ -1,3 +1,6 @@
+import {
+  generatePattern,
+} from '@react-input/mask';
 import { useCallback, useState } from 'react';
 import { FormField } from './useForm';
 
@@ -44,6 +47,19 @@ export const useValidation = (field: FormField) => {
             pattern: field.rules?.[validation]?.message || 'Ошибка! Данные не соответствуют шаблону',
           };
         }
+        break;
+      case 'mask':
+        {
+          const pattern = generatePattern(field.rules?.[validation]?.mask as any);
+          if (!RegExp(pattern).test(field.value)) {
+            isValid = false;
+            errors = {
+              ...errors,
+              pattern: field.rules?.[validation]?.message || 'Ошибка! Данные не соответствуют шаблону',
+            };
+          }
+        }
+
         break;
       case 'required':
         if (isEmpty && field.rules?.[validation]) {

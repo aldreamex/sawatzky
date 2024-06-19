@@ -8,8 +8,12 @@ import { useAppDispatch } from 'shared/lib/hooks/useAppDispatch/useAppDispatch';
 import { EmployeeRole } from 'entities/Employee';
 import { useUserData } from 'shared/lib/hooks/useUserData/useUserData';
 import { FormType, useForm } from 'shared/lib/hooks/useForm/useForm';
-import { validationPatterns } from 'shared/patterns/validationPatterns';
+import { maskValidation, validationPatterns } from 'shared/patterns/validationPatterns';
 import { editEmployee } from 'features/CreateEmployee/model/services/editEmployee';
+import {
+  unformat,
+} from '@react-input/mask';
+import { getUnformattedPhone } from 'shared/lib/form/utils';
 import {
   getCreateEmployeeFormData,
   getCreateEmployeeFormLegalEntity,
@@ -92,12 +96,12 @@ export const CreateEmployeeForm: React.FC<CreateEmployeeFormProps> = (props) => 
         ...formData,
         user: {
           fio: user?.fio ?? '',
-          phoneNumber: user?.phoneNumber ?? '',
+          phoneNumber: getUnformattedPhone(user?.phoneNumber),
         },
         employeeId,
       }));
     } else if (formData && user) {
-      dispatch(createEmployee({ ...formData, user }));
+      dispatch(createEmployee({ ...formData, user: { ...user, phoneNumber: getUnformattedPhone(user?.phoneNumber) } }));
     }
   }, [dispatch, formData, user, isEdit, employeeId]);
 
@@ -155,9 +159,10 @@ export const CreateEmployeeForm: React.FC<CreateEmployeeFormProps> = (props) => 
         defaultValue: phoneNumber,
         value: phoneNumber ?? '',
         onChange: onChangePhoneNumber,
+        mask: maskValidation.PHONE.mask,
         rules: {
           required: true,
-          pattern: validationPatterns.PHONE,
+          mask: maskValidation.PHONE,
         },
       },
       {

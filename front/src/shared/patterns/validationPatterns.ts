@@ -1,3 +1,5 @@
+import { FormType } from 'shared/lib/hooks/useForm/useForm';
+
 export const validationPatterns = {
   NUMBER: {
     template: /^[0-9]*$/,
@@ -26,5 +28,19 @@ export const validationPatterns = {
   EMAIL: {
     template: /^[a-zA-Z0-9]{2,}@.*/,
     message: 'Должно соответствовать формату email',
+  },
+};
+
+export const maskValidation = {
+  PHONE: {
+    mask: { mask: '+7 (___) ___-__-__', replacement: { _: /\d/ } },
+    message: 'Проверьте корректность введенного номера телефона',
+  },
+};
+
+export const unformatMaskValidation = {
+  PHONE: {
+    mask: { mask: '+_ (___) ___-__-__', replacement: { _: /\d/ } },
+    message: 'Проверьте корректность введенного номера телефона',
   },
 };
