@@ -116,3 +116,17 @@
   right: 0px;
   align-items: flex-end;
 }
+.text-center {
+  text-align: center;
+  align-items: center;
+  &:first-child,
+  &:nth-child(2) {
+    align-items: flex-start;
+  }
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}

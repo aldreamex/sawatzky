@@ -18,6 +18,7 @@ interface TableItemProps {
   editable?: boolean;
   deleteble?: boolean
   checkable: boolean;
+  textAlignment?: 'left' | 'center' | 'right'
 }
 
 export const enum ItemTheme {
@@ -42,6 +43,7 @@ export const TableItem: React.FC<TableItemProps> = (props) => {
     deleteble,
     editable,
     checkable,
+    textAlignment,
   } = props;
 
   return (
@@ -60,6 +62,7 @@ export const TableItem: React.FC<TableItemProps> = (props) => {
           deleteble={deleteble}
           editable={editable}
           checkable={checkable}
+          textAlignment={textAlignment}
         />
       )
       : (
@@ -70,6 +73,7 @@ export const TableItem: React.FC<TableItemProps> = (props) => {
           selectedAll={selectedAll}
           onSelectAll={onSelectAll}
           checkable={checkable}
+          textAlignment={textAlignment}
         />
       )
   );

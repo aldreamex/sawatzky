@@ -24,7 +24,7 @@ const App = () => {
     const connectWebSocket = () => {
       // const url = `ws://77.223.126.233/ws/applications?token=${tokens?.access}`;
       const url = `ws://localhost:8000/ws/applications?token=${tokens?.access}`;
-//       const url = `wss://sw-prod.uitdep.ru/ws/applications?token=${tokens?.access}`;
+      //       const url = `wss://sw-prod.uitdep.ru/ws/applications?token=${tokens?.access}`;
       // const url = `wss://sw-dev.uitdep.ru/ws/applications?token=${tokens?.access}`;
       socketRef.current = new WebSocket(url);
       socketRef.current.onopen = () => {

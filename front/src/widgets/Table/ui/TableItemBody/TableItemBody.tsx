@@ -21,6 +21,7 @@ interface TableItemBodyProps {
   editable?: boolean;
   deleteble?: boolean
   checkable: boolean;
+  textAlignment?: 'left' | 'center' | 'right'
 }
 
 export const TableItemBody: React.FC<TableItemBodyProps> = (props) => {
@@ -37,6 +38,7 @@ export const TableItemBody: React.FC<TableItemBodyProps> = (props) => {
     editable,
     deleteble,
     checkable,
+    textAlignment,
   } = props;
 
   const onCheckHandler = useCallback((id: any) => {
@@ -61,163 +63,165 @@ export const TableItemBody: React.FC<TableItemBodyProps> = (props) => {
     onClick?.(item);
   }, [onClick]);
 
+  const alignmentClass = textAlignment ? cls[`text-${textAlignment}`] : '';
+
   const itemBody = useMemo(() => {
     if (item) {
       switch (mod) {
-        case TableItemsMod.LINK:
-          return (
-            <AppLink to={`${path}${item?.id}`} className={classNames(cls.tableItemBody, {}, [className, cls[mod]])}>
-              {
-                checkable && (
-                  <Checkbox
-                    className={cls.checkbox}
-                    id={`${item?.id}`}
-                    onChange={() => onCheckHandler(item?.id)}
-                    checked={isChecked}
-                  />
-                )
-              }
-              {
-                item && Object.keys(item).map((key) => (
-                  <div className={cls.column} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / (Object.keys(item).length + 1)}%` }}>
-                    <span className={cls.text}>{item[key]}</span>
-                  </div>
-                ))
-              }
-              <div className={classNames(cls.column, {}, [cls.columnButtons])} style={{ flex: `1 0 ${100 / (Object.keys(item!!).length + 1)}%` }}>
-                <div className={cls.buttons}>
-                  {
-                    editable ? (
-                      <Button
-                        className={cls.button}
-                        theme={ButtonThemes.CLEAR}
-                        onClick={(e) => onDeleteHandler(e, item)}
-                      >
-                        <CrossIcon />
-                      </Button>
-                    )
-                      : null
-                  }
+      case TableItemsMod.LINK:
+        return (
+          <AppLink to={`${path}${item?.id}`} className={classNames(cls.tableItemBody, {}, [alignmentClass, className, cls[mod]])}>
+            {
+              checkable && (
+                <Checkbox
+                  className={cls.checkbox}
+                  id={`${item?.id}`}
+                  onChange={() => onCheckHandler(item?.id)}
+                  checked={isChecked}
+                />
+              )
+            }
+            {
+              item && Object.keys(item).map((key) => (
+                <div className={cls.column} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / (Object.keys(item).length + 1)}%` }}>
+                  <span className={cls.text}>{item[key]}</span>
+                </div>
+              ))
+            }
+            <div className={classNames(cls.column, {}, [cls.columnButtons])} style={{ flex: `1 0 ${100 / (Object.keys(item!!).length + 1)}%` }}>
+              <div className={cls.buttons}>
+                {
+                  editable ? (
+                    <Button
+                      className={cls.button}
+                      theme={ButtonThemes.CLEAR}
+                      onClick={(e) => onDeleteHandler(e, item)}
+                    >
+                      <CrossIcon />
+                    </Button>
+                  )
+                    : null
+                }
 
-                  {
-                    deleteble ? (
-                      <Button
-                        className={cls.button}
-                        theme={ButtonThemes.CLEAR}
-                        onClick={(e) => onEditHandler(e, item)}
-                      >
-                        <PenIcon />
-                      </Button>
-                    )
-                      : null
-                  }
-                </div>
+                {
+                  deleteble ? (
+                    <Button
+                      className={cls.button}
+                      theme={ButtonThemes.CLEAR}
+                      onClick={(e) => onEditHandler(e, item)}
+                    >
+                      <PenIcon />
+                    </Button>
+                  )
+                    : null
+                }
               </div>
-            </AppLink>
-          );
-        case TableItemsMod.NORMAL:
-          return (
-            <div className={classNames(cls.tableItemBody, {}, [cls[mod], className])}>
-              {
-                checkable && (
-                  <Checkbox
-                    className={cls.checkbox}
-                    id={`${item?.id}`}
-                    onChange={() => onCheckHandler(item?.id)}
-                    checked={isChecked}
-                  />
-                )
-              }
-              {
-                item && Object.keys(item).map((key) => (
-                  <div className={cls.column} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / (Object.keys(item).length + 1)}%` }}>
-                    <span className={cls.text}>{item[key]}</span>
-                  </div>
-                ))
-              }
-              <div className={classNames(cls.column, {}, [cls.columnButtons])} style={{ flex: `1 0 ${100 / (Object.keys(item!!).length + 1)}%` }}>
-                <div className={cls.buttons}>
-                  {
-                    editable ? (
-                      <Button
-                        className={cls.button}
-                        theme={ButtonThemes.CLEAR}
-                        onClick={(e) => onDeleteHandler(e, item)}
-                      >
-                        <CrossIcon />
-                      </Button>
-                    )
-                      : null
-                  }
+            </div>
+          </AppLink>
+        );
+      case TableItemsMod.NORMAL:
+        return (
+          <div className={classNames(cls.tableItemBody, {}, [alignmentClass, cls[mod], className])}>
+            {
+              checkable && (
+                <Checkbox
+                  className={cls.checkbox}
+                  id={`${item?.id}`}
+                  onChange={() => onCheckHandler(item?.id)}
+                  checked={isChecked}
+                />
+              )
+            }
+            {
+              item && Object.keys(item).map((key) => (
+                <div className={cls.column} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / (Object.keys(item).length + 1)}%` }}>
+                  <span className={cls.text}>{item[key]}</span>
+                </div>
+              ))
+            }
+            <div className={classNames(cls.column, {}, [cls.columnButtons])} style={{ flex: `1 0 ${100 / (Object.keys(item!!).length + 1)}%` }}>
+              <div className={cls.buttons}>
+                {
+                  editable ? (
+                    <Button
+                      className={cls.button}
+                      theme={ButtonThemes.CLEAR}
+                      onClick={(e) => onDeleteHandler(e, item)}
+                    >
+                      <CrossIcon />
+                    </Button>
+                  )
+                    : null
+                }
 
-                  {
-                    deleteble ? (
-                      <Button
-                        className={cls.button}
-                        theme={ButtonThemes.CLEAR}
-                        onClick={(e) => onEditHandler(e, item)}
-                      >
-                        <PenIcon />
-                      </Button>
-                    )
-                      : null
-                  }
-                </div>
+                {
+                  deleteble ? (
+                    <Button
+                      className={cls.button}
+                      theme={ButtonThemes.CLEAR}
+                      onClick={(e) => onEditHandler(e, item)}
+                    >
+                      <PenIcon />
+                    </Button>
+                  )
+                    : null
+                }
               </div>
             </div>
-          );
-        case TableItemsMod.CLICK:
-          return (
-            <div className={classNames(cls.tableItemBody, {}, [cls[mod], className])} onClick={(e) => onClickHandler(e, item)}>
-              {
-                checkable && (
-                  <Checkbox
-                    className={cls.checkbox}
-                    id={`${item?.id}`}
-                    onChange={() => onCheckHandler(item?.id)}
-                    checked={isChecked}
-                  />
-                )
-              }
-              {
-                item && Object.keys(item).map((key) => (
-                  <div className={cls.column} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / (Object.keys(item).length + 1)}%` }}>
-                    <span className={cls.text}>{item[key]}</span>
-                  </div>
-                ))
-              }
-              <div className={classNames(cls.column, {}, [cls.columnButtons])} style={{ flex: `1 0 ${100 / (Object.keys(item!!).length + 1)}%` }}>
-                <div className={cls.buttons}>
-                  {
-                    editable ? (
-                      <Button
-                        className={cls.button}
-                        theme={ButtonThemes.CLEAR}
-                        onClick={(e) => onDeleteHandler(e, item)}
-                      >
-                        <CrossIcon />
-                      </Button>
-                    )
-                      : null
-                  }
+          </div>
+        );
+      case TableItemsMod.CLICK:
+        return (
+          <div className={classNames(cls.tableItemBody, {}, [alignmentClass, cls[mod], className])} onClick={(e) => onClickHandler(e, item)}>
+            {
+              checkable && (
+                <Checkbox
+                  className={cls.checkbox}
+                  id={`${item?.id}`}
+                  onChange={() => onCheckHandler(item?.id)}
+                  checked={isChecked}
+                />
+              )
+            }
+            {
+              item && Object.keys(item).map((key) => (
+                <div className={cls.column} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / (Object.keys(item).length + 1)}%` }}>
+                  <span className={cls.text}>{item[key]}</span>
                 </div>
+              ))
+            }
+            <div className={classNames(cls.column, {}, [cls.columnButtons])} style={{ flex: `1 0 ${100 / (Object.keys(item!!).length + 1)}%` }}>
+              <div className={cls.buttons}>
+                {
+                  editable ? (
+                    <Button
+                      className={cls.button}
+                      theme={ButtonThemes.CLEAR}
+                      onClick={(e) => onDeleteHandler(e, item)}
+                    >
+                      <CrossIcon />
+                    </Button>
+                  )
+                    : null
+                }
               </div>
             </div>
-          );
-        case TableItemsMod.NO_CONTROL:
-          return (
-            <div className={classNames(cls.tableItemBody, {}, [cls[mod], className])}>
-              {
-                item && Object.keys(item).map((key, index) => (
-                  <div className={cls.column} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / Object.keys(item).length}%` }}>
-                    <span className={cls.text}>{item[key]}</span>
-                  </div>
-                ))
-              }
-            </div>
-          );
-        default:
-          return null;
+          </div>
+        );
+      case TableItemsMod.NO_CONTROL:
+        return (
+          <div className={classNames(cls.tableItemBody, {}, [alignmentClass, cls[mod], className])}>
+            {
+              item && Object.keys(item).map((key, index) => (
+                <div className={cls.column} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / Object.keys(item).length}%` }}>
+                  <span className={cls.text}>{item[key]}</span>
+                </div>
+              ))
+            }
+          </div>
+        );
+      default:
+        return null;
       }
     }
     return null;

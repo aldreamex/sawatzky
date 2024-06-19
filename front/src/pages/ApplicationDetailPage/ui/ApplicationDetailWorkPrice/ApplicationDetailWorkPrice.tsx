@@ -152,6 +152,7 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
     onDelete: onDeleteTaskHandler,
     mod: (isInitiator || step === 2) ? TableItemsMod.NO_CONTROL : TableItemsMod.NORMAL,
     checkable: false,
+    textAlignment: 'center',
   });
 
   const { Table: WorkMaterialsTable } = useTable({
@@ -160,26 +161,14 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
     onDelete: onDeleteMaterialHandler,
     mod: (isInitiator || step === 2) ? TableItemsMod.NO_CONTROL : TableItemsMod.NORMAL,
     checkable: false,
+    textAlignment: 'center',
   });
 
   const ChangeStepButton = useMemo(() => {
     if (!prepayment) {
       switch (step) {
-        case 1:
-          if (isSawatzky && (workTasksTable.items?.length || workMaterialsTable.items?.length)) {
-            return (
-              <Button
-                theme={ButtonThemes.BLUE_SOLID}
-                onClick={() => dispatch(nextApplicationStep({
-                  applicationId,
-                  step,
-                }))}
-              >Отправить на согласованию заказчику
-              </Button>
-            );
-          }
-          break;
-        case 2:
+      case 1:
+        if (isSawatzky && (workTasksTable.items?.length || workMaterialsTable.items?.length)) {
           return (
             <Button
               theme={ButtonThemes.BLUE_SOLID}
@@ -187,12 +176,42 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
                 applicationId,
                 step,
               }))}
-            >Согласовать список работ
+            >Отправить на согласованию заказчику
             </Button>
           );
-        case 3:
-          if (isSawatzky && (isDispatcher || isAdmin) && detail?.confirmations?.length) {
-            return (
+        }
+        break;
+      case 2:
+        return (
+          <Button
+            theme={ButtonThemes.BLUE_SOLID}
+            onClick={() => dispatch(nextApplicationStep({
+              applicationId,
+              step,
+            }))}
+          >Согласовать список работ
+          </Button>
+        );
+      case 3:
+        if (isSawatzky && (isDispatcher || isAdmin) && detail?.confirmations?.length) {
+          return (
+            <Button
+              className={cls.blueBtn}
+              theme={ButtonThemes.BLUE_SOLID}
+              onClick={() => dispatch(nextApplicationStep({
+                applicationId,
+                step,
+              }))}
+            >
+              Отправить на подтверждение заказчику
+            </Button>
+          );
+        }
+        break;
+      case 4:
+        if (!isSawatzky && detail?.confirmations?.length) {
+          return (
+            <div className={cls.btns}>
               <Button
                 className={cls.blueBtn}
                 theme={ButtonThemes.BLUE_SOLID}
@@ -201,74 +220,44 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
                   step,
                 }))}
               >
-                Отправить на подтверждение заказчику
+                Согласовать
               </Button>
-            );
-          }
-          break;
-        case 4:
-          if (!isSawatzky && detail?.confirmations?.length) {
-            return (
-              <div className={cls.btns}>
-                <Button
-                  className={cls.blueBtn}
-                  theme={ButtonThemes.BLUE_SOLID}
-                  onClick={() => dispatch(nextApplicationStep({
-                    applicationId,
-                    step,
-                  }))}
-                >
-                  Согласовать
-                </Button>
-                <Button
-                  className={cls.blueBtn}
-                  theme={ButtonThemes.BLUE_SOLID}
-                  onClick={() => dispatch(prevApplicationStep({
-                    applicationId,
-                    step,
-                  }))}
-                >
-                  Отправить на доработку
-                </Button>
-              </div>
-            );
-          }
-          break;
-        case 5:
-          if (isSawatzky && (isDispatcher || isAdmin) && detail?.confirmations?.length) {
-            return (
               <Button
                 className={cls.blueBtn}
                 theme={ButtonThemes.BLUE_SOLID}
-                onClick={() => dispatch(nextApplicationStep({
+                onClick={() => dispatch(prevApplicationStep({
                   applicationId,
                   step,
                 }))}
-              >Завершить заявку
+              >
+                Отправить на доработку
               </Button>
-            );
-          }
-          break;
-        default:
-          return null;
+            </div>
+          );
+        }
+        break;
+      case 5:
+        if (isSawatzky && (isDispatcher || isAdmin) && detail?.confirmations?.length) {
+          return (
+            <Button
+              className={cls.blueBtn}
+              theme={ButtonThemes.BLUE_SOLID}
+              onClick={() => dispatch(nextApplicationStep({
+                applicationId,
+                step,
+              }))}
+            >Завершить заявку
+            </Button>
+          );
+        }
+        break;
+      default:
+        return null;
       }
     } else {
       switch (step) {
-        case 1:
-          if (isSawatzky && (workTasksTable.items?.length || workMaterialsTable.items?.length)) {
-            return (
-              <Button
-                theme={ButtonThemes.BLUE_SOLID}
-                onClick={() => dispatch(nextApplicationStep({
-                  applicationId,
-                  step,
-                }))}
-              >Отправить на согласованию заказчику
-              </Button>
-            );
-          }
-          break;
-        case 2:
+      case 1:
+        if (isSawatzky && (workTasksTable.items?.length || workMaterialsTable.items?.length)) {
           return (
             <Button
               theme={ButtonThemes.BLUE_SOLID}
@@ -276,26 +265,56 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
                 applicationId,
                 step,
               }))}
-            >Согласовать список работ
+            >Отправить на согласованию заказчику
             </Button>
           );
-        case 3:
-          if (detail?.paymentSlips.length && prepayment) {
-            return (
-              <Button
-                theme={ButtonThemes.BLUE_SOLID}
-                onClick={() => dispatch(nextApplicationStep({
-                  applicationId,
-                  step,
-                }))}
-              >Отправить платежку
-              </Button>
-            );
-          }
-          break;
-        case 4:
-          if (isSawatzky && (isDispatcher || isAdmin) && detail?.confirmations?.length) {
-            return (
+        }
+        break;
+      case 2:
+        return (
+          <Button
+            theme={ButtonThemes.BLUE_SOLID}
+            onClick={() => dispatch(nextApplicationStep({
+              applicationId,
+              step,
+            }))}
+          >Согласовать список работ
+          </Button>
+        );
+      case 3:
+        if (detail?.paymentSlips.length && prepayment) {
+          return (
+            <Button
+              theme={ButtonThemes.BLUE_SOLID}
+              onClick={() => dispatch(nextApplicationStep({
+                applicationId,
+                step,
+              }))}
+            >Отправить платежку
+            </Button>
+          );
+        }
+        break;
+      case 4:
+        if (isSawatzky && (isDispatcher || isAdmin) && detail?.confirmations?.length) {
+          return (
+            <Button
+              className={cls.blueBtn}
+              theme={ButtonThemes.BLUE_SOLID}
+              onClick={() => dispatch(nextApplicationStep({
+                applicationId,
+                step,
+              }))}
+            >
+              Отправить на подтверждение заказчику
+            </Button>
+          );
+        }
+        break;
+      case 5:
+        if (!isSawatzky && detail?.confirmations?.length) {
+          return (
+            <div className={cls.btns}>
               <Button
                 className={cls.blueBtn}
                 theme={ButtonThemes.BLUE_SOLID}
@@ -304,56 +323,39 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
                   step,
                 }))}
               >
-                Отправить на подтверждение заказчику
+                Согласовать
               </Button>
-            );
-          }
-          break;
-        case 5:
-          if (!isSawatzky && detail?.confirmations?.length) {
-            return (
-              <div className={cls.btns}>
-                <Button
-                  className={cls.blueBtn}
-                  theme={ButtonThemes.BLUE_SOLID}
-                  onClick={() => dispatch(nextApplicationStep({
-                    applicationId,
-                    step,
-                  }))}
-                >
-                  Согласовать
-                </Button>
-                <Button
-                  className={cls.blueBtn}
-                  theme={ButtonThemes.BLUE_SOLID}
-                  onClick={() => dispatch(prevApplicationStep({
-                    applicationId,
-                    step,
-                  }))}
-                >
-                  Отправить на доработку
-                </Button>
-              </div>
-            );
-          }
-          break;
-        case 6:
-          if (isSawatzky && (isDispatcher || isAdmin) && detail?.confirmations?.length) {
-            return (
               <Button
                 className={cls.blueBtn}
                 theme={ButtonThemes.BLUE_SOLID}
-                onClick={() => dispatch(nextApplicationStep({
+                onClick={() => dispatch(prevApplicationStep({
                   applicationId,
                   step,
                 }))}
-              >Завершить заявку
+              >
+                Отправить на доработку
               </Button>
-            );
-          }
-          break;
-        default:
-          return null;
+            </div>
+          );
+        }
+        break;
+      case 6:
+        if (isSawatzky && (isDispatcher || isAdmin) && detail?.confirmations?.length) {
+          return (
+            <Button
+              className={cls.blueBtn}
+              theme={ButtonThemes.BLUE_SOLID}
+              onClick={() => dispatch(nextApplicationStep({
+                applicationId,
+                step,
+              }))}
+            >Завершить заявку
+            </Button>
+          );
+        }
+        break;
+      default:
+        return null;
       }
     }
   }, [
