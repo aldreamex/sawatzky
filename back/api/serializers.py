@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db.models import Sum
 from django.utils import timezone
 from rest_framework.serializers import ModelSerializer
@@ -1122,7 +1124,7 @@ class GeneralJournalCreateSerializer(ModelSerializer):
     # Сериализатор для создания генерального журнала
     class Meta:
         model = GeneralJournal
-        fields = ['paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount']
+        fields = ['id', 'paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount']
 
 
 class GeneralJournalListSerializer(ModelSerializer):
@@ -1133,9 +1135,6 @@ class GeneralJournalListSerializer(ModelSerializer):
         fields = ['id', 'paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount', 'amountByInvoices', 'status']
 
 
-
-
-
 class ApplicationGeneralJournalSerializer(serializers.ModelSerializer):
     legalEntity = serializers.CharField(source='creator.legalEntity.name')
     class Meta:
@@ -1144,6 +1143,7 @@ class ApplicationGeneralJournalSerializer(serializers.ModelSerializer):
 
 
 class GeneralJournalDetailSerializer(serializers.ModelSerializer):
+    """Сериализатор для детейла записи журнала"""
     applications = serializers.SerializerMethodField()
     totalDebt = serializers.DecimalField(max_digits=15, decimal_places=2, required=False)
     totalPayment = serializers.DecimalField(max_digits=15, decimal_places=2, required=False)
@@ -1182,3 +1182,70 @@ class GeneralJournalUpdateSerializer(serializers.ModelSerializer):
         # Сохраняем изменения
         instance.save()
         return instance
+
+
+class ApplicationUpdatejournalSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    class Meta:
+        model = Application
+        fields = ['id', 'totalPayment']
+
+
+class GeneralJournalUpdateAPLSerializer(serializers.ModelSerializer):
+    application = ApplicationUpdatejournalSerializer(many=True, read_only=False)
+
+    class Meta:
+        model = GeneralJournal
+        fields = [
+            'application'
+        ]
+
+    def update(self, instance, validated_data):
+        applications_data = validated_data.get('application')
+
+        if applications_data:
+            for app_data in applications_data:
+                app_id = app_data.get('id')
+                additional_payment = Decimal(app_data.get('totalPayment'))
+
+                try:
+                    application = Application.objects.get(id=app_id)
+
+                    if application.creator and application.creator.legalEntity == instance.legalEntity:
+                        instance.application.add(application)
+
+                        total_sum = Decimal(application.totalSum)
+                        current_payment = Decimal(application.totalPayment)
+                        current_debt = total_sum - current_payment
+
+                        if additional_payment > current_debt:
+                            raise serializers.ValidationError(
+                                f"Сумма платежа {additional_payment} превышает текущий долг {current_debt} для заявки {app_id}"
+                            )
+
+                        application.totalPayment = current_payment + additional_payment
+                        application.totalDebt = total_sum - application.totalPayment
+                        application.save()
+                    else:
+                        raise serializers.ValidationError(
+                            f"Заявка с id {app_id} не связана с юридическим лицом из общего журнала"
+                        )
+
+                except Application.DoesNotExist:
+                    raise serializers.ValidationError(f"Заявка с id {app_id} не существует")
+
+            total_debt = Application.objects.filter(
+                creator__legalEntity=instance.legalEntity
+            ).aggregate(total_debt=Sum('totalDebt'))['total_debt'] or Decimal('0.0')
+
+            instance.amountByInvoices = total_debt
+            instance.save()
+
+        return instance
+
+
+class GeneralJournalApplicationsByLegalEntitySerializer(serializers.ModelSerializer):
+    legalEntity = serializers.CharField(source='creator.legalEntity.name')
+    class Meta:
+        model = Application
+        fields = ['id', 'title', 'legalEntity', 'createdAt', 'totalSum', 'totalDebt', 'totalPayment']

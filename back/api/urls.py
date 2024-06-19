@@ -78,4 +78,7 @@ urlpatterns = [
     path('general_journal/create/', views.GeneralJournalCreateView.as_view()),
     path('general_journal/<int:pk>/', views.GeneralJournalDetailView.as_view()),
     path('general_journal/update/<int:pk>/', views.GeneralJournalUpdateView.as_view()),
+    path('general_journal/update_applications/<int:pk>/', views.GeneralJournalUpdateAPLView.as_view()),
+    path('general_journal/applications_by_legal_entity/<int:legal_entity_id>/', views.GeneralJournalApplicationsByLegalEntityView.as_view()),
+
 ]
