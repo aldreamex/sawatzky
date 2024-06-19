@@ -65,6 +65,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = (props) => {
   const { Table } = useTable({
     data: tableData,
     mod: TableItemsMod.NO_CONTROL,
+    textAlignment: 'center',
   });
 
   const onCloseHandler = useCallback(() => {

@@ -18,6 +18,7 @@ interface TableProps {
   editable?: boolean;
   deleteble?: boolean
   checkable: boolean;
+  textAlignment?: 'left' | 'center' | 'right'
 }
 
 export const Table: React.FC<TableProps> = (props) => {
@@ -36,6 +37,7 @@ export const Table: React.FC<TableProps> = (props) => {
     deleteble,
     editable,
     checkable,
+    textAlignment,
   } = props;
 
   return (
@@ -46,6 +48,7 @@ export const Table: React.FC<TableProps> = (props) => {
         selectedAll={selectedAll}
         onSelectAll={onSelectAll}
         checkable={checkable}
+        textAlignment={textAlignment}
       />
       {
         data.items && (
@@ -61,6 +64,7 @@ export const Table: React.FC<TableProps> = (props) => {
             deleteble={deleteble}
             editable={editable}
             checkable={checkable}
+            textAlignment={textAlignment}
           />
         )
       }
