@@ -74,7 +74,8 @@ from .serializers import (
     WorkMaterialUpdateSerializer,
     WorkObjectUpdateSerializer, ApplicationListSerializer, GeneralJournalCreateSerializer, GeneralJournalListSerializer,
     GeneralJournalDetailSerializer,
-    GeneralJournalUpdateSerializer
+    GeneralJournalUpdateSerializer,
+    GeneralJournalUpdateAPLSerializer, GeneralJournalApplicationsByLegalEntitySerializer
 )
 
 from .models import (
@@ -392,7 +393,7 @@ class LegalEntityListView(generics.ListAPIView):
 class LegalEntityDetailView(generics.RetrieveDestroyAPIView):
     # представление на получение, обновление, удаление Юр. лица по id
     serializer_class = LegalEntityDetailSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
 
@@ -1152,3 +1153,44 @@ class GeneralJournalUpdateView(generics.UpdateAPIView):
 
         except (KeyError, GeneralJournal.DoesNotExist):
             return Response({'message': 'Генеральный журнал не найден'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+class GeneralJournalUpdateAPLView(generics.UpdateAPIView):
+    """Представление на обновление связанных заявок журнала по id"""
+    serializer_class = GeneralJournalUpdateAPLSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+
+        try:
+            pk = self.kwargs['pk']
+            generalJournal = GeneralJournal.objects.filter(id=pk)
+            return generalJournal
+
+        except (KeyError, GeneralJournal.DoesNotExist):
+            return Response({'message': 'Генеральный журнал не найден'}, status=status.HTTP_404_NOT_FOUND)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+
+class GeneralJournalApplicationsByLegalEntityView(generics.ListAPIView):
+    serializer_class = GeneralJournalApplicationsByLegalEntitySerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        legal_entity_id = self.kwargs['legal_entity_id']
+        return Application.objects.filter(creator__legalEntity_id=legal_entity_id)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

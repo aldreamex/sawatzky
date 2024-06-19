@@ -318,9 +318,12 @@ class Application(models.Model):
     documents = models.ManyToManyField("api.Document", verbose_name=("Документы"), blank=True, null=True, related_name='application_documents')
     place = models.CharField(("Место выполнения заявки"), max_length=100, blank=True, null=True )
 
-    totalSum = models.FloatField(("Общая стоимость работ"), blank=True, null=True)
+    totalSum = models.FloatField(("Общая стоимость работ"), blank=True, null=True, default=0)
     percent = models.FloatField(("НДС"), blank=True, null=True)
     totalSumWithPercent = models.FloatField(("Общая стоимость работ с НДС"), blank=True, null=True)
+    totalPayment = models.DecimalField(("Сумма оплаты"), max_digits=15, decimal_places=2, blank=True, null=True, default=0)
+    totalDebt = models.DecimalField(("Сумма долга"), max_digits=15, decimal_places=2, blank=True, null=True, default=0)
+
 
     status = models.CharField(("Статус заявки"), max_length=50, blank=False, choices=STATUSES, default='new')
     step = models.PositiveIntegerField(("Шаг выполнения заявки"), default=1)
@@ -498,7 +501,8 @@ class GeneralJournal(models.Model):
     totalAmount = models.DecimalField(("Общая сумма"), max_digits=15, decimal_places=2)
     amountByInvoices = models.DecimalField(("Сумма по счетам"), max_digits=15, decimal_places=2, blank=True, null=True)
     status = models.CharField(("Статус оплаты"), max_length=50, blank=False, choices=STATUSES, default='unpaid')
-    application = models.ForeignKey(Application, verbose_name=("Заявка"), on_delete=models.CASCADE, blank=True, null=True)
+    # application = models.ForeignKey(Application, verbose_name=("Заявка"), on_delete=models.CASCADE, blank=True, null=True)
+    application = models.ManyToManyField(Application, verbose_name=("Заявки"), blank=True)
     totalDebt = models.DecimalField(("Сумма долга"), max_digits=15, decimal_places=2, blank=True, null=True)
     totalPayment = models.DecimalField(("Сумма оплаты"), max_digits=15, decimal_places=2, blank=True, null=True)
 
