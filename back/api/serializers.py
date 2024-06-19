@@ -1250,6 +1250,17 @@ class GeneralJournalUpdateAPLSerializer(serializers.ModelSerializer):
             total_debt = Application.objects.filter(
                 creator__legalEntity=instance.legalEntity
             ).aggregate(total_debt=Sum('totalDebt'))['total_debt'] or Decimal('0.0')
+            total_payment = instance.application.aggregate(total_payment=Sum('totalPayment'))[
+                                'total_payment'] or Decimal('0.0')
+            # total_sum = instance.application.aggregate(total_sum=Sum('totalSum'))['total_sum'] or Decimal('0.0')
+
+            # Логика установки статуса
+            if total_debt == 0:
+                instance.status = 'fully'
+            elif total_payment == 0:
+                instance.status = 'unpaid'
+            else:
+                instance.status = 'partially'
 
             instance.amountByInvoices = total_debt
             instance.save()
