@@ -405,11 +405,27 @@ class LegalEntityDetailView(generics.RetrieveDestroyAPIView):
         except (KeyError, LegalEntity.DoesNotExist):
             return Response({'message': 'Юр. лицо не найдено'}, status=status.HTTP_404_NOT_FOUND)
 
+    def destroy(self, request, *args, **kwargs):
+        """Запрет на удаление Юр лиц, если пользователь не администратор"""
+        user = self.request.user
+        try:
+            sawatzky_employee = user.sawatzky_employee
+        except SawatzkyEmployee.DoesNotExist:
+            raise PermissionDenied("У вас нет прав на удаление этого объекта.")
+
+        if sawatzky_employee.role != 'admin':
+            raise PermissionDenied("У вас нет прав на удаление этого объекта.")
+
+        # Получаем объект, который нужно удалить
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class LegalEntityUpdateView(generics.UpdateAPIView):
     # представление на обновление группы объектов
     serializer_class = LegalEntityUpdateSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
 
