@@ -358,7 +358,7 @@ class Report(models.Model):
         ('notUrgent', 'Не срочно'),
     )
 
-    legalEntity = models.ForeignKey(LegalEntity, verbose_name=("Заказчик в рамках которого создается отчет"), on_delete=models.CASCADE)
+    legalEntity = models.ForeignKey(LegalEntity, verbose_name=("Заказчик в рамках которого создается отчет"), on_delete=models.CASCADE, blank=True, null=True)
     creator = models.ForeignKey("api.SawatzkyEmployee", verbose_name=("Сотрудник, создавший отчет"), blank=True, null=True, on_delete=models.CASCADE)
 
     workObjectsGroup = models.ForeignKey('api.WorkObjectsGroup', verbose_name=("Группа рабочих объектов"), on_delete=models.CASCADE, blank=True, null=True)
