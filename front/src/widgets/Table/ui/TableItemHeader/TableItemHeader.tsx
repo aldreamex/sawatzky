@@ -11,6 +11,7 @@ interface TableItemHeaderProps {
   onSelectAll?: () => void;
   mod?: TableItemsMod;
   checkable: boolean;
+  textAlignment?: 'left' | 'center' | 'right'
 }
 
 export const TableItemHeader: React.FC<TableItemHeaderProps> = (props) => {
@@ -21,11 +22,14 @@ export const TableItemHeader: React.FC<TableItemHeaderProps> = (props) => {
     onSelectAll,
     mod,
     checkable,
+    textAlignment,
   } = props;
 
   const onCheckClick = useCallback(() => {
     onSelectAll?.();
   }, [onSelectAll]);
+
+  const alignmentClass = textAlignment ? cls[`text-${textAlignment}`] : '';
 
   return (
     <div className={classNames(cls.tableItemHeader, {}, [className])}>
@@ -38,12 +42,12 @@ export const TableItemHeader: React.FC<TableItemHeaderProps> = (props) => {
         item && Object.keys(item).map((key, index) => (
           mod !== TableItemsMod.NO_CONTROL
             ? (
-              <div className={cls.column} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / (Object.keys(item).length + 1)}%` }}>
+              <div className={classNames(cls.column, {}, [alignmentClass])} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / (Object.keys(item).length + 1)}%` }}>
                 <span className={cls.text}>{item[key]}</span>
               </div>
             )
             : (
-              <div className={cls.column} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / (Object.keys(item).length)}%` }}>
+              <div className={classNames(cls.column, {}, [alignmentClass])} key={`${key}_table_item_column`} style={{ flex: `1 0 ${100 / (Object.keys(item).length)}%` }}>
                 <span className={cls.text}>{item[key]}</span>
               </div>
             )

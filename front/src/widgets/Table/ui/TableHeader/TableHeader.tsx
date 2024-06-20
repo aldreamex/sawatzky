@@ -9,6 +9,7 @@ interface TableHeaderProps {
     onSelectAll?: () => void;
     selectedAll?: boolean;
     checkable: boolean;
+    textAlignment?: 'left' | 'center' | 'right'
 }
 
 export const TableHeader: React.FC<TableHeaderProps> = (props) => {
@@ -19,6 +20,7 @@ export const TableHeader: React.FC<TableHeaderProps> = (props) => {
     onSelectAll,
     selectedAll,
     checkable,
+    textAlignment,
   } = props;
 
   return (
@@ -30,6 +32,7 @@ export const TableHeader: React.FC<TableHeaderProps> = (props) => {
         onSelectAll={onSelectAll}
         selectedAll={selectedAll}
         checkable={checkable}
+        textAlignment={textAlignment}
       />
     </div>
   );

@@ -57,6 +57,7 @@ const StatisticPage: React.FC<StatisticPageProps> = (props) => {
   const { Table } = useTable({
     data: tableData,
     mod: TableItemsMod.NO_CONTROL,
+    textAlignment: 'center',
   });
 
   return (

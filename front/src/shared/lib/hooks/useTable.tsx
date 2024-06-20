@@ -14,6 +14,7 @@ export interface UseTableProps {
   editable?: boolean;
   deleteble?: boolean
   checkable?: boolean;
+  textAlignment?: 'left' | 'center' | 'right'
 }
 
 type UseTableResult = {
@@ -38,6 +39,7 @@ export const useTable = (props: UseTableProps): UseTableResult => {
     deleteble = true,
     editable = true,
     checkable = true,
+    textAlignment = undefined,
   } = props;
 
   const [selectedItems, setSelectedItems] = useState<TableItemType[]>([]);
@@ -89,6 +91,7 @@ export const useTable = (props: UseTableProps): UseTableResult => {
       deleteble={deleteble}
       editable={editable}
       checkable={checkable}
+      textAlignment={textAlignment}
     />
   ), [path, mod, className, data, onDeleteHandler, onEditHandler, onClickHandler, onSelectAllHandler, onCheckHandler, selectedAll, selectedItems, deleteble, editable, checkable]);
 
