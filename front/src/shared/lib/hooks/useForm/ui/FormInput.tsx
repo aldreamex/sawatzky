@@ -33,17 +33,10 @@ export const FormInput: FC<FormInputProps> = ({
     isValid: inputIsValid,
   } = useValidation(field);
 
-  const [isInit, setIsInit] = useState(false);
-  const [fieldIsValid, setFieldIsValid] = useState(false);
-
   useEffect(() => {
-    const { isValid } = validateField(field);
-    setFieldIsValid(isValid);
-  }, [isInit, setIsValid, setIsInit, id, checkValidation, field.value, validateField]);
-
-  useEffect(() => {
-    setIsValid(field.id, fieldIsValid);
-  }, [fieldIsValid, setIsValid, field.id]);
+    validateField(field);
+    setIsValid(field.id, inputIsValid);
+  }, [setIsValid, id, checkValidation, field.value, validateField]);
 
   const onBlurHandler = useCallback(() => {
     const { isValid } = validateField(field);
