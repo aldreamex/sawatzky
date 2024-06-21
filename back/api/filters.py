@@ -16,6 +16,8 @@ from .models import (
 class ApplicationFilter(filters.FilterSet):
     legalEntity = filters.CharFilter(field_name="creator__legalEntity", lookup_expr="exact")
     ordering = filters.OrderingFilter(fields=("createdAt", 'id'), field_labels={"createdAt": "Дата создания"})
+    periodStart = filters.DateFilter(field_name="createdAt", lookup_expr="gte")
+    periodEnd = filters.DateFilter(field_name="createdAt", lookup_expr="lte")
     creator = filters.CharFilter(field_name="creator__user__username", lookup_expr="exact")
     workObject = filters.CharFilter(method='filter_by_work_object')
     performer = filters.CharFilter(method='filter_by_performer')
@@ -27,7 +29,7 @@ class ApplicationFilter(filters.FilterSet):
 
     class Meta:
         model = Application
-        fields = ['legalEntity', 'ordering', 'creator', 'workObject', 'performer']
+        fields = ['legalEntity', 'ordering', 'periodStart', 'periodEnd', 'creator', 'workObject', 'performer']
 
     def filter_by_work_object(self, queryset, name, value):
         workingObjects = value.split(',')
