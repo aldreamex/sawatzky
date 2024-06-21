@@ -28,6 +28,7 @@ export const applicationsPageSlice = createSlice({
     status: undefined,
     isCalendarOpen: false,
     creator: undefined,
+    sort: undefined,
   }),
   reducers: {
     toggleCheckbox: (state, action: PayloadAction<string>) => {
@@ -83,6 +84,9 @@ export const applicationsPageSlice = createSlice({
     },
     closeCalendar: (state) => {
       state.isCalendarOpen = false;
+    },
+    setSort: (state, action: PayloadAction<undefined|'createdAt'|'-createdAt'>) => {
+      state.sort = action.payload;
     },
   },
   extraReducers: (builder) => builder

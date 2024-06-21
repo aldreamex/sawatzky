@@ -3,6 +3,7 @@ import { Title } from 'shared/ui/Title/Title';
 import { ReactComponent as AddLogo } from 'shared/assets/icons/add-icon.svg';
 // import { ReactComponent as DeleteLogo } from 'shared/assets/icons/delete-icon.svg';
 import { ReactComponent as OrderLogo } from 'shared/assets/icons/order-icon.svg';
+import { ReactComponent as OrderLogo2 } from 'shared/assets/icons/order-icon-1.svg';
 import { Button, ButtonThemes } from 'shared/ui/Button/Button';
 import { CreateApplicationModal, createApplicationActions, createApplicationReducer } from 'features/CreateApplication';
 import {
@@ -23,12 +24,20 @@ import { DateInput } from 'widgets/DateInput';
 import { CalendarThemes } from 'widgets/DateInput/ui/DateInput';
 import { fetchLegalEntityList, legalEntityReducer } from 'entities/LegalEntity';
 import { employeeReducer, fetchEmployeeList } from 'entities/Employee';
+import { classNames } from 'shared/lib/classNames/classNames';
 import { applicationsPageActions, applicationsPageReducer, getApplicationsPage } from '../../model/slice/applicationsPageSlice';
 import { fetchApplicationsList } from '../../model/services/fetchApplicationsList/fetchApplicationsList';
 import { ApplicationPreviewList } from '../ApplicationPreviewList/ApplicationPreviewList';
 import {
   getApplicationIsCalendarOpen,
-  getApplicationIsLoading, getApplicationPageCreator, getApplicationPageEndWorkDate, getApplicationPageStartWorkDate, getApplicationStatus, getApplicationWorkObject, getPageInit,
+  getApplicationIsLoading,
+  getApplicationPageCreator,
+  getApplicationPageEndWorkDate,
+  getApplicationPageSort,
+  getApplicationPageStartWorkDate,
+  getApplicationStatus,
+  getApplicationWorkObject,
+  getPageInit,
   getShowFinishedApplications,
 } from '../../model/selectors/applicationsPageSelectors';
 import { ApplicationLoader } from '../ApplicationLoader/ApplicationLoader';
@@ -54,8 +63,8 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
   const init = useSelector(getPageInit);
 
   const user = useUserData();
-  const workObjectsGroups = useSelector(getWorkObjectGroup.selectAll);
-  const workObjectsGroup = user.sawatzkyEmployee?.workingObjects[0];
+  // const workObjectsGroups = useSelector(getWorkObjectGroup.selectAll);
+  // const workObjectsGroup = user.sawatzkyEmployee?.workingObjects[0];
   const workObject = useSelector(getApplicationWorkObject);
 
   const filteredApplications = useMemo(
@@ -236,14 +245,34 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
     [creator, creatorsOptions],
   );
 
+  // sort
+
+  const sorting = useSelector(getApplicationPageSort);
+  function changeSort() {
+    console.log('changeSort', sorting);
+    switch (sorting) {
+    case undefined:
+      dispatch(applicationsPageActions.setSort('createdAt'));
+      break;
+    case 'createdAt':
+      dispatch(applicationsPageActions.setSort('-createdAt'));
+      break;
+    case '-createdAt':
+    default:
+      dispatch(applicationsPageActions.setSort(undefined));
+      break;
+    }
+  }
+
   useEffect(() => {
     const params = {
+      ...(sorting && { ordering: sorting }),
       ...(creator && { creator }),
       ...(status && { status }),
       ...(startWorkDate && endWorkDate && { createdAt_before: endWorkDate, createdAt_after: startWorkDate }),
     };
     dispatch(fetchApplicationsList({ params }));
-  }, [creator, startWorkDate, endWorkDate, status, dispatch]);
+  }, [creator, startWorkDate, endWorkDate, status, sorting, dispatch]);
 
   return (
     <DynamicModuleLoader reducers={reducers} removeAfterUnmount>
@@ -252,8 +281,14 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
         Запросы
       </Title>
       <div className={cls.navigation}>
-        <Button className={cls.iconBtn} theme={ButtonThemes.ICON}>
-          <OrderLogo />
+        <Button
+          onClick={() => {
+            changeSort();
+          }}
+          className={cls.iconBtn}
+          theme={ButtonThemes.ICON}
+        >
+          { sorting ? <OrderLogo className={classNames('', { [cls.rotate180]: sorting === '-createdAt' }, [])} /> : <OrderLogo2 /> }
         </Button>
         {
           !isSawatzky && (

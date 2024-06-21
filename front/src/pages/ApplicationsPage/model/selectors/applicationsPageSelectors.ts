@@ -14,6 +14,7 @@ export const getApplicationPageEndWorkDate = (state: StateSchema) => state.appli
 export const getApplicationStatus = (state: StateSchema) => state.applicationsPage?.status ?? '';
 export const getApplicationIsCalendarOpen = (state: StateSchema) => state.applicationsPage?.isCalendarOpen;
 export const getApplicationPageCreator = (state: StateSchema) => state.applicationsPage?.creator;
+export const getApplicationPageSort = (state: StateSchema) => state.applicationsPage?.sort;
 
 export const getRowItemIsChecked = (id: string) => createSelector(
   [getCheckedItems],

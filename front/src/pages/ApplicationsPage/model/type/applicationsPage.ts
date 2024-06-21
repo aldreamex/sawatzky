@@ -20,4 +20,5 @@ export interface ApplicationsPageSchema extends EntityState<Application> {
     status?: ApplicationStatus
     isCalendarOpen: boolean
     creator?: string
+    sort?: 'createdAt' | '-createdAt'
 }
