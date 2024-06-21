@@ -5,31 +5,42 @@ import { ReactComponent as AddLogo } from 'shared/assets/icons/add-icon.svg';
 import { ReactComponent as OrderLogo } from 'shared/assets/icons/order-icon.svg';
 import { Button, ButtonThemes } from 'shared/ui/Button/Button';
 import { CreateApplicationModal, createApplicationActions, createApplicationReducer } from 'features/CreateApplication';
-import { useCallback, useEffect, useMemo } from 'react';
+import {
+  useCallback, useEffect, useMemo, useRef,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'shared/lib/hooks/useAppDispatch/useAppDispatch';
 import { useUserData } from 'shared/lib/hooks/useUserData/useUserData';
 import {
   Select, SelectOptionType, SelectSize, SelectThemes,
 } from 'shared/ui/Select/Select';
+import { InputThemes } from 'shared/ui/Input/Input';
 import { fetchWorkObjectGroupList, getWorkObjectGroup, workObjectGroupReducer } from 'entities/WorkObjectGroup';
 import { dateInputReducer } from 'widgets/DateInput/model/slice/dateInputSlice';
 import { ApplicationStatus } from 'entities/Application';
+import { RangePickerSelectedDays } from 'react-trip-date/dist/rangePicker/rangePicker.type';
+import { DateInput } from 'widgets/DateInput';
+import { CalendarThemes } from 'widgets/DateInput/ui/DateInput';
+import { fetchLegalEntityList, legalEntityReducer } from 'entities/LegalEntity';
+import { employeeReducer, fetchEmployeeList } from 'entities/Employee';
 import { applicationsPageActions, applicationsPageReducer, getApplicationsPage } from '../../model/slice/applicationsPageSlice';
-import cls from './ApplicationsPageContent.module.scss';
 import { fetchApplicationsList } from '../../model/services/fetchApplicationsList/fetchApplicationsList';
 import { ApplicationPreviewList } from '../ApplicationPreviewList/ApplicationPreviewList';
 import {
-  getApplicationIsLoading, getApplicationWorkObject, getPageInit,
+  getApplicationIsCalendarOpen,
+  getApplicationIsLoading, getApplicationPageCreator, getApplicationPageEndWorkDate, getApplicationPageStartWorkDate, getApplicationStatus, getApplicationWorkObject, getPageInit,
   getShowFinishedApplications,
 } from '../../model/selectors/applicationsPageSelectors';
 import { ApplicationLoader } from '../ApplicationLoader/ApplicationLoader';
+import cls from './ApplicationsPageContent.module.scss';
 
 interface ApplicationsPageContentProps {
 }
 
 const reducers: ReducersList = {
   applicationsPage: applicationsPageReducer,
+  legalEntity: legalEntityReducer,
+  employee: employeeReducer,
   createApplication: createApplicationReducer,
   workObjectGroup: workObjectGroupReducer,
   dateInput: dateInputReducer,
@@ -57,6 +68,8 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
 
   useEffect(() => {
     dispatch(fetchWorkObjectGroupList());
+    dispatch(fetchLegalEntityList());
+    dispatch(fetchEmployeeList());
   }, [dispatch]);
 
   const {
@@ -73,32 +86,32 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
     dispatch(createApplicationActions.openForm());
   }, [dispatch]);
 
-  const onChangeWorkObject = useCallback((item: SelectOptionType) => {
-    dispatch(applicationsPageActions.setWorkObject(+item.value));
-  }, [dispatch]);
+  // const onChangeWorkObject = useCallback((item: SelectOptionType) => {
+  //   dispatch(applicationsPageActions.setWorkObject(+item.value));
+  // }, [dispatch]);
 
-  const workObjectOptions = useMemo(() => {
-    const workObjects = workObjectsGroups.find((item) => item.id === workObjectsGroup)?.workObjects;
-    if (workObjects) {
-      const options = [{
-        value: 0,
-        text: 'Все',
-      }];
-      options.push(...workObjects?.map((item) => ({
-        value: item.id,
-        text: item.name,
-      })));
-      return options;
-    }
-    return undefined;
-  }, [workObjectsGroups, workObjectsGroup]);
+  // const workObjectOptions = useMemo(() => {
+  //   const workObjects = workObjectsGroups.find((item) => item.id === workObjectsGroup)?.workObjects;
+  //   if (workObjects) {
+  //     const options = [{
+  //       value: 0,
+  //       text: 'Все',
+  //     }];
+  //     options.push(...workObjects?.map((item) => ({
+  //       value: item.id,
+  //       text: item.name,
+  //     })));
+  //     return options;
+  //   }
+  //   return undefined;
+  // }, [workObjectsGroups, workObjectsGroup]);
 
-  const workObjectOption = useMemo(() => {
-    if (workObject) {
-      return workObjectOptions?.find((item) => item.value === workObject);
-    }
-    return undefined;
-  }, [workObject, workObjectOptions]);
+  // const workObjectOption = useMemo(() => {
+  //   if (workObject) {
+  //     return workObjectOptions?.find((item) => item.value === workObject);
+  //   }
+  //   return undefined;
+  // }, [workObject, workObjectOptions]);
 
   useEffect(() => {
     if (init) {
@@ -107,6 +120,130 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
       dispatch(applicationsPageActions.initPage());
     }
   }, [dispatch, init]);
+
+  // filtres
+
+  const statusesOptions: SelectOptionType[] = [
+    {
+      value: 0,
+      text: 'Показать все',
+    },
+    {
+      value: ApplicationStatus.NEW,
+      text: 'Запрос создан',
+    },
+    {
+      value: ApplicationStatus.COORDINATION,
+      text: 'На согласовании',
+    },
+
+    {
+      value: ApplicationStatus.PAYMENT_COORDINATION,
+      text: 'Ожидается оплата',
+    },
+    {
+      value: ApplicationStatus.IN_WORK,
+      text: 'Отправлено исполнителю',
+    },
+    {
+      value: ApplicationStatus.PROCESSED,
+      text: 'Обрабатывается',
+    },
+    {
+      value: ApplicationStatus.WAITING_FINISH,
+      text: 'Ожидает подтверждения завершения',
+    },
+    {
+      value: ApplicationStatus.FINISHED,
+      text: 'Запрос выполнен',
+    },
+  ];
+
+  const status = useSelector(getApplicationStatus);
+  const statusValue = useMemo(
+    () => {
+      if (status) {
+        return statusesOptions?.find((item) => item.value === status);
+      }
+      return undefined;
+    },
+    [status, statusesOptions],
+  );
+  // Date
+  const isCalendarOpen = useSelector(getApplicationIsCalendarOpen);
+  const onCloseCalendar = () => {
+    dispatch(applicationsPageActions.closeCalendar());
+  };
+  const onFocusCalendarHandler = useCallback(() => {
+    // dispatch(applicationsPageActions.clearWorkDates());
+    dispatch(applicationsPageActions.openCalendar());
+  }, [dispatch]);
+
+  const changeSelectedDaysHandler = useCallback((dates: RangePickerSelectedDays) => {
+    if (dates.from) {
+      dispatch(applicationsPageActions.setStartWorkDate(dates.from));
+    }
+    if (dates.to) {
+      dispatch(applicationsPageActions.setEndWorkDate(dates.to));
+    }
+  }, [dispatch]);
+
+  const clearWorkDatesHandler = useCallback(() => {
+    dispatch(applicationsPageActions.clearWorkDates());
+  }, [dispatch]);
+
+  const startWorkDate = useSelector(getApplicationPageStartWorkDate);
+  const endWorkDate = useSelector(getApplicationPageEndWorkDate);
+
+  // creator
+
+  const creatorsOptionsRef = useRef<SelectOptionType[]>([]);
+
+  useEffect(() => {
+    if (creatorsOptionsRef.current.length === 0) {
+      const uniqueCreators: SelectOptionType[] = [];
+      const seenUsernames: { [key: string]: boolean } = {};
+
+      if (applications.length) {
+        uniqueCreators.push({
+          value: 0,
+          text: 'Показать все',
+        });
+      }
+      for (const app of applications) {
+        const username = app.creator?.user?.username;
+        const text = app.creator?.user?.fio || username || '-';
+
+        if (username && !seenUsernames[username]) {
+          uniqueCreators.push({ value: username, text });
+          seenUsernames[username] = true;
+        }
+      }
+      creatorsOptionsRef.current = uniqueCreators;
+    }
+  }, [applications]);
+
+  const creatorsOptions = creatorsOptionsRef.current;
+
+  const creator = useSelector(getApplicationPageCreator);
+  const creatorValue = useMemo(
+    () => {
+      if (creator) {
+        return creatorsOptions?.find((item) => item.value === creator);
+      }
+      return undefined;
+    },
+    [creator, creatorsOptions],
+  );
+
+  useEffect(() => {
+    const params = {
+      ...(creator && { creator }),
+      ...(status && { status }),
+      ...(startWorkDate && endWorkDate && { createdAt_before: endWorkDate, createdAt_after: startWorkDate }),
+    };
+    dispatch(fetchApplicationsList({ params }));
+  }, [creator, startWorkDate, endWorkDate, status, dispatch]);
 
   return (
     <DynamicModuleLoader reducers={reducers} removeAfterUnmount>
@@ -132,17 +269,57 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
         }
         {
           !isInitiator && (
+            // <Select
+            //   className={cls.select}
+            //   size={SelectSize.A}
+            //   placeholder="Выбор заказчика"
+            //   theme={SelectThemes.ACTIVE}
+            //   onChange={onChangeWorkObject}
+            //   options={workObjectOptions}
+            //   value={workObjectOption}
+            // />
             <Select
               className={cls.select}
               size={SelectSize.A}
               placeholder="Выбор заказчика"
               theme={SelectThemes.ACTIVE}
-              onChange={onChangeWorkObject}
-              options={workObjectOptions}
-              value={workObjectOption}
+              onChange={(item: SelectOptionType) => {
+                dispatch(applicationsPageActions.setCreator(item.value !== 0 ? item.value as string : undefined));
+              }}
+              options={creatorsOptions}
+              value={creatorValue}
             />
           )
         }
+
+        <Select
+          className={cls.select}
+          size={SelectSize.A}
+          placeholder="Статус"
+          theme={SelectThemes.ACTIVE}
+          onChange={(item: SelectOptionType) => {
+            dispatch(applicationsPageActions.setStatus(item.value !== 0 ? item.value as ApplicationStatus : undefined));
+          }}
+          options={statusesOptions}
+          value={statusValue}
+        />
+        <div style={{ maxWidth: '260px', width: '100%' }}>
+          <DateInput
+            className={cls.date}
+            inputTheme={InputThemes.WHITE}
+            onChange={changeSelectedDaysHandler}
+            selectedDays={{ from: startWorkDate, to: endWorkDate }}
+            onClear={clearWorkDatesHandler}
+            theme={CalendarThemes.DOWN}
+            // onSaveCalendar={}
+            isFocused={isCalendarOpen}
+            onCloseCalendar={onCloseCalendar}
+            onFocusHandler={onFocusCalendarHandler}
+            placeholder="Дата заявки"
+            startDay={false}
+          />
+        </div>
+
         <Button className={cls.btn} theme={ButtonThemes.BLUE_SOLID} onClick={() => dispatch(applicationsPageActions.toggleFinishedApplications())}>
           {
             isShowFinishedApplications ? 'Только открытые' : 'Все запросы'

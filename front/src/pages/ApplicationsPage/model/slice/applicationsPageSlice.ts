@@ -1,6 +1,6 @@
 import { PayloadAction, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { StateSchema } from 'app/providers';
-import { Application } from 'entities/Application';
+import { Application, ApplicationStatus } from 'entities/Application';
 import { ApplicationsPageSchema } from '../type/applicationsPage';
 import { fetchApplicationsList } from '../services/fetchApplicationsList/fetchApplicationsList';
 import { deleteCheckedItems } from '../services/deleteCheckedItems/deleteCheckedItems';
@@ -25,6 +25,9 @@ export const applicationsPageSlice = createSlice({
     modalIsOpen: false,
     _init: false,
     workObject: undefined,
+    status: undefined,
+    isCalendarOpen: false,
+    creator: undefined,
   }),
   reducers: {
     toggleCheckbox: (state, action: PayloadAction<string>) => {
@@ -58,6 +61,28 @@ export const applicationsPageSlice = createSlice({
     },
     toggleFinishedApplications: (state) => {
       state.showFinishedApplicaitons = !state.showFinishedApplicaitons;
+    },
+    setStartWorkDate: (state, action: PayloadAction<string>) => {
+      state.startWorkDate = action.payload;
+    },
+    setEndWorkDate: (state, action: PayloadAction<string>) => {
+      state.endWorkDate = action.payload;
+    },
+    setStatus: (state, action: PayloadAction<ApplicationStatus|undefined>) => {
+      state.status = action.payload;
+    },
+    setCreator: (state, action: PayloadAction<string|undefined>) => {
+      state.creator = action.payload;
+    },
+    clearWorkDates: (state) => {
+      state.startWorkDate = '';
+      state.endWorkDate = '';
+    },
+    openCalendar: (state) => {
+      state.isCalendarOpen = true;
+    },
+    closeCalendar: (state) => {
+      state.isCalendarOpen = false;
     },
   },
   extraReducers: (builder) => builder
