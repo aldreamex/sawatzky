@@ -269,7 +269,7 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
       ...(sorting && { ordering: sorting }),
       ...(creator && { creator }),
       ...(status && { status }),
-      ...(startWorkDate && endWorkDate && { createdAt_before: endWorkDate, createdAt_after: startWorkDate }),
+      ...(startWorkDate && endWorkDate && { periodEnd: endWorkDate, periodStart: startWorkDate }),
     };
     dispatch(fetchApplicationsList({ params }));
   }, [creator, startWorkDate, endWorkDate, status, sorting, dispatch]);
