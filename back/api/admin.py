@@ -3,7 +3,6 @@ from .models import (
     User,
     Application,
     Employee,
-    Employee,
     LegalEntity,
     WorkTaskGroup,
     ApplicationWorkTask,
@@ -17,7 +16,9 @@ from .models import (
     WorkTask,
     WorkMaterialGroup,
     WorkMaterial,
-    Document, GeneralJournal
+    Document,
+    GeneralJournal,
+    ApplicationJournal
 ) 
 # Register your models here.
 
@@ -39,3 +40,4 @@ admin.site.register(WorkMaterialGroup)
 admin.site.register(WorkMaterial)
 admin.site.register(Document)
 admin.site.register(GeneralJournal)
+admin.site.register(ApplicationJournal)
