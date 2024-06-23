@@ -270,7 +270,21 @@ class ApplicationPerformer(models.Model):
 
     def __str__(self):
         return f'application №{self.application.id} performer №{self.performer.id}'
-    
+
+
+
+class ApplicationJournal(models.Model):
+    """Промежуточная таблица для связи заявок с журналом"""
+
+    application = models.ForeignKey("api.Application", on_delete=models.CASCADE)
+    general_journal = models.ForeignKey("api.GeneralJournal", on_delete=models.CASCADE)
+    totalPayment = models.DecimalField(("Сумма оплаты"), max_digits=15, decimal_places=2, default=0)
+    totalDebt = models.DecimalField(("Сумма долга"), max_digits=15, decimal_places=2, default=0)
+
+
+    def __str__(self):
+        return f'application №{self.application.id} generalJournal №{self.general_journal.id}'
+
 
 
 class Application(models.Model):
@@ -502,7 +516,7 @@ class GeneralJournal(models.Model):
     amountByInvoices = models.DecimalField(("Сумма по счетам"), max_digits=15, decimal_places=2, blank=True, null=True)
     status = models.CharField(("Статус оплаты"), max_length=50, blank=False, choices=STATUSES, default='unpaid')
     # application = models.ForeignKey(Application, verbose_name=("Заявка"), on_delete=models.CASCADE, blank=True, null=True)
-    application = models.ManyToManyField(Application, verbose_name=("Заявки"), blank=True)
+    application = models.ManyToManyField(Application, through='ApplicationJournal', verbose_name=("Заявки"), blank=True)
     totalDebt = models.DecimalField(("Сумма долга"), max_digits=15, decimal_places=2, blank=True, null=True)
     totalPayment = models.DecimalField(("Сумма оплаты"), max_digits=15, decimal_places=2, blank=True, null=True)
 

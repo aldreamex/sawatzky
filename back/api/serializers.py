@@ -1,5 +1,7 @@
+from django.db import models, transaction
+from django.db.models import F, Sum
 from decimal import Decimal
-
+from django.db.models import Sum, F, ExpressionWrapper, DecimalField
 from django.db.models import Sum
 from django.utils import timezone
 from rest_framework.serializers import ModelSerializer
@@ -24,7 +26,7 @@ from .models import (
     ApplicationPerformer,
     Report,
     Comments,
-    Log, GeneralJournal
+    Log, GeneralJournal, ApplicationJournal
 )
 
 
@@ -1134,6 +1136,18 @@ class LegalEntityGeneralJournalSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class ApplicationJournalSerializer(serializers.ModelSerializer):
+    application_id = serializers.IntegerField(source='application.id')
+    title = serializers.CharField(source='application.title')
+    totalSum = serializers.DecimalField(max_digits=15, decimal_places=2, source='application.totalSum')
+    totalPayment = serializers.DecimalField(max_digits=15, decimal_places=2)
+    totalDebt = serializers.DecimalField(max_digits=15, decimal_places=2)
+
+    class Meta:
+        model = ApplicationJournal
+        fields = ['application_id', 'title', 'totalSum', 'totalPayment', 'totalDebt']
+
+
 class GeneralJournalListSerializer(ModelSerializer):
     """Сериализатор для вывода списка генерального журнала"""
     # legalEntity = serializers.CharField(source='legalEntity.name', read_only=True)
@@ -1144,9 +1158,9 @@ class GeneralJournalListSerializer(ModelSerializer):
         fields = ['id', 'paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount', 'amountByInvoices', 'status', 'application']
 
     def get_application(self, obj):
-        # applications = Application.objects.filter(generaljournal=obj)
-        applications = obj.application.all()
-        return ApplicationSerializer(applications, many=True).data
+        application_journals = ApplicationJournal.objects.filter(general_journal=obj)
+        return ApplicationJournalSerializer(application_journals, many=True).data
+
 
 class ApplicationGeneralJournalSerializer(serializers.ModelSerializer):
     legalEntity = serializers.CharField(source='creator.legalEntity.name')
@@ -1214,56 +1228,75 @@ class GeneralJournalUpdateAPLSerializer(serializers.ModelSerializer):
         ]
 
     def update(self, instance, validated_data):
-        applications_data = validated_data.get('application')
+        applications_data = validated_data.pop('application', [])
 
-        if applications_data:
-            for app_data in applications_data:
-                app_id = app_data.get('id')
-                additional_payment = Decimal(app_data.get('totalPayment'))
+        for app_data in applications_data:
+            application_id = app_data.get('id')
+            additional_payment = Decimal(app_data.get('totalPayment'))
 
-                try:
-                    application = Application.objects.get(id=app_id)
+            try:
+                application = Application.objects.get(id=application_id)
 
-                    if application.creator and application.creator.legalEntity == instance.legalEntity:
-                        instance.application.add(application)
+                if application.creator and application.creator.legalEntity != instance.legalEntity:
+                    raise serializers.ValidationError(
+                        f"Заявка с id {application_id} не связана с юридическим лицом из общего журнала"
+                    )
 
-                        total_sum = Decimal(application.totalSum)
-                        current_payment = Decimal(application.totalPayment)
-                        current_debt = total_sum - current_payment
+                with transaction.atomic():
+                    # Обновление записи в промежуточной таблице
+                    app_journal, created = ApplicationJournal.objects.get_or_create(
+                        application=application,
+                        general_journal=instance
+                    )
 
-                        if additional_payment > current_debt:
-                            raise serializers.ValidationError(
-                                f"Сумма платежа {additional_payment} превышает текущий долг {current_debt} для заявки {app_id}"
-                            )
+                    total_sum = Decimal(application.totalSum)
+                    current_payment = Decimal(app_journal.totalPayment)
+                    current_debt = total_sum - current_payment
 
-                        application.totalPayment = current_payment + additional_payment
-                        application.totalDebt = total_sum - application.totalPayment
-                        application.save()
-                    else:
+                    if additional_payment > current_debt:
                         raise serializers.ValidationError(
-                            f"Заявка с id {app_id} не связана с юридическим лицом из общего журнала"
+                            f"Сумма платежа {additional_payment} превышает текущий долг {current_debt} для заявки {application_id}"
                         )
 
-                except Application.DoesNotExist:
-                    raise serializers.ValidationError(f"Заявка с id {app_id} не существует")
+                    # Обновление записи в промежуточной таблице
+                    app_journal.totalPayment = current_payment + additional_payment
+                    app_journal.save()
 
-            total_debt = Application.objects.filter(
-                creator__legalEntity=instance.legalEntity
-            ).aggregate(total_debt=Sum('totalDebt'))['total_debt'] or Decimal('0.0')
-            total_payment = instance.application.aggregate(total_payment=Sum('totalPayment'))[
-                                'total_payment'] or Decimal('0.0')
-            # total_sum = instance.application.aggregate(total_sum=Sum('totalSum'))['total_sum'] or Decimal('0.0')
+                    # Вычисление totalDebt для данной заявки
+                    total_payment_across_journals = ApplicationJournal.objects.filter(
+                        application=application
+                    ).aggregate(total_payment=Sum('totalPayment'))['total_payment'] or Decimal('0.0')
 
-            # Логика установки статуса
-            if total_debt == 0:
-                instance.status = 'fully'
-            elif total_payment == 0:
-                instance.status = 'unpaid'
-            else:
-                instance.status = 'partially'
+                    # Вычисление totalDebt для данной заявки
+                    total_debt = total_sum - total_payment_across_journals
 
-            instance.amountByInvoices = total_debt
-            instance.save()
+                    # Проверка, чтобы totalPayment не превышал totalDebt по всем журналам
+                    if total_payment_across_journals > total_sum:
+                        raise serializers.ValidationError(
+                            f"Сумма платежа {additional_payment} превышает суммарный долг {total_debt} для заявки {application_id}"
+                        )
+
+                    # Обновление totalDebt для данной заявки во всех журналах
+                    ApplicationJournal.objects.filter(application=application).update(
+                        totalDebt=total_debt
+                    )
+
+            except Application.DoesNotExist:
+                raise serializers.ValidationError(f"Заявка с id {application_id} не существует")
+
+        # После обновления всех заявок для текущего журнала, обновляем amountByInvoices
+        updated_amount_by_invoices = ApplicationJournal.objects.filter(general_journal=instance).aggregate(
+            total_amount=Sum('totalDebt')
+        )['total_amount'] or Decimal('0.0')
+        instance.amountByInvoices = updated_amount_by_invoices
+        instance.save()
+
+        # Обновление totalPayment для текущего instance
+        total_payment = ApplicationJournal.objects.filter(general_journal=instance).aggregate(
+            total_payment=Sum('totalPayment')
+        )['total_payment'] or Decimal('0.0')
+        instance.totalPayment = total_payment
+        instance.save()
 
         return instance
 
