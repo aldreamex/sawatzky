@@ -20,7 +20,9 @@ CreateApplicationData,
       throw new Error('Ошибка аунтификации пользователя!');
     }
 
-    const creator = data.formData.client !== undefined ? data.formData.client : JSON.parse(creatorId).employee.id;
+    const parsedCreatorJSON = JSON.parse(creatorId);
+    const creator = parsedCreatorJSON?.employee?.id || parsedCreatorJSON?.sawatzkyEmployee?.id;
+    const { client } = data.formData;
 
     const applicationData: CreateApplicationData = {
       title: data.formData.title ?? '',
@@ -29,6 +31,7 @@ CreateApplicationData,
       endWorkDate: data.formData.endWorkDate ?? '',
       status: ApplicationStatus.NEW,
       creator,
+      ...(client && { clients: client }),
       subject: data.formData.subject ?? '',
     };
 
