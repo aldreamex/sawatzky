@@ -35,6 +35,7 @@ export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (prop
   const { className, onClose } = props;
 
   const {
+    sawatzkyEmployee,
     isSawatzky, isAdmin, isDispatcher, isInitiator, isPerformer,
   } = useUserData();
 
@@ -90,8 +91,10 @@ export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (prop
   const employees = useSelector(getEmployee.selectAll);
   const employee = useSelector(getFormApplicationClient);
 
+  const workObjectsId = sawatzkyEmployee?.workingObjects || [];
   const employeeOptions: SelectOptionType[] | undefined = useMemo(() => (
     employees
+      .filter((item) => workObjectsId.includes(Number(item?.legalEntity?.workObject?.id)))
       .map((item) => ({ value: item.id ?? '', text: item.user.fio ?? '' }
       ))), [employees]);
 
