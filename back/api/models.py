@@ -1,6 +1,8 @@
+from decimal import Decimal
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django.db.models import Sum
 
 
 class User(AbstractUser):
@@ -362,6 +364,20 @@ class Application(models.Model):
     class Meta:
         verbose_name = "Заявка"
         verbose_name_plural = "Заявки"
+
+    def update_totals(self):
+        total_payment = ApplicationJournal.objects.filter(application=self).aggregate(
+            total_payment=Sum('totalPayment')
+        )['total_payment'] or Decimal('0.0')
+
+        app_journal = ApplicationJournal.objects.filter(application=self).first()
+        if app_journal:
+            self.totalDebt = app_journal.totalDebt
+        else:
+            self.totalDebt = Decimal('0.0')
+
+        self.totalPayment = total_payment
+        self.save()
 
     def __str__(self):
         return self.title
