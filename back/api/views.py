@@ -33,6 +33,7 @@ from .serializers import (
     ApplicationWithCreatorSerializer,
     ApplicationWorkMaterialSerializer,
     ApplicationSerializer,
+    ApplicationDispatcherSerializer,
     LegalEntitySerializer,
     WorkObjectsGroupSerializer,
     WorkObjectsGroupWithWorkObjectSerializer,
@@ -175,6 +176,35 @@ class ApplicationCreateView(generics.CreateAPIView):
     serializer_class = ApplicationSerializer
     queryset = Application.objects.all()
     permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        user = self.request.user
+
+        instance = serializer.save()
+        work_object = instance.creator.legalEntity.workObject.id
+        channel_layer = get_channel_layer()
+        channel_name = f"sawatzky_dispatcher_{work_object}"
+        try:
+            data = {
+                'action': 'create_application',
+                'application_data': serializer.data,
+            }
+            async_to_sync(channel_layer.group_send)(
+                channel_name,
+                {
+                    'type': 'send_application_notification',
+                    'application_data': json.dumps(data['application_data'])
+                }
+            )
+        except json.JSONDecodeError:
+            pass
+
+
+class ApplicationDispatcherCreateView(generics.CreateAPIView):
+    """представление на создание заявки диспетчером"""
+    serializer_class = ApplicationDispatcherSerializer
+    queryset = Application.objects.all()
+    # permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         user = self.request.user

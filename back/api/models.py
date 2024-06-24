@@ -344,6 +344,10 @@ class Application(models.Model):
 
     createdAt = models.DateField(("Дата создания заявки"), auto_now=False, auto_now_add=True)
     updatedAt = models.DateField(("Последняя дата изменения"), auto_now=True, auto_now_add=False)
+    clients = models.ForeignKey(Employee, verbose_name=("Заказчики"), blank=True, null=True,
+                                related_name='applications', on_delete=models.CASCADE)
+    legalEntities = models.ForeignKey('api.LegalEntity', blank=True, null=True, verbose_name=("Юридические лица"),
+                                      related_name='applications', on_delete=models.CASCADE)
     startWorkDate = models.DateField(("Дата начала проведения работ"), auto_now=False, auto_now_add=False)
     endWorkDate = models.DateField(("Дата окончания проведения работ"), auto_now=False, auto_now_add=False)
     actualWorkDate = models.DateField(("Фактическая дата выполнения запроса"), auto_now=False, auto_now_add=False,

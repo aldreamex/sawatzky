@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('applications/', views.ApplicationListView.as_view()),
     path('applications/create/', views.ApplicationCreateView.as_view()),
+    path('applications_dispatcher/create/', views.ApplicationDispatcherCreateView.as_view()),
     path('applications/update/<int:pk>/', views.ApplicationUpdateView.as_view()),
     path('applications/<int:pk>/', views.ApplicationDetailView.as_view()),
     path('applications/<int:pk>/documents/', views.DocumentToApplicationCreateView.as_view()),
