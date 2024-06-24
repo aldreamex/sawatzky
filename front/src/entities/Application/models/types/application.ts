@@ -53,6 +53,8 @@ export interface Application {
     updatedAt?: string;
     startWorkDate?: string;
     endWorkDate?: string;
+
+    client?: string | number;
 }
 
 export interface ApplicationSchema extends EntityState<Application> {

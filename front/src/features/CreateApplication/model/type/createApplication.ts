@@ -6,6 +6,7 @@ export interface CreateApplicationFormType {
     startWorkDate?: string;
     endWorkDate?: string;
     subject?: string;
+    client?: string | number;
 }
 
 export interface CreateApplicationData {
@@ -16,6 +17,7 @@ export interface CreateApplicationData {
     endWorkDate: string;
     status: ApplicationStatus;
     creator: number;
+    client?: string | number;
 }
 
 export interface CreateApplicationSchema {

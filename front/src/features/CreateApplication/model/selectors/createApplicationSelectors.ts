@@ -5,6 +5,8 @@ export const getFormApplicationSubject = (state: StateSchema) => state.createApp
 export const getFormApplicationDescription = (state: StateSchema) => state.createApplication?.form?.description ?? '';
 export const getFormApplicationStartWorkDate = (state: StateSchema) => state.createApplication?.form?.startWorkDate ?? '';
 export const getFormApplicationEndWorkDate = (state: StateSchema) => state.createApplication?.form?.endWorkDate ?? '';
+export const getFormApplicationClient = (state: StateSchema) => state.createApplication?.form?.client ?? '';
+
 export const getFormApplication = (state: StateSchema) => state.createApplication?.form;
 export const getFormApplicationCalendarIsOpen = (state: StateSchema) => state.createApplication?.calendarIsOpen;
 export const getFormApplicationIsOpen = (state: StateSchema) => state.createApplication?.isOpen;

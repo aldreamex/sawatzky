@@ -1,12 +1,14 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import { useSelector } from 'react-redux';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { RangePickerSelectedDays } from 'react-trip-date/dist/rangePicker/rangePicker.type';
 import { useAppDispatch } from 'shared/lib/hooks/useAppDispatch/useAppDispatch';
 import { FormType, useForm } from 'shared/lib/hooks/useForm/useForm';
 import { Text, TextAlign } from 'shared/ui/Text/Text';
 import { useUserData } from 'shared/lib/hooks/useUserData/useUserData';
 import { fetchApplicationDetail } from 'pages/ApplicationDetailPage/model/services/fetchApplicationDetail/fetchApplicationDetail';
+import { getEmployee } from 'entities/Employee';
+import { SelectOptionType } from 'shared/ui/Select/Select';
 import {
   getFormApplication,
   getFormApplicationDescription,
@@ -17,6 +19,7 @@ import {
   getFormApplicationCalendarIsOpen,
   getFormApplicationIsEdit,
   getFormApplicationApplicationId,
+  getFormApplicationClient,
 } from '../../model/selectors/createApplicationSelectors';
 import { createApplicationActions } from '../../model/slice/createApplicationSlice';
 import cls from './CreateApplicationForm.module.scss';
@@ -31,7 +34,11 @@ interface CreateApplicationFormProps {
 export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (props) => {
   const { className, onClose } = props;
 
-  const { isSawatzky } = useUserData();
+  const {
+    isSawatzky, isAdmin, isDispatcher, isInitiator, isPerformer,
+  } = useUserData();
+
+  const allowEdit = useMemo(() => (isSawatzky && (isAdmin || isDispatcher) || isInitiator), [isSawatzky, isAdmin, isDispatcher, isInitiator]);
   const dispatch = useAppDispatch();
   const title = useSelector(getFormApplicationTitle);
   const subject = useSelector(getFormApplicationSubject);
@@ -79,6 +86,26 @@ export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (prop
     dispatch(createApplicationActions.closeCalendar());
   };
 
+  // employee options для диспетчеров
+  const employees = useSelector(getEmployee.selectAll);
+  const employee = useSelector(getFormApplicationClient);
+
+  const employeeOptions: SelectOptionType[] | undefined = useMemo(() => (
+    employees
+      .map((item) => ({ value: item.id ?? '', text: item.user.fio ?? '' }
+      ))), [employees]);
+
+  const employeeOption = useMemo(() => {
+    if (employee) {
+      return employeeOptions?.find((item) => item.value === employee);
+    }
+    return undefined;
+  }, [employee, employeeOptions]);
+
+  const changeEmployee = useCallback((item: SelectOptionType) => {
+    dispatch(createApplicationActions.setClient(+item.value));
+  }, [dispatch]);
+
   const onSaveHandler = useCallback(() => {
     if (isEdit && applicationId && form) {
       dispatch(saveEditApplication({
@@ -92,9 +119,21 @@ export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (prop
       onCloseHandler();
     }
   }, [form, dispatch, applicationId, isEdit, onCloseHandler]);
-
   const { Form } = useForm({
     fields: [
+      ...(isSawatzky && isDispatcher ? [
+        {
+          id: 'employee',
+          type: FormType.SELECT,
+          placeholder: 'Заказчик',
+          options: employeeOptions,
+          value: employeeOption,
+          onChange: changeEmployee,
+          rules: {
+            required: true,
+          },
+        },
+      ] : []),
       {
         id: 'name',
         type: FormType.TEXT,
@@ -106,7 +145,7 @@ export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (prop
           required: true,
         },
         otherProps: {
-          disabled: isSawatzky,
+          disabled: !allowEdit,
         },
       },
       {
@@ -120,7 +159,7 @@ export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (prop
           required: true,
         },
         otherProps: {
-          disabled: isSawatzky,
+          disabled: !allowEdit,
         },
       },
       {
@@ -134,7 +173,7 @@ export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (prop
           required: true,
         },
         otherProps: {
-          disabled: isSawatzky,
+          disabled: !allowEdit,
         },
       },
       {
@@ -151,20 +190,22 @@ export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (prop
           isFocused: isCalendarOpen,
           onCloseCalendar,
           onFocusHandler,
-          disabled: isSawatzky,
+          disabled: !allowEdit,
         },
         placeholder: 'Желаемая дата проведения работ',
       },
     ],
-    onSubmit: !isSawatzky ? onSaveHandler : undefined,
-    onCancel: !isSawatzky ? onCloseHandler : undefined,
+    // onSubmit: !isSawatzky ? onSaveHandler : undefined,
+    // onCancel: !isSawatzky ? onCloseHandler : undefined,
+    onSubmit: allowEdit ? onSaveHandler : undefined,
+    onCancel: allowEdit ? onCloseHandler : undefined,
     submitTitle: !isEdit ? 'Создать' : 'Сохранить',
   });
 
   return (
     <div className={classNames(cls.createApplicationForm, {}, [className])}>
       {
-        isSawatzky
+        !allowEdit
           ? <Text title={!isEdit ? 'Создание запроса' : 'Информация по запросу'} className={cls.title} textAlign={TextAlign.CENTER} />
           : <Text title={!isEdit ? 'Создание запроса' : 'Редактирование запроса'} text="Информация по запросу" className={cls.title} textAlign={TextAlign.CENTER} />
       }

@@ -62,7 +62,6 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
   const isShowFinishedApplications = useSelector(getShowFinishedApplications);
   const init = useSelector(getPageInit);
 
-  const user = useUserData();
   // const workObjectsGroups = useSelector(getWorkObjectGroup.selectAll);
   // const workObjectsGroup = user.sawatzkyEmployee?.workingObjects[0];
   const workObject = useSelector(getApplicationWorkObject);
@@ -82,7 +81,7 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
   }, [dispatch]);
 
   const {
-    isSawatzky, isInitiator,
+    isSawatzky, isInitiator, isAdmin, isDispatcher, isPerformer,
   } = useUserData();
 
   // const onDeleteHandler = useCallback(() => {
@@ -291,7 +290,7 @@ export const ApplicationsPageContent: React.FC<ApplicationsPageContentProps> = (
           { sorting ? <OrderLogo className={classNames('', { [cls.rotate180]: sorting === '-createdAt' }, [])} /> : <OrderLogo2 /> }
         </Button>
         {
-          !isSawatzky && (
+          ((isSawatzky && (isAdmin || isDispatcher)) || isInitiator) && (
             <>
               <Button className={cls.iconBtn} theme={ButtonThemes.ICON} helpInfo="добавить запрос" onClick={openModalHandler}>
                 <AddLogo />

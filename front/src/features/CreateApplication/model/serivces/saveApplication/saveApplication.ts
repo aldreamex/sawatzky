@@ -20,13 +20,15 @@ export const saveApplication = createAsyncThunk<
       throw new Error('Ошибка аунтификации пользователя!');
     }
 
+    const creator = formData.client !== undefined ? formData.client : JSON.parse(creatorId).employee.id;
+
     const applicationData: CreateApplicationData = {
       title: formData.title ?? '',
       description: formData.description ?? '',
       startWorkDate: formData.startWorkDate ?? '',
       endWorkDate: formData.endWorkDate ?? '',
       status: ApplicationStatus.NEW,
-      creator: JSON.parse(creatorId).employee.id,
+      creator,
       subject: formData.subject ?? '',
     };
 
