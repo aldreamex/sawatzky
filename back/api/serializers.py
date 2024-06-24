@@ -1273,12 +1273,11 @@ class GeneralJournalUpdateAPLSerializer(serializers.ModelSerializer):
                     app_journal.totalPayment = current_payment + additional_payment
                     app_journal.save()
 
-                    # Вычисление totalDebt для данной заявки
+                    # Вычисление totalDebt для данной заявки в промежуточной таблице
                     total_payment_across_journals = ApplicationJournal.objects.filter(
                         application=application
                     ).aggregate(total_payment=Sum('totalPayment'))['total_payment'] or Decimal('0.0')
 
-                    # Вычисление totalDebt для данной заявки
                     total_debt = total_sum - total_payment_across_journals
 
                     # Проверка, чтобы totalPayment не превышал totalDebt по всем журналам
@@ -1287,15 +1286,31 @@ class GeneralJournalUpdateAPLSerializer(serializers.ModelSerializer):
                             f"Сумма платежа {additional_payment} превышает суммарный долг {total_debt} для заявки {application_id}"
                         )
 
-                    # Обновление totalDebt для данной заявки во всех журналах
+                    # Обновление totalDebt для данной заявки в промежуточной таблице
                     ApplicationJournal.objects.filter(application=application).update(
                         totalDebt=total_debt
                     )
 
+                    # Обновление totalDebt и totalPayment для самой модели заявки (не пром. табл.) - нужно для вывода списка заявок по юр. лицу
+                    application.update_totals()
+
+                    # Обновление amountByInvoices для всех связанных журналов по нужной заявке
+                    related_journals = GeneralJournal.objects.filter(
+                        applicationjournal__application=application).distinct()
+
+                    for journal in related_journals:
+                        updated_amount_by_invoices = \
+                        ApplicationJournal.objects.filter(general_journal=journal).aggregate(
+                            total_amount=Sum('totalDebt')
+                        )['total_amount'] or Decimal('0.0')
+
+                        journal.amountByInvoices = updated_amount_by_invoices
+                        journal.save()
+
             except Application.DoesNotExist:
                 raise serializers.ValidationError(f"Заявка с id {application_id} не существует")
 
-        # После обновления всех заявок для текущего журнала, обновляем amountByInvoices
+        # После обновления всех заявок для текущего журнала, обновляем amountByInvoices для текущего журнала
         updated_amount_by_invoices = ApplicationJournal.objects.filter(general_journal=instance).aggregate(
             total_amount=Sum('totalDebt')
         )['total_amount'] or Decimal('0.0')
@@ -1308,6 +1323,7 @@ class GeneralJournalUpdateAPLSerializer(serializers.ModelSerializer):
         )['total_payment'] or Decimal('0.0')
         instance.totalPayment = total_payment
         instance.save()
+
 
         return instance
 
