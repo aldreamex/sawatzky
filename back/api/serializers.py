@@ -574,15 +574,15 @@ class ApplicationSerializer(ModelSerializer):
         fields = '__all__'
 
 
-# class ApplicationDispatcherSerializer(ModelSerializer):
-#     """Сериализатор для создания/удаления/обновления заявки диспетчером"""
-#     workTasks = ApplicationWorkTaskSerializer(read_only=True, many=True)
-#     workMaterials = ApplicationWorkMaterialSerializer(read_only=True, many=True)
-#
-#     class Meta:
-#         model = Application
-#         many = False
-#         fields = '__all__'
+class ApplicationDispatcherSerializer(ModelSerializer):
+    """Сериализатор для создания/удаления/обновления заявки диспетчером"""
+    workTasks = ApplicationWorkTaskSerializer(read_only=True, many=True)
+    workMaterials = ApplicationWorkMaterialSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Application
+        many = False
+        fields = '__all__'
 
 
 class ApplicationListSerializer(serializers.ModelSerializer):
