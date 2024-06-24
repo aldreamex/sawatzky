@@ -574,6 +574,17 @@ class ApplicationSerializer(ModelSerializer):
         fields = '__all__'
 
 
+# class ApplicationDispatcherSerializer(ModelSerializer):
+#     """Сериализатор для создания/удаления/обновления заявки диспетчером"""
+#     workTasks = ApplicationWorkTaskSerializer(read_only=True, many=True)
+#     workMaterials = ApplicationWorkMaterialSerializer(read_only=True, many=True)
+#
+#     class Meta:
+#         model = Application
+#         many = False
+#         fields = '__all__'
+
+
 class ApplicationListSerializer(serializers.ModelSerializer):
     workObject = serializers.SerializerMethodField()
     class Meta:
@@ -731,7 +742,7 @@ class ApplicationWithWorkTasksWorkMaterialsUpdateSerializer(ModelSerializer):
     class Meta:
         model = Application
         fields = ['workTasks', 'workMaterials', 'step', 'status', 'performers',
-                  'title', 'subject', 'description', 'startWorkDate', 'endWorkDate']
+                  'title', 'subject', 'description', 'creator', 'startWorkDate', 'endWorkDate']
 
     def update(self, instance, validated_data):
 
