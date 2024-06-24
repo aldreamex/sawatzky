@@ -163,7 +163,6 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
     checkable: false,
     textAlignment: 'center',
   });
-
   const ChangeStepButton = useMemo(() => {
     if (!prepayment) {
       switch (step) {
@@ -235,6 +234,25 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
             </div>
           );
         }
+
+        return (
+          <div className={cls.btns}>
+            <Button
+              className={cls.blueBtn}
+              theme={ButtonThemes.BLUE_SOLID}
+              onClick={() => {
+                const lastStep = 5;
+                dispatch(nextApplicationStep({
+                  applicationId,
+                  step: lastStep,
+                }));
+              }}
+            >
+              Завершить заявку
+            </Button>
+          </div>
+        );
+
         break;
       case 5:
         if (isSawatzky && (isDispatcher || isAdmin) && detail?.confirmations?.length) {
