@@ -37,6 +37,11 @@
   stroke: var(--white-color);
 }
 
+.text {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+}
 .collapsed {
 
   .link {
@@ -47,7 +52,6 @@
     display: block;
     width: 0;
     overflow: hidden;
-
     @media (max-width: 760px) {
       overflow: auto;
       width: auto;

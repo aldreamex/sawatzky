@@ -37,6 +37,7 @@ export enum AppRoutes {
   HOME = 'home',
   FORBIDDEN = 'forbidden',
   NOT_FOUND = 'not_found',
+  GENERAL_JOURNAL = 'general_journal'
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
@@ -46,6 +47,8 @@ export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.REPORTS]: '/report',
   [AppRoutes.STATISTIC]: '/statistic/',
   [AppRoutes.HOME]: '/',
+
+  [AppRoutes.GENERAL_JOURNAL]: '/general_journal',
 
   [AppRoutes.FORBIDDEN]: '/forbidden',
   [AppRoutes.NOT_FOUND]: '/*',
@@ -65,7 +68,7 @@ export enum DirectoryRoutes {
   WORK_MATERIAL_GROUP = 'work_material_group',
   EMPLOYEE = 'employee',
   EMPLOYEE_SAWATZKY = 'employee_sawatzky',
-  GENERAL_JOURNAL = 'general_journal'
+  // GENERAL_JOURNAL = 'general_journal'
 }
 
 export const DirectoryPath: Record<DirectoryRoutes, string> = {
@@ -80,7 +83,7 @@ export const DirectoryPath: Record<DirectoryRoutes, string> = {
   [DirectoryRoutes.WORK_MATERIAL_GROUP_DETAIL]: '/directory/work-material-group/',
   [DirectoryRoutes.EMPLOYEE]: '/directory/employee',
   [DirectoryRoutes.EMPLOYEE_SAWATZKY]: '/directory/employee-sawatzky',
-  [DirectoryRoutes.GENERAL_JOURNAL]: '/directory/general_journal',
+  // [DirectoryRoutes.GENERAL_JOURNAL]: '/directory/general_journal',
 
 };
 
@@ -196,9 +199,9 @@ export const routeConfig: Record<AppRoutes | DirectoryRoutes, AppRouteProps> = {
     sawatzkyOnly: true,
     permittedRoles: [EmployeeRole.ADMIN, EmployeeRole.DISPATCHER, EmployeeRole.DISPATCHER_PERFORMER],
   },
-
-  [DirectoryRoutes.GENERAL_JOURNAL]: {
-    path: `${DirectoryPath.general_journal}`,
+  // General journal
+  [AppRoutes.GENERAL_JOURNAL]: {
+    path: `${RoutePath.general_journal}`,
     element: <GeneralJournalPage />,
     authOnly: true,
     sawatzkyOnly: true,

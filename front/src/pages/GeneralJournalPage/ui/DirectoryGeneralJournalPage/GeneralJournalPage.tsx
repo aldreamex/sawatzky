@@ -163,7 +163,6 @@ const DirectoryEmployeePage: React.FC<DirectoryEmployeePageProps> = (props) => {
 
   return (
     <DynamicModuleLoader reducers={reducers}>
-      <DirectoryPageWrapper className={classNames(cls.directoryEmployeePage, {}, [className])}>
         <div className={cls.filters}>
           <Select
             className={cls.select}
@@ -217,7 +216,6 @@ const DirectoryEmployeePage: React.FC<DirectoryEmployeePageProps> = (props) => {
         <EditGeneralJournalModal
           className={cls.form}
         />
-      </DirectoryPageWrapper>
     </DynamicModuleLoader>
   );
 };

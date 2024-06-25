@@ -17,8 +17,7 @@ interface DirectoryEmployeePageProps {
   info?: any
 }
 function sumTotalSum(data: any, param: string = 'totalSum') {
-  const total = data.reduce((accumulator: any, currentValue: any) => accumulator + parseFloat(currentValue[param]), 0);
-  return formatCurrency(total);
+  return data.reduce((accumulator: any, currentValue: any) => accumulator + parseFloat(currentValue[param]), 0);
 }
 
 const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
@@ -49,7 +48,7 @@ const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
           ),
           // id: <div className={clsTableItemHeader.text}> { application.id } </div>,
           name: <div className={cls.tableItemHeader} style={{ flex: 1 }}> { application.title } </div>,
-          applicationAmount: <div className={cls.tableItemHeader} style={{ flex: 1 }}> { formatCurrency(application.totalPayment || '') } </div>,
+          applicationAmount: <div className={cls.tableItemHeader} style={{ flex: 1 }}> { formatCurrency(application.totalPayment || '') } в </div>,
           deptAmount: <div className={classNames(cls.tableItemHeader, {}, [])} style={{ flex: 1, color: '#E11B1B' }}> { formatCurrency(application.totalDebt || '') } </div>,
           paymentAmount: <div className={cls.tableItemHeader} style={{ flex: 1, color: '#169F55' }}> +{ formatCurrency(application.totalPayment || '') } </div>,
         })) : [{
@@ -121,7 +120,7 @@ const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
           className={cls.tableItemHeader}
           style={{ flex: 1 }}
         >
-          { sumTotalSum(info.application, 'totalPayment')}
+          { formatCurrency(sumTotalSum(info.application, 'totalDebt'))}
         </div>
       ),
       restOfThePayment: (
@@ -129,7 +128,7 @@ const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
           className={cls.tableItemHeader}
           style={{ flex: 1 }}
         >
-          {formatCurrency(info?.amountByInvoices)}
+          { formatCurrency(Number(info?.totalAmount) - sumTotalSum(info.application, 'totalDebt'))}
         </div>
       ),
       status: (
