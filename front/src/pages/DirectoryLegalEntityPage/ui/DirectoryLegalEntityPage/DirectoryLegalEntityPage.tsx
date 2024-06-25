@@ -16,6 +16,7 @@ import { fetchWorkTaskGroupList, workTaskGroupReducer } from 'entities/WorkTaskG
 import { fetchWorkMaterialGroupList, workMaterialGroupReducer } from 'entities/WorkMaterialGroup';
 import { fetchLegalEntityList, getLegalEntity, legalEntityReducer } from 'entities/LegalEntity';
 import { useTable } from 'shared/lib/hooks/useTable';
+import { useUserData } from 'shared/lib/hooks/useUserData/useUserData';
 import { deleteLegalEntityCounter } from 'entities/LegalEntity/model/services/deleteLegalEntityCounter';
 import cls from './DirectoryLegalEntityPage.module.scss';
 
@@ -37,6 +38,7 @@ const DirectoryLegalEntityPage: React.FC<DirectoryLegalEntityPageProps> = (props
   const legalEntityFormIsOpen = useSelector(getCreateLegalEntityIsOpen);
   const dispatch = useAppDispatch();
   const legalEntities = useSelector(getLegalEntity.selectAll);
+  const { isAdmin } = useUserData();
 
   useEffect(() => {
     dispatch(fetchWorkObjectGroupList());
@@ -87,6 +89,7 @@ const DirectoryLegalEntityPage: React.FC<DirectoryLegalEntityPageProps> = (props
     data: tableData,
     onDelete: onTableDeleteHandler,
     onEdit: onTableEditHandler,
+    deleteble: isAdmin,
   });
 
   const onButtonDeleteHandler = useCallback(() => {

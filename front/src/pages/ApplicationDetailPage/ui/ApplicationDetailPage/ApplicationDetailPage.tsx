@@ -17,6 +17,7 @@ import { StateSchema } from 'app/providers';
 import { createApplicationReducer } from 'features/CreateApplication';
 import { createLegalEntityReducer } from 'features/CreateLegalEntity';
 import { createEmployeeReducer } from 'features/CreateEmployee';
+import { employeeReducer, fetchEmployeeList } from 'entities/Employee';
 import { fetchApplicationDetail } from '../../model/services/fetchApplicationDetail/fetchApplicationDetail';
 import { ApplicationDetailContent } from '../ApplicationDetailContent/ApplicationDetailContent';
 import { getApplicationDetailIsInit } from '../../model/selectors/getApplicationDetail';
@@ -38,6 +39,7 @@ const initialReducers: ReducersList = {
   createApplication: createApplicationReducer,
   createLegalEntityForm: createLegalEntityReducer,
   createEmployee: createEmployeeReducer,
+  employee: employeeReducer,
 };
 
 const ApplicationDetailPage: React.FC<ApplicationDetailPageProps> = (props) => {
@@ -53,6 +55,7 @@ const ApplicationDetailPage: React.FC<ApplicationDetailPageProps> = (props) => {
       dispatch(fetchWorkTaskGroupList());
       dispatch(fetchWorkMaterialGroupList());
       dispatch(applicationDetailActions.setIsInit());
+      dispatch(fetchEmployeeList());
     }
     if (detail?.creator?.legalEntity.workObject) {
       dispatch(fetchPerformersList([detail?.creator?.legalEntity.workObject.id]));

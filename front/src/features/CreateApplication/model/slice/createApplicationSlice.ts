@@ -53,6 +53,9 @@ export const createApplicationSlice = createSlice({
     openForm: (state) => {
       state.isOpen = true;
     },
+    setClient: (state, action: PayloadAction<string|number>) => {
+      state.form.client = action.payload;
+    },
     openEditForm: (state, action: PayloadAction<ApplicationInfo>) => {
       state.isOpen = true;
       state.isEdit = true;
@@ -60,6 +63,7 @@ export const createApplicationSlice = createSlice({
       state.form.title = action.payload.title;
       state.form.subject = action.payload.subject;
       state.form.startWorkDate = action.payload.startWorkDate;
+      state.form.client = action.payload.client || action.payload.creator?.id || undefined;
       state.form.endWorkDate = action.payload.endWorkDate;
       state.applicationId = action.payload.id;
     },

@@ -91,7 +91,7 @@ export const TableItemBody: React.FC<TableItemBodyProps> = (props) => {
             <div className={classNames(cls.column, {}, [cls.columnButtons])} style={{ flex: `1 0 ${100 / (Object.keys(item!!).length + 1)}%` }}>
               <div className={cls.buttons}>
                 {
-                  editable ? (
+                  deleteble ? (
                     <Button
                       className={cls.button}
                       theme={ButtonThemes.CLEAR}
@@ -104,7 +104,7 @@ export const TableItemBody: React.FC<TableItemBodyProps> = (props) => {
                 }
 
                 {
-                  deleteble ? (
+                  editable ? (
                     <Button
                       className={cls.button}
                       theme={ButtonThemes.CLEAR}
@@ -142,7 +142,7 @@ export const TableItemBody: React.FC<TableItemBodyProps> = (props) => {
             <div className={classNames(cls.column, {}, [cls.columnButtons])} style={{ flex: `1 0 ${100 / (Object.keys(item!!).length + 1)}%` }}>
               <div className={cls.buttons}>
                 {
-                  editable ? (
+                  deleteble ? (
                     <Button
                       className={cls.button}
                       theme={ButtonThemes.CLEAR}
@@ -155,7 +155,7 @@ export const TableItemBody: React.FC<TableItemBodyProps> = (props) => {
                 }
 
                 {
-                  deleteble ? (
+                  editable ? (
                     <Button
                       className={cls.button}
                       theme={ButtonThemes.CLEAR}
