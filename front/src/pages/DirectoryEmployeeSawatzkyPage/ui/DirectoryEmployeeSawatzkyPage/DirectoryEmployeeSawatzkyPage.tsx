@@ -50,14 +50,14 @@ const DirectoryEmployeeSawatzkyPage: React.FC<DirectoryEmployeeSawatzkyPageProps
       name: 'ФИО',
       status: 'Статус  ',
       position: 'Должность',
-      object: 'Объект',
+      // object: 'Объект',
     },
     items: sawatzkyEmployees.map((item) => ({
       id: item.id ?? '',
       name: item.user.fio ?? '',
       status: item.status ? 'активный' : 'неактивный',
       position: item.position ?? '',
-      object: item.workObject.name ?? '',
+      // object: item.workObject.name ?? '',
     })),
   };
 

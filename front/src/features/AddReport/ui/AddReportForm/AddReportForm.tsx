@@ -201,7 +201,7 @@ export const AddReportForm: React.FC<AddReportFormProps> = (props) => {
         value: legalEntityOption,
         onChange: onChangeLegalEntity,
         rules: {
-          required: true,
+          // required: true,
         },
       },
       {
@@ -212,7 +212,7 @@ export const AddReportForm: React.FC<AddReportFormProps> = (props) => {
         value: employeeOption,
         onChange: onChangeEmployee,
         rules: {
-          required: true,
+          // required: true,
         },
       },
       {
@@ -223,7 +223,7 @@ export const AddReportForm: React.FC<AddReportFormProps> = (props) => {
         value: statusOption,
         onChange: onChangeStatus,
         rules: {
-          required: true,
+          // required: true,
         },
       },
     ],

@@ -124,7 +124,7 @@ export const CreateApplicationForm: React.FC<CreateApplicationFormProps> = (prop
   }, [form, dispatch, applicationId, isEdit, onCloseHandler]);
   const { Form } = useForm({
     fields: [
-      ...(isSawatzky && isDispatcher ? [
+      ...(isSawatzky && (isDispatcher || isAdmin) ? [
         {
           id: 'employee',
           type: FormType.SELECT,
