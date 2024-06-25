@@ -116,6 +116,23 @@
   right: 0px;
   align-items: flex-end;
 }
+.reset {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 1px 42px;
+  border-radius: 10px;
+  border-color: transparent;
+  background: unset;
+  div {
+    font-family: 'Calibri';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: #031332;
+  }
+}
 .text-center {
   text-align: center;
   align-items: center;

@@ -41,6 +41,9 @@ import { DateInputSchema } from 'widgets/DateInput';
 import { ReportsSchema } from 'entities/Report';
 import { ReportDetailSchema } from 'features/ReportDetail/model/type/reportDetail';
 import { StatisticSchema } from 'entities/Statistic/model/type/statistics';
+import { GeneralJournalSchema } from 'entities/GeneralJournal/model/type/generalJournal';
+import { CreateGeneralJournalSchema } from 'features/CreateGeneralJournal';
+import { EditGeneralJournalSchema } from 'features/EditGeneralJournal';
 
 export interface StateSchema {
     user: UserSchema;
@@ -64,6 +67,7 @@ export interface StateSchema {
     performer?: PerformerSchema;
     report?: ReportsSchema;
     statistic?: StatisticSchema;
+    generalJournal?: GeneralJournalSchema;
     // widgets
     table?: TableSchema;
     direcotryNavigation?: DirectoryNavigaionSchema;
@@ -86,6 +90,8 @@ export interface StateSchema {
     addReportForm?: AddReportSchema;
     changePasswordForm?: ChangePasswordSchema;
     reportDetail?: ReportDetailSchema;
+    createGeneralJournal?: CreateGeneralJournalSchema;
+    editGeneralJournal?: EditGeneralJournalSchema;
 }
 
 export type StateSchemaKey = keyof StateSchema;

@@ -1,14 +1,15 @@
 import { EntityState } from '@reduxjs/toolkit';
+import { ReactElement } from 'react';
 
 export type TableHeaderType = {
-    [key: string]: string;
+    [key: string]: string | ReactElement;
 };
 
 export type TableItemType = Record<keyof TableHeaderType, any>;
 
 export interface TableType {
     header?: TableHeaderType;
-    items?: TableItemType[]
+    items?: TableItemType[] | ReactElement[];
     selectedItems?: TableItemType[];
     selectedAll?: boolean;
 }
@@ -18,6 +19,7 @@ export enum TableItemsMod {
     NORMAL = 'normal',
     NO_CONTROL = 'noControl',
     CLICK = 'click',
+    RESET = 'reset'
 }
 
 export interface TableSchema extends EntityState<TableType> {

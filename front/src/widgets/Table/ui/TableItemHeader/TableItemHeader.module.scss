@@ -33,9 +33,24 @@
 .text-center {
   text-align: center;
   align-items: center;
-  &:first-child,
-  &:nth-child(2) {
+  &:first-child {
     align-items: flex-start;
+  }
+  &:last-child {
+    align-items: flex-end;
+  }
+}
+
+.tableItemHeaderReset {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 43px;
+  background: unset;
+  border-radius: 10px;
+
+  @media(max-width: 960px) {
+    padding: 10px 15px;
   }
 }
 .text-left {

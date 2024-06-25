@@ -1,15 +1,19 @@
 import { classNames } from 'shared/lib/classNames/classNames';
 import { TableHeaderType, TableItemsMod } from '../../model/type/table';
 import { ItemTheme, TableItem } from '../TableItem/TableItem';
+import cls from './TableHeader.module.scss';
 
 interface TableHeaderProps {
     className?: string;
     options?: TableHeaderType;
     mod?: TableItemsMod;
+    headerMod?: TableItemsMod;
     onSelectAll?: () => void;
     selectedAll?: boolean;
     checkable: boolean;
     textAlignment?: 'left' | 'center' | 'right'
+    collapsable?: boolean
+    onClick?: () => void
 }
 
 export const TableHeader: React.FC<TableHeaderProps> = (props) => {
@@ -20,14 +24,21 @@ export const TableHeader: React.FC<TableHeaderProps> = (props) => {
     onSelectAll,
     selectedAll,
     checkable,
+    collapsable,
+    onClick,
     textAlignment,
+    headerMod,
   } = props;
 
   return (
-    <div className={classNames('', {}, [className])}>
+    <div
+      onClick={onClick}
+      className={classNames('', { [cls.collapsableTableHeader]: collapsable }, [className])}
+    >
       <TableItem
         item={options}
         type={ItemTheme.HEADER}
+        headerMod={headerMod}
         mod={mod}
         onSelectAll={onSelectAll}
         selectedAll={selectedAll}

@@ -5,6 +5,9 @@ import { MouseEvent, useCallback, useMemo } from 'react';
 import { Button, ButtonThemes } from 'shared/ui/Button/Button';
 import { ReactComponent as CrossIcon } from 'shared/assets/icons/cross-icon.svg';
 import { ReactComponent as PenIcon } from 'shared/assets/icons/pen-icon.svg';
+import { CollapsBoard } from 'widgets/CollapsBoard';
+import { CollapsBoardThemes } from 'widgets/CollapsBoard/ui/CollapsBoard/CollapsBoard';
+import isReactElement from 'shared/lib/helpers/isReactElement';
 import { TableItemType, TableItemsMod } from '../../model/type/table';
 import cls from './TableItemBody.module.scss';
 
@@ -220,6 +223,24 @@ export const TableItemBody: React.FC<TableItemBodyProps> = (props) => {
             }
           </div>
         );
+      case TableItemsMod.RESET:
+        return (
+          <div className={classNames(cls.tableItemBody, {}, [cls[mod], alignmentClass, className])}>
+            {
+              item && Object.keys(item).map((key, index) => {
+                if (!isReactElement(item[key])) {
+                  return (
+                  // className={cls.column}
+                    <div key={`${key}_table_item_column`} style={{ flex: 1 }}>
+                      <div className={cls.text}> {item[key]}</div>
+                    </div>
+                  );
+                }
+                return item[key];
+              })
+            }
+          </div>
+        );
       default:
         return null;
       }
@@ -227,5 +248,9 @@ export const TableItemBody: React.FC<TableItemBodyProps> = (props) => {
     return null;
   }, [item, mod, path, className, checkable, isChecked, editable, deleteble, onCheckHandler, onDeleteHandler, onEditHandler, onClickHandler]);
 
-  return itemBody;
+  return (
+    <div>
+      {itemBody}
+    </div>
+  );
 };
