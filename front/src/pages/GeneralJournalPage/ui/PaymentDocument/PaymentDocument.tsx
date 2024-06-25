@@ -25,7 +25,6 @@ const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
   const dispatch = useAppDispatch();
 
   const statusClass = cls[`statusBadge-${info?.status}`];
-  console.log(info, 'info');
   const onDeleteHandler = useCallback((item: TableItemType) => {
   }, [dispatch]);
 
@@ -48,7 +47,7 @@ const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
           ),
           // id: <div className={clsTableItemHeader.text}> { application.id } </div>,
           name: <div className={cls.tableItemHeader} style={{ flex: 1 }}> { application.title } </div>,
-          applicationAmount: <div className={cls.tableItemHeader} style={{ flex: 1 }}> { formatCurrency(application.totalPayment || '') } в </div>,
+          applicationAmount: <div className={cls.tableItemHeader} style={{ flex: 1 }}> { formatCurrency(application.totalPayment || '') } </div>,
           deptAmount: <div className={classNames(cls.tableItemHeader, {}, [])} style={{ flex: 1, color: '#E11B1B' }}> { formatCurrency(application.totalDebt || '') } </div>,
           paymentAmount: <div className={cls.tableItemHeader} style={{ flex: 1, color: '#169F55' }}> +{ formatCurrency(application.totalPayment || '') } </div>,
         })) : [{
@@ -139,7 +138,7 @@ const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
           </div>
         </div>
       ),
-       // delete: (
+      // delete: (
       //   <Button
       //     className={cls.button}
       //     theme={ButtonThemes.CLEAR}

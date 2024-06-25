@@ -69,7 +69,7 @@ export const CreateGeneralJournalForm: React.FC<CreateGeneralJournalFormProps> =
     };
     dispatch(addApplicationToGeneralJournal(postData));
   }, [dispatch, isEdit, fullSelectedApplications]);
-  console.log('appl', info?.application);
+
   const applicationsIds = useMemo(() => info?.application?.map((i: any) => i.application_id), [info]) || [];
   const selectAllOptions = useSelector(getEditGeneralJournalSelectOptions);
   const selectAOptions = useMemo(() => {
@@ -89,13 +89,16 @@ export const CreateGeneralJournalForm: React.FC<CreateGeneralJournalFormProps> =
   }, []);
 
   useEffect(() => {
-    console.log('selectedApplications', selectedApplications);
-    const fullSelectedOptions = selectedApplications?.map((item) => ({
-      value: '',
-      title: item.text,
-      id: item?.application_id || item?.id || item?.value,
-      isDirty: false,
-    }));
+    const fullSelectedOptions = [];
+    for (const option of (selectedApplications || [])) {
+      const currentApp = info?.application?.find((item: any) => item.application_id == option.value);
+      fullSelectedOptions.push({
+        value: currentApp?.totalPayment || '',
+        title: option.text,
+        id: option?.application_id || option?.id || option?.value,
+        isDirty: false,
+      });
+    }
 
     dispatch(editGeneralJournalActions.setFullSelectedApplications(fullSelectedOptions));
   }, [selectedApplications]);
@@ -161,6 +164,7 @@ export const CreateGeneralJournalForm: React.FC<CreateGeneralJournalFormProps> =
                 // value={app.value as any}
                 isDirty={app.isDirty}
                 field={{
+                  placeholder: 'Сумма оплаты',
                   id: '1',
                   type: FormType.TEXT,
                   value: app.value as any,
@@ -169,7 +173,6 @@ export const CreateGeneralJournalForm: React.FC<CreateGeneralJournalFormProps> =
                     pattern: validationPatterns.NUMBER,
                   },
                   onChange: (value) => {
-                    console.log('value', value);
                     dispatch(editGeneralJournalActions.setFullSelectedValueApplications({ app, value }));
                   },
                 }}

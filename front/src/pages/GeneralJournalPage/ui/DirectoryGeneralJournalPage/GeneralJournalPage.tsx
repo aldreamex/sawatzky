@@ -163,36 +163,36 @@ const DirectoryEmployeePage: React.FC<DirectoryEmployeePageProps> = (props) => {
 
   return (
     <DynamicModuleLoader reducers={reducers}>
-        <div className={cls.filters}>
-          <Select
-            className={cls.select}
-            size={SelectSize.A}
-            placeholder="Выбор заказчика"
-            theme={SelectThemes.ACTIVE}
-            onChange={onChangeEmployee}
-            options={employeeOptions}
-            value={employeeOption}
+      <div className={cls.filters}>
+        <Select
+          className={cls.select}
+          size={SelectSize.A}
+          placeholder="Выбор заказчика"
+          theme={SelectThemes.ACTIVE}
+          onChange={onChangeEmployee}
+          options={employeeOptions}
+          value={employeeOption}
+        />
+        <div style={{ maxWidth: '260px', width: '100%' }}>
+          <DateInput
+            className={cls.date}
+            inputTheme={InputThemes.WHITE}
+            onChange={changeSelectedDaysHandler}
+            selectedDays={{ from: date.from, to: date.to }}
+            onClear={clearWorkDatesHandler}
+            theme={CalendarThemes.DOWN}
+            // onSaveCalendar={}
+            isFocused={isOpenCalendar}
+            onCloseCalendar={onCloseCalendar}
+            onFocusHandler={onFocusCalendarHandler}
+            placeholder="Дата"
+            startDay={false}
           />
-          <div style={{ maxWidth: '260px', width: '100%' }}>
-            <DateInput
-              className={cls.date}
-              inputTheme={InputThemes.WHITE}
-              onChange={changeSelectedDaysHandler}
-              selectedDays={{ from: date.from, to: date.to }}
-              onClear={clearWorkDatesHandler}
-              theme={CalendarThemes.DOWN}
-              // onSaveCalendar={}
-              isFocused={isOpenCalendar}
-              onCloseCalendar={onCloseCalendar}
-              onFocusHandler={onFocusCalendarHandler}
-              placeholder="Дата"
-              startDay={false}
-            />
-          </div>
         </div>
-        <div className={cls.buttons}>
-          {
-            isSawatzky
+      </div>
+      <div className={cls.buttons}>
+        {
+          isSawatzky
             && (
               <>
                 <button
@@ -207,15 +207,15 @@ const DirectoryEmployeePage: React.FC<DirectoryEmployeePageProps> = (props) => {
                 </button>
               </>
             )
-          }
-        </div>
-        {Table}
-        <CreateGeneralJournalModal
-          className={cls.form}
-        />
-        <EditGeneralJournalModal
-          className={cls.form}
-        />
+        }
+      </div>
+      {Table}
+      <CreateGeneralJournalModal
+        className={cls.form}
+      />
+      <EditGeneralJournalModal
+        className={cls.form}
+      />
     </DynamicModuleLoader>
   );
 };

@@ -82,7 +82,7 @@ export const SidebarItemsList: SidebarItemType[] = [
     isHidden: true,
 
   },
-   {
+  {
     path: '/general_journal',
     text: 'Генеральный журнал',
     Icon: ReportIcon,
