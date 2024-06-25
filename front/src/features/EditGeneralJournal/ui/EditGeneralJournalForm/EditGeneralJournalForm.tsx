@@ -102,7 +102,6 @@ export const CreateGeneralJournalForm: React.FC<CreateGeneralJournalFormProps> =
 
     dispatch(editGeneralJournalActions.setFullSelectedApplications(fullSelectedOptions));
   }, [selectedApplications]);
-
   return (
     <div className={classNames(cls.CreateGeneralJournalForm, {}, [className])}>
       <Text className={cls.title} textAlign={TextAlign.CENTER} title="Контрагент наименование" />

@@ -47,7 +47,7 @@ const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
           ),
           // id: <div className={clsTableItemHeader.text}> { application.id } </div>,
           name: <div className={cls.tableItemHeader} style={{ flex: 1 }}> { application.title } </div>,
-          applicationAmount: <div className={cls.tableItemHeader} style={{ flex: 1 }}> { formatCurrency(application.totalPayment || '') } </div>,
+          applicationAmount: <div className={cls.tableItemHeader} style={{ flex: 1 }}> { formatCurrency(application.totalSum || '') } </div>,
           deptAmount: <div className={classNames(cls.tableItemHeader, {}, [])} style={{ flex: 1, color: '#E11B1B' }}> { formatCurrency(application.totalDebt || '') } </div>,
           paymentAmount: <div className={cls.tableItemHeader} style={{ flex: 1, color: '#169F55' }}> +{ formatCurrency(application.totalPayment || '') } </div>,
         })) : [{

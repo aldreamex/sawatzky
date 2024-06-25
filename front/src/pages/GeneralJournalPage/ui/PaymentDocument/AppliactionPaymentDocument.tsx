@@ -42,9 +42,9 @@ const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
           ),
           // id: <div className={clsTableItemHeader.text}> { application.id } </div>,
           name: application.title,
-          applicationAmount: formatCurrency(application.totalPayment || ''),
+          applicationAmount: formatCurrency(application.totalSum || ''),
           deptAmount: formatCurrency(application.totalDebt || ''),
-          paymentAmount: formatCurrency(application.totalSum || ''),
+          paymentAmount: formatCurrency(application.totalPayment || ''),
         })) || [{
         status: '-',
         name: '-',
