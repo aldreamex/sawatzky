@@ -7,6 +7,7 @@ interface TableItemProps {
   item?: TableItemType;
   type?: ItemTheme;
   mod?: TableItemsMod;
+  headerMod?: TableItemsMod;
   path?: string;
   isChecked?: boolean;
   selectedAll?: boolean;
@@ -32,6 +33,7 @@ export const TableItem: React.FC<TableItemProps> = (props) => {
     item,
     type = ItemTheme.BODY,
     mod,
+    headerMod,
     path,
     isChecked,
     selectedAll,
@@ -45,7 +47,6 @@ export const TableItem: React.FC<TableItemProps> = (props) => {
     checkable,
     textAlignment,
   } = props;
-
   return (
     type === ItemTheme.BODY
       ? (
@@ -74,6 +75,7 @@ export const TableItem: React.FC<TableItemProps> = (props) => {
           onSelectAll={onSelectAll}
           checkable={checkable}
           textAlignment={textAlignment}
+          headerMod={headerMod}
         />
       )
   );

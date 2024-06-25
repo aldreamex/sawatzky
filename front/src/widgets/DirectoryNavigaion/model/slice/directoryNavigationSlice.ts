@@ -23,6 +23,7 @@ export const directoryNavigationSlice = createSlice({
       DirectoryPath.work_material_group,
       DirectoryPath.employee,
       DirectoryPath.employee_sawatzky,
+      DirectoryPath.general_journal,
     ],
     entities: {
       [DirectoryPath.objects]: {
@@ -73,6 +74,12 @@ export const directoryNavigationSlice = createSlice({
         sawatzkyOnly: routeConfig.employee_sawatzky.sawatzkyOnly ?? false,
         permittedRoles: routeConfig.employee_sawatzky.permittedRoles ?? [],
       },
+      [DirectoryPath.general_journal]: {
+        path: DirectoryPath.general_journal,
+        text: 'Генеральный журнал',
+        sawatzkyOnly: routeConfig.employee_sawatzky.sawatzkyOnly ?? false,
+        permittedRoles: routeConfig.employee_sawatzky.permittedRoles ?? [],
+      },
     },
     error: undefined,
     isLoading: false,
@@ -84,3 +91,4 @@ export const directoryNavigationSlice = createSlice({
 
 export const { actions: directoryNavigationActions } = directoryNavigationSlice;
 export const { reducer: directoryNavigationReducer } = directoryNavigationSlice;
+//

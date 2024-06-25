@@ -4,6 +4,7 @@ import { ApplicationsPage } from 'pages/ApplicationsPage';
 import { AuthorizationPage } from 'pages/AuthorizaionPage';
 import { DirectoryEmployeePage } from 'pages/DirectoryEmployeePage';
 import { DirectoryEmployeeSawatzkyPage } from 'pages/DirectoryEmployeeSawatzkyPage';
+import { GeneralJournalPage } from 'pages/GeneralJournalPage';
 import { DirectoryLegalEntityPage } from 'pages/DirectoryLegalEntityPage';
 import { DirectoryLegalEntitySawatzkyPage } from 'pages/DirectoryLegalEntitySawatzkyPage';
 import { DirectoryObjectPage } from 'pages/DirectoryObjectPage';
@@ -64,6 +65,7 @@ export enum DirectoryRoutes {
   WORK_MATERIAL_GROUP = 'work_material_group',
   EMPLOYEE = 'employee',
   EMPLOYEE_SAWATZKY = 'employee_sawatzky',
+  GENERAL_JOURNAL = 'general_journal'
 }
 
 export const DirectoryPath: Record<DirectoryRoutes, string> = {
@@ -78,6 +80,7 @@ export const DirectoryPath: Record<DirectoryRoutes, string> = {
   [DirectoryRoutes.WORK_MATERIAL_GROUP_DETAIL]: '/directory/work-material-group/',
   [DirectoryRoutes.EMPLOYEE]: '/directory/employee',
   [DirectoryRoutes.EMPLOYEE_SAWATZKY]: '/directory/employee-sawatzky',
+  [DirectoryRoutes.GENERAL_JOURNAL]: '/directory/general_journal',
 
 };
 
@@ -189,6 +192,14 @@ export const routeConfig: Record<AppRoutes | DirectoryRoutes, AppRouteProps> = {
   [DirectoryRoutes.EMPLOYEE_SAWATZKY]: {
     path: `${DirectoryPath.employee_sawatzky}`,
     element: <DirectoryEmployeeSawatzkyPage />,
+    authOnly: true,
+    sawatzkyOnly: true,
+    permittedRoles: [EmployeeRole.ADMIN, EmployeeRole.DISPATCHER, EmployeeRole.DISPATCHER_PERFORMER],
+  },
+
+  [DirectoryRoutes.GENERAL_JOURNAL]: {
+    path: `${DirectoryPath.general_journal}`,
+    element: <GeneralJournalPage />,
     authOnly: true,
     sawatzkyOnly: true,
     permittedRoles: [EmployeeRole.ADMIN, EmployeeRole.DISPATCHER, EmployeeRole.DISPATCHER_PERFORMER],

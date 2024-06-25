@@ -1,6 +1,8 @@
 import { classNames } from 'shared/lib/classNames/classNames';
+import isReactElement from 'shared/lib/helpers/isReactElement';
 import { TableItemType, TableItemsMod } from '../../model/type/table';
 import { ItemTheme, TableItem } from '../TableItem/TableItem';
+import cls from './TableBody.module.scss';
 
 interface TableBodyProps {
   className?: string;
@@ -17,6 +19,7 @@ interface TableBodyProps {
   checkable: boolean;
   textAlignment?: 'left' | 'center' | 'right'
 
+  collapsable?: boolean
 }
 
 export const TableBody: React.FC<TableBodyProps> = (props) => {
@@ -34,29 +37,34 @@ export const TableBody: React.FC<TableBodyProps> = (props) => {
     editable,
     checkable,
     textAlignment = undefined,
+    collapsable,
   } = props;
-
   return (
-    <div className={classNames('', {}, [className])}>
+    <div className={classNames('', { [cls.collapsableTable]: collapsable }, [className])}>
       {
-        items?.map((item, index) => (
-          <TableItem
-            path={path}
-            mod={mod}
-            key={`TableBodyItem_${item.id}`}
-            type={ItemTheme.BODY}
-            item={item}
-            onCheck={() => onCheck?.(item)}
-            onDelete={() => onDelete?.(item)}
-            onEdit={() => onEdit?.(item)}
-            onClick={() => onClick?.(item)}
-            isChecked={Boolean(selectedItems?.find((selectedItem) => item.id === selectedItem.id))}
-            deleteble={deleteble}
-            editable={editable}
-            textAlignment={textAlignment}
-            checkable={checkable}
-          />
-        ))
+        items?.map((item, index) => {
+          if (isReactElement(item)) {
+            return item;
+          }
+          return (
+            <TableItem
+              path={path}
+              mod={mod}
+              key={`TableBodyItem_${item.id}`}
+              type={ItemTheme.BODY}
+              item={item}
+              onCheck={() => onCheck?.(item)}
+              onDelete={() => onDelete?.(item)}
+              onEdit={() => onEdit?.(item)}
+              onClick={() => onClick?.(item)}
+              isChecked={Boolean(selectedItems?.find((selectedItem) => item.id === selectedItem.id))}
+              deleteble={deleteble}
+              editable={editable}
+              checkable={checkable}
+              textAlignment={textAlignment}
+            />
+          );
+        })
       }
     </div>
   );

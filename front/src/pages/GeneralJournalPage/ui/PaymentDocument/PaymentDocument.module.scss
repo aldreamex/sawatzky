@@ -1,3 +1,6 @@
+.tableItemList {
+
+}
 .tableItemBody {
   position: relative;
   display: flex;
@@ -93,6 +96,9 @@
 .column {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
+
   &:first-child,
   &:nth-child(2) {
     align-items: flex-start;
@@ -116,34 +122,124 @@
   right: 0px;
   align-items: flex-end;
 }
-.reset {
-  position: relative;
+
+
+//new
+
+.tableFirstHeader {
   display: flex;
-  justify-content: space-between;
-  padding: 1px 42px;
-  border-radius: 10px;
-  border-color: transparent;
-  background: unset;
-  div {
-    font-family: 'Calibri';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 24px;
-    color: #031332;
-  }
-}
-.text-center {
-  text-align: center;
+  gap: 8px;
   align-items: center;
-  &:first-child,
-  &:nth-child(2) {
-    align-items: flex-start;
+ }
+
+ 
+ .tableItemHeader {
+  font-family: 'Calibri';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  color: #031332;
+  text-align: center;
+  &:last-child {
+    text-align: right;
+  }
+ }
+
+
+.tableItemStatus {
+ display: flex;
+ align-items: center;
+ width: 20px;
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3CACDD;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 }
-.text-left {
-  text-align: left;
+
+.statusBadge {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 8px 2px 6px;
+  gap: 6px;
+  min-width: 94px;
+  min-height: 22px;
+  border-radius: 16px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  margin-left: auto;
+  span {
+    position: relative;
+    padding-left: 12px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    &::before {
+      content: ' ';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    
+    }
+  }
+  &.success {
+    background: #ECFDF3;
+    color: #027A48;
+    span {
+      &::before {
+        background-color: #12B76A;
+      }
+    }
+  }
+  &-fully {
+    background: #ECFDF3;
+    color: #027A48;
+    span {
+      &::before {
+        background-color: #12B76A;
+      }
+    }
+  }
+  &-partially {
+    background: #FFFAEB;
+    color: #B54708;
+    span {
+      &::before {
+        background-color: #F79009;
+      }
+    }
+  }
+  &-unpaid {
+    background: #FEF3F2;
+    color: #B42318;
+    span {
+      &::before {
+        background-color: #F04438;
+      }
+    }
+  }
+
 }
-.text-right {
-  text-align: right;
+
+
+.tableItemDebt {
+  color: #E11B1B;
 }

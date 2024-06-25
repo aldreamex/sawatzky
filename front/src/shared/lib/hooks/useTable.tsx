@@ -6,6 +6,7 @@ import {
 export interface UseTableProps {
   className?: string;
   mod?: TableItemsMod;
+  headerMod?: TableItemsMod;
   data: TableType;
   path?: string;
   onDelete?: (item: TableItemType) => void;
@@ -14,6 +15,7 @@ export interface UseTableProps {
   editable?: boolean;
   deleteble?: boolean
   checkable?: boolean;
+  collapsable?: boolean;
   textAlignment?: 'left' | 'center' | 'right'
 }
 
@@ -40,6 +42,8 @@ export const useTable = (props: UseTableProps): UseTableResult => {
     editable = true,
     checkable = true,
     textAlignment = undefined,
+    collapsable = false,
+    headerMod,
   } = props;
 
   const [selectedItems, setSelectedItems] = useState<TableItemType[]>([]);
@@ -79,6 +83,7 @@ export const useTable = (props: UseTableProps): UseTableResult => {
     <Table
       path={path}
       mod={mod}
+      headerMod={headerMod}
       className={className}
       data={data}
       onDelete={onDeleteHandler}
@@ -91,6 +96,7 @@ export const useTable = (props: UseTableProps): UseTableResult => {
       deleteble={deleteble}
       editable={editable}
       checkable={checkable}
+      collapsable={collapsable}
       textAlignment={textAlignment}
     />
   ), [path, mod, className, data, onDeleteHandler, onEditHandler, onClickHandler, onSelectAllHandler, onCheckHandler, selectedAll, selectedItems, deleteble, editable, checkable]);

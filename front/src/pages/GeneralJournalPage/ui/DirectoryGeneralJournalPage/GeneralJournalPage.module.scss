@@ -1,0 +1,46 @@
+.buttons {
+  display: flex;
+  align-items: center;
+  margin: 0 -6px;
+  margin-bottom: 17px;
+}
+
+.button {
+  margin: 0 6px;
+}
+
+.form {
+  margin-top: 70px;
+}
+
+.addButton {
+    font-family: 'Calibri';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--primary-color);
+    cursor: pointer; 
+    background: unset;
+    padding: 0;
+}
+.filters {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  gap: 15px;
+  margin-bottom: 24px;
+  @media (max-width:540px) {
+    flex-wrap: wrap;
+  }
+}
+
+.select {
+  width: auto;
+  padding-right: 50px;
+
+  @media (max-width:540px) {
+    width: 100%;
+    margin-top: 5px;
+  }
+}
