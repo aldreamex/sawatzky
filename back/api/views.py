@@ -15,7 +15,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from .consumers import ApplicationConsumer
 
-from .utils import send_notification_email
+from .utils import send_notification_email, generate_pdf
 
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import (
@@ -1112,6 +1112,11 @@ class ReportDetailView(generics.RetrieveDestroyAPIView):
 
         except (KeyError, Report.DoesNotExist):
             return Response({'message': 'Отчет не найден'}, status=status.HTTP_404_NOT_FOUND)
+
+
+def report_download(request, pk):
+    report = get_object_or_404(Report, pk=pk)
+    return generate_pdf(report)
 
 
 """Comments"""

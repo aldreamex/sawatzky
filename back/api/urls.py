@@ -72,6 +72,7 @@ urlpatterns = [
     path('reports/', views.ReportListView.as_view()),
     path('reports/create/', views.ReportCreateView.as_view()),
     path('reports/<int:pk>/', views.ReportDetailView.as_view()),
+    path('reports_download/<int:pk>/', views.report_download),
 
     path('comments/', views.CommentsListView.as_view()),
 
