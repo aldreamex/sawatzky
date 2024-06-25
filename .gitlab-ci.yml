@@ -2,7 +2,7 @@ stages:
  - prebuild
  - build
  - pack
-# - push
+ - push
 
 .common: &common
  tags:
