@@ -61,14 +61,14 @@ const DirectoryLegalEntityPage: React.FC<DirectoryLegalEntityPageProps> = (props
       id: 'Код',
       name: 'Наименование компании',
       group: 'Группа объектов',
-      object: 'Объект',
+      // object: 'Объект',
     },
     items: useMemo(() => legalEntities.map((entity) => (
       {
         id: entity.id ?? '',
         name: entity.name ?? '',
         group: entity.workObjectsGroup?.name ?? '',
-        object: entity.workObject?.name ?? '',
+        // object: entity.workObject?.name ?? '',
 
       }
     )), [legalEntities]),

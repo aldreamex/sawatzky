@@ -56,14 +56,14 @@ const DirectoryLegalEntitySawatzkyPage: React.FC<DirectoryLegalEntitySawatzkyPag
       id: 'Код',
       name: 'Наименование Юр. лица',
       group: 'Группа',
-      object: 'Объект',
+      // object: 'Объект',
     },
     items: useMemo(() => legalEntities.map((entity) => (
       {
         id: entity.id ?? '',
         name: entity.name ?? '',
         group: entity.workObjectsGroup?.name ?? '',
-        object: entity.workObject?.name ?? '',
+        // object: entity.workObject?.name ?? '',
 
       }
     )), [legalEntities]),
