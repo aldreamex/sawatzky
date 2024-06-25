@@ -1071,7 +1071,10 @@ class ReportCreateView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         instance = serializer.save()
 
-        applications = Application.objects.filter(creator__legalEntity=serializer.validated_data.get('legalEntity', instance.legalEntity.id))
+        # Получение legalEntity из запроса или установка значения по умолчанию
+        # applications = Application.objects.filter(creator__legalEntity=serializer.validated_data.get('legalEntity', instance.legalEntity.id))
+        legal_entity = serializer.validated_data.get('legalEntity', instance.legalEntity.id if instance.legalEntity else None)
+        applications = Application.objects.filter(creator__legalEntity=legal_entity)
 
         application_status = serializer.validated_data.get('application_status')
 
