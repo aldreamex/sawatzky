@@ -1085,11 +1085,18 @@ class ReportCreateSerializer(ModelSerializer):
         if hasattr(user, 'sawatzky_employee'):
             sawatzky_employee = user.sawatzky_employee
             validated_data['creator'] = sawatzky_employee
-            super().create(validated_data).application_status = validated_data.pop('application_status', None)
-            return super().create(validated_data)
+
+            # Сохраняем application_status отдельно и удаляем его из validated_data перед созданием отчета
+            application_status = validated_data.pop('application_status', None)
+            report = super().create(validated_data)
+
+            # Присваиваем значение application_status полю созданного отчета
+            report.application_status = application_status
+            report.save()
+
+            return report
         else:
             raise serializers.ValidationError("Только сотрудники Sawatzky могут создавать отчеты")
-
 
 
 class FoundedApplicationDetailSerializer(ModelSerializer):
