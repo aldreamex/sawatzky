@@ -15,7 +15,7 @@ export const Navigation: React.FC<NavigationProps> = (props) => {
   const { pathname } = useLocation();
   const { role, isSawatzky } = useUserData();
 
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   return (
     <div
