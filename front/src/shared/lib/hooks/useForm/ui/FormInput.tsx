@@ -53,12 +53,8 @@ export const FormInput: FC<FormInputProps> = ({
 
   const onChangeHandler = useCallback((value: any) => {
     field.onChange(value);
-    const isValid = typeof value === 'boolean' ? value : validateField(field).isValid;
-    setIsValid(id, isValid);
-
-    if (typeof value === 'boolean') {
-      validateField({ ...field, value }); // Передаем обновленное значение в validateField
-    }
+    validateField(field);
+    setIsValid(id, inputIsValid);
   }, [field, id, setIsValid, validateField]);
   if (!field.isHidden) {
     switch (type) {

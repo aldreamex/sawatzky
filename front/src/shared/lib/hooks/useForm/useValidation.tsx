@@ -23,7 +23,8 @@ export const useValidation = (field: FormField) => {
       isEmpty = !field.value;
       break;
     case 'boolean':
-      isEmpty = !field.value;
+      isEmpty = false;
+      // isEmpty = field.value; если булево задано, то уже непустое
       break;
     case 'object':
       if (field.value instanceof File) {
