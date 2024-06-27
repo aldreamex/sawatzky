@@ -19,7 +19,7 @@ const initialState: CreateEmployeeSchema = {
     },
   },
   formData: {
-    status: true,
+    status: false,
     user: {
       fio: '',
       phoneNumber: '',
