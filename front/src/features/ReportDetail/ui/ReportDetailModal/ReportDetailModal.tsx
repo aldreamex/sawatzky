@@ -14,6 +14,7 @@ import { Tag } from 'shared/ui/Tag/Tag';
 import { getDateString } from 'shared/lib/getDateString/getDateString';
 import { ReportDocument } from 'widgets/ReportDocument';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import { ReactComponent as PdfFile } from 'shared/assets/icons/pdf-file.svg';
 import cls from './ReportDetailModal.module.scss';
 import {
   getReportDetail, getReportDetailApplication, getReportDetailIsInit, getReportDetailIsOpen, getReportDetailReportId,
@@ -73,6 +74,10 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = (props) => {
     dispatch(reportDetailActions.close());
   }, [dispatch, onClose]);
 
+  const downloadPdfReport = useCallback(() => {
+    const url = `/reports_download/${reportId}/`;
+    window.open(url, '_blank');
+  }, [reportId]);
   return (
     <Modal className={classNames(cls.reportDetailModal, {}, [className])} isOpen={isOpen} onClose={onCloseHandler}>
       <div className={cls.table}>
@@ -86,6 +91,9 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = (props) => {
         </PDFDownloadLink>
         <Button className={cls.btn} theme={ButtonThemes.ICON}> <SendFileLogo /> </Button>
       </div> */}
+      <div className={cls.btns}>
+        <Button className={cls.btn} theme={ButtonThemes.ICON} onClick={downloadPdfReport}> <PdfFile /></Button>
+      </div>
     </Modal>
   );
 };
