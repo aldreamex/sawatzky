@@ -114,29 +114,29 @@ export const CreateLegalEntitySawatzkyForm: React.FC<CreateLegalEntitySawatzkyFo
 
   const { Form } = useForm({
     fields: [
-      {
-        id: 'workObjectsGroup',
-        type: FormType.SELECT,
-        placeholder: 'Группа объектов',
-        options: workObjectGroupOptions,
-        value: workObjectGroupOption,
-        rules: {
-          required: true,
-        },
-        onChange: onChangeWorkObjectGroup,
-      },
-      {
-        id: 'workObject',
-        type: FormType.SELECT,
-        placeholder: 'Объект',
-        options: workObjectOptions,
-        value: workObjectOption,
-        isHidden: Boolean(!workObjectGroupOption),
-        onChange: onChangeWorkObject,
-        rules: {
-          required: true,
-        },
-      },
+      // {
+      //   id: 'workObjectsGroup',
+      //   type: FormType.SELECT,
+      //   placeholder: 'Группа объектов',
+      //   options: workObjectGroupOptions,
+      //   value: workObjectGroupOption,
+      //   rules: {
+      //     required: true,
+      //   },
+      //   onChange: onChangeWorkObjectGroup,
+      // },
+      // {
+      //   id: 'workObject',
+      //   type: FormType.SELECT,
+      //   placeholder: 'Объект',
+      //   options: workObjectOptions,
+      //   value: workObjectOption,
+      //   isHidden: Boolean(!workObjectGroupOption),
+      //   onChange: onChangeWorkObject,
+      //   rules: {
+      //     required: true,
+      //   },
+      // },
       {
         id: 'name',
         type: FormType.TEXT,
