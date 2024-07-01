@@ -15,6 +15,7 @@ import { getDateString } from 'shared/lib/getDateString/getDateString';
 import { ReportDocument } from 'widgets/ReportDocument';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { ReactComponent as PdfFile } from 'shared/assets/icons/pdf-file.svg';
+import { baseUrl } from 'shared/api/api';
 import cls from './ReportDetailModal.module.scss';
 import {
   getReportDetail, getReportDetailApplication, getReportDetailIsInit, getReportDetailIsOpen, getReportDetailReportId,
@@ -75,7 +76,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = (props) => {
   }, [dispatch, onClose]);
 
   const downloadPdfReport = useCallback(() => {
-    const url = `/reports_download/${reportId}/`;
+    const url = `${baseUrl}/api/v1/reports_download/${reportId}/`;
     window.open(url, '_blank');
   }, [reportId]);
   return (
