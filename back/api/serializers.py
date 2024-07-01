@@ -294,8 +294,7 @@ class LegalEntityOrClientLESerializer(ModelSerializer):
             if sawatzky_value:
                 true_required_fields = [
                     'name', 'head', 'legalAddress', 'actualAddress', 'phone', 'mail', 'INN',
-                    'settlementAccount', 'correspondentAccount', 'bank', 'bik', 'workObjectsGroup',
-                    'workObject'
+                    'settlementAccount', 'correspondentAccount', 'bank', 'bik'
                 ]
                 for field_name in true_required_fields:
                     self.fields[field_name].required = True
