@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
+from django.db.models import F
 from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.views import APIView
 import json
@@ -1242,7 +1243,7 @@ class GeneralJournalApplicationsByLegalEntityView(generics.ListAPIView):
 
     def get_queryset(self):
         legal_entity_id = self.kwargs['legal_entity_id']
-        return Application.objects.filter(creator__legalEntity_id=legal_entity_id)
+        return Application.objects.filter(creator__legalEntity_id=legal_entity_id).exclude(totalSum=F('totalPayment'))
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
