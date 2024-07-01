@@ -1276,6 +1276,13 @@ class GeneralJournalUpdateAPLSerializer(serializers.ModelSerializer):
                             f"Сумма платежа {additional_payment} превышает текущий долг {current_debt} для заявки {application_id}"
                         )
 
+                    # Проверка на общую сумму документа
+                    total_payment_with_additional = current_payment + additional_payment
+                    if total_payment_with_additional > instance.totalAmount:
+                        raise serializers.ValidationError(
+                            f"Сумма платежа {total_payment_with_additional} превышает общую сумму документа {instance.totalAmount}"
+                        )
+
                     # Обновление записи в промежуточной таблице
                     app_journal.totalPayment = current_payment + additional_payment
                     app_journal.save()
