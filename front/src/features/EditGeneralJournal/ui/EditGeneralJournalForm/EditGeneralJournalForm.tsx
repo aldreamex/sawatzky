@@ -2,13 +2,8 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { Text, TextAlign } from 'shared/ui/Text/Text';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-// import { getLegalEntity } from 'entities/LegalEntity';
 import { useAppDispatch } from 'shared/lib/hooks/useAppDispatch/useAppDispatch';
-// import { useUserData } from 'shared/lib/hooks/useUserData/useUserData';
-// import { FormType, useForm } from 'shared/lib/hooks/useForm/useForm';
 import { validationPatterns } from 'shared/patterns/validationPatterns';
-// import { editEmployee } from 'features/CreateEmployee/model/services/editEmployee';
-import { CalendarThemes } from 'widgets/DateInput/ui/DateInput';
 import { Button, ButtonThemes, ButtonSize } from 'shared/ui/Button/Button';
 import { formatCurrency } from 'shared/lib/data/utiils';
 import { getDateString } from 'shared/lib/getDateString/getDateString';
@@ -20,10 +15,7 @@ import { FormInput } from 'shared/lib/hooks/useForm/ui/FormInput';
 import { FormType } from 'shared/lib/hooks/useForm/useForm';
 import { sumTotalSum } from 'pages/GeneralJournalPage/ui/PaymentDocument/PaymentDocument';
 import {
-  getCreateGeneralJournalFormData,
-  getCreateGeneralJournalFormLegalEntity,
   getCreateGeneralJournalIsEdit,
-  // getCreateGeneralJournalUserFormUsername,
   getEditGeneralJournalInfo,
   getEditGeneralJournalSelectOptions,
   getEditGeneralJournalSelectedApplications,
@@ -42,13 +34,6 @@ export function formatApplicationString(application: any) {
       ${formatCurrency(application.totalSum)} /
       ${formatCurrency(application.totalPayment)}
   `.trim();
-  // return `
-  //     ${application.application_id} /
-  //     Название: ${application.title} /
-  //     Контрагент: / 12.02.1990 /
-  //     ${formatCurrency(application.totalSum)} /
-  //     ${formatCurrency(application.totalPayment)}
-  // `.trim();
 }
 
 export const CreateGeneralJournalForm: React.FC<CreateGeneralJournalFormProps> = (props) => {
@@ -78,7 +63,7 @@ export const CreateGeneralJournalForm: React.FC<CreateGeneralJournalFormProps> =
       return selectAllOptions?.filter((item: any) => !applicationsIds.includes(item.id)).map((item: any) => ({
         text: formatApplicationString(item),
         value: item?.application_id || item?.id,
-      })); // workingObjects.find((object) => object === item.value));
+      }));
     }
     return undefined;
   }, [selectAllOptions]);
