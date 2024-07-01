@@ -1,3 +1,5 @@
+import { ApplicationStatus } from 'entities/Application';
+
 export interface AddReportFormType {
   startWorkDate?: string;
   endWorkDate?: string;
@@ -14,7 +16,7 @@ export interface AddReportData {
   legalEntity: number | string;
   workObjectsGroup?: number | string;
   workObject?: number | string;
-  application_status?: string;
+  application_status?: ApplicationStatus;
 }
 
 export interface AddReportSchema {

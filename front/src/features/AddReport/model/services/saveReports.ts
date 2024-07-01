@@ -3,6 +3,7 @@ import { ThunkConfig } from 'app/providers';
 import { USER_LOCALSTORAGE_DATA } from 'shared/const/localStorage';
 import { userActions } from 'entities/User';
 import { fetchReportList } from 'entities/Report';
+import { ApplicationStatus } from 'entities/Application';
 import { addReportActions } from '../slice/addReportSlice';
 import { AddReportData, AddReportFormType } from '../type/addReport';
 
@@ -24,7 +25,7 @@ export const saveReport = createAsyncThunk<
       legalEntity: formData.legalEntity ?? '',
       workObject: formData.workObject ?? '',
       workObjectsGroup: formData.workObjectsGroup ?? '',
-      application_status: formData.status ?? '',
+      application_status: formData.status as ApplicationStatus || undefined,
     };
     try {
       const response = await extra.api.post<AddReportData>('/api/v1/reports/create/', reportData);
