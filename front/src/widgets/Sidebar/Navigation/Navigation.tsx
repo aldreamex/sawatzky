@@ -15,15 +15,15 @@ export const Navigation: React.FC<NavigationProps> = (props) => {
   const { pathname } = useLocation();
   const { role, isSawatzky } = useUserData();
 
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  // const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   return (
     <div
       className={classNames(cls.navigation, {
-        [cls.collapsed]: isCollapsed,
+        // [cls.collapsed]: isCollapsed,
       }, [className ?? ''])}
-      onMouseEnter={() => setIsCollapsed(false)}
-      onMouseLeave={() => setIsCollapsed(true)}
+      // onMouseEnter={() => setIsCollapsed(false)}
+      // onMouseLeave={() => setIsCollapsed(true)}
 
     >
       {
@@ -35,7 +35,7 @@ export const Navigation: React.FC<NavigationProps> = (props) => {
             <SidebarItem
               item={item}
               key={item.path}
-              isCollapsed={isCollapsed}
+              // isCollapsed={isCollapsed}
               isActive={pathname.split('/')[1] === item.path.split('/')[1]}
             />
           ))
