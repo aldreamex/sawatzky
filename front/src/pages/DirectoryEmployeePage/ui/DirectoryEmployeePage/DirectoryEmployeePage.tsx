@@ -40,7 +40,7 @@ const DirectoryEmployeePage: React.FC<DirectoryEmployeePageProps> = (props) => {
 
   const dispatch = useAppDispatch();
   const employees = useSelector(getEmployee.selectAll);
-  const { isSawatzky } = useUserData();
+  const { isSawatzky, isAdmin } = useUserData();
 
   useEffect(() => {
     dispatch(fetchEmployeeList());
@@ -83,7 +83,7 @@ const DirectoryEmployeePage: React.FC<DirectoryEmployeePageProps> = (props) => {
     onDelete: onTableDeleteHandler,
     onEdit: onTableEditHandler,
     editable: isSawatzky,
-    deleteble: isSawatzky,
+    deleteble: isAdmin,
   });
 
   const onButtonDeleteHandler = useCallback(() => {

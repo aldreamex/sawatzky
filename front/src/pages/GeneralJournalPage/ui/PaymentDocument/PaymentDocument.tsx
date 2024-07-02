@@ -16,8 +16,8 @@ interface DirectoryEmployeePageProps {
   className?: string;
   info?: any
 }
-function sumTotalSum(data: any, param: string = 'totalSum') {
-  return data.reduce((accumulator: any, currentValue: any) => accumulator + parseFloat(currentValue[param]), 0);
+export function sumTotalSum(data: any = [], param: string = 'totalSum') {
+  return data?.reduce((accumulator: any, currentValue: any) => accumulator + parseFloat(currentValue[param]), 0) || 0;
 }
 
 const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
