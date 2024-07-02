@@ -1247,10 +1247,22 @@ class GeneralJournalUpdateAPLSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         applications_data = validated_data.pop('application', [])
 
+        # Сначала подсчитаем все суммы платежей по заявкам
+        total_additional_payment = Decimal('0.0')
+
+        for app_data in applications_data:
+            additional_payment = Decimal(app_data.get('totalPayment'))
+            total_additional_payment += additional_payment
+
+        # Проверка на общую сумму документа
+        if total_additional_payment > instance.totalAmount:
+            raise serializers.ValidationError(
+                f"Общая сумма платежей {total_additional_payment} превышает общую сумму документа {instance.totalAmount}"
+            )
+
         for app_data in applications_data:
             application_id = app_data.get('id')
             additional_payment = Decimal(app_data.get('totalPayment'))
-
             try:
                 application = Application.objects.get(id=application_id)
 
@@ -1275,12 +1287,12 @@ class GeneralJournalUpdateAPLSerializer(serializers.ModelSerializer):
                             f"Сумма платежа {additional_payment} превышает текущий долг {current_debt} для заявки {application_id}"
                         )
 
-                    # Проверка на общую сумму документа
-                    total_payment_with_additional = current_payment + additional_payment
-                    if total_payment_with_additional > instance.totalAmount:
-                        raise serializers.ValidationError(
-                            f"Сумма платежа {total_payment_with_additional} превышает общую сумму документа {instance.totalAmount}"
-                        )
+                    # # Проверка на общую сумму документа
+                    # total_payment_with_additional = current_payment + additional_payment
+                    # if total_payment_with_additional > instance.totalAmount:
+                    #     raise serializers.ValidationError(
+                    #         f"Сумма платежа {total_payment_with_additional} превышает общую сумму документа {instance.totalAmount}"
+                    #     )
 
                     # Обновление записи в промежуточной таблице
                     app_journal.totalPayment = current_payment + additional_payment
