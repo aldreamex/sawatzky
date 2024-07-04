@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { RangePicker, Theme } from 'react-trip-date';
+import { RangePicker, Theme, DatePicker } from 'react-trip-date';
 import { ReactComponent as ArrowIcon } from 'shared/assets/icons/arrow-icon-right.svg';
 import { Button, ButtonThemes } from 'shared/ui/Button/Button';
 import { classNames } from 'shared/lib/classNames/classNames';
@@ -29,17 +29,23 @@ const theme: Theme = {
 
 interface CalendarProps {
   onChange?: (selectedDays: RangePickerSelectedDays) => void;
+  onChangeSingleDate?: (selectedDays: string[]) => void;
   selectedDays?: RangePickerSelectedDays;
+  selectedDay?: string[];
   className?: string;
   startDay?: boolean;
+  isRangePicker?: boolean;
 }
 
 export const Calendar: React.FC<CalendarProps> = (props) => {
   const {
     onChange,
+    onChangeSingleDate,
     className,
     selectedDays,
+    selectedDay,
     startDay,
+    isRangePicker = true,
   } = props;
 
   const onChangeHandler = useCallback((days: RangePickerSelectedDays) => {
@@ -47,30 +53,56 @@ export const Calendar: React.FC<CalendarProps> = (props) => {
       onChange(days);
     }
   }, [onChange]);
-
   return (
     <div className={classNames(cls.calendar, {}, [className])}>
-      <RangePicker
-        selectedDays={selectedDays}
-        disabledBeforeToday={startDay}
-        numberOfMonths={1}
-        allowDisabledDaysSpan
-        theme={theme}
-        onChange={onChangeHandler}
-        autoResponsive={false}
-        components={{
-          header: {
-            monthIcons: {
-              left: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowLeft, {}, [cls.icon])} /></Button>),
-              right: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowRight, {}, [cls.icon])} /></Button>),
+      {!isRangePicker ? (
+        <DatePicker
+          selectedDays={selectedDay}
+          autoResponsive={false}
+          components={{
+            header: {
+              monthIcons: {
+                left: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowLeft, {}, [cls.icon])} /></Button>),
+                right: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowRight, {}, [cls.icon])} /></Button>),
+              },
+              yearIcons: {
+                left: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowLeft, {}, [cls.icon])} /></Button>),
+                right: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowRight, {}, [cls.icon])} /></Button>),
+              },
             },
-            yearIcons: {
-              left: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowLeft, {}, [cls.icon])} /></Button>),
-              right: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowRight, {}, [cls.icon])} /></Button>),
+          }}
+          disabledBeforeToday={startDay}
+          numberOfMonths={1}
+          theme={theme}
+          numberOfSelectableDays={1}
+          onChange={(dates) => {
+            onChangeSingleDate?.(dates);
+          }}
+        />
+      ) : (
+        <RangePicker
+          selectedDays={selectedDays}
+          disabledBeforeToday={startDay}
+          numberOfMonths={1}
+          allowDisabledDaysSpan
+          theme={theme}
+          onChange={onChangeHandler}
+          autoResponsive={false}
+          components={{
+            header: {
+              monthIcons: {
+                left: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowLeft, {}, [cls.icon])} /></Button>),
+                right: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowRight, {}, [cls.icon])} /></Button>),
+              },
+              yearIcons: {
+                left: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowLeft, {}, [cls.icon])} /></Button>),
+                right: (<Button theme={ButtonThemes.CLEAR} className={cls.button}><ArrowIcon className={classNames(cls.arrowRight, {}, [cls.icon])} /></Button>),
+              },
             },
-          },
-        }}
-      />
+          }}
+        />
+      )}
+
     </div>
   );
 };

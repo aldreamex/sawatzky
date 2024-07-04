@@ -3,7 +3,6 @@ import {
   useCallback, useEffect, useMemo, useRef,
   useState,
 } from 'react';
-import { RangePickerSelectedDays } from 'react-trip-date/dist/rangePicker/rangePicker.type';
 import { Calendar } from 'shared/ui/Calendar/Calendar';
 import { Input, InputThemes } from 'shared/ui/Input/Input';
 import { Button, ButtonThemes } from 'shared/ui/Button/Button';
@@ -12,8 +11,8 @@ import cls from './DateInput.module.scss';
 
 interface DateInputProps {
   className?: string;
-  onChange?: (dates: RangePickerSelectedDays) => void;
-  selectedDays?: RangePickerSelectedDays;
+  onChange?: (days: string[]) => void; // (dates: RangePickerSelectedDays) => void;
+  selectedDays?: string[]; // RangePickerSelectedDays;
   onClear?: () => void;
   inputTheme?: InputThemes;
   isFocused?: boolean;
@@ -23,14 +22,14 @@ interface DateInputProps {
   theme?: CalendarThemes;
   placeholder: string;
   isError?: boolean;
-  startDay?: boolean;
-  isRangePicker?: boolean;
+  // startDay?: boolean;
 }
 
 export enum CalendarThemes {
   CENTER = 'center',
   DOWN = 'down',
 }
+const isRangePicker = false;
 
 export const DateInput: React.FC<DateInputProps> = (props) => {
   const {
@@ -46,12 +45,15 @@ export const DateInput: React.FC<DateInputProps> = (props) => {
     placeholder,
     onBlur,
     isError,
-    startDay = true,
-    isRangePicker = true,
+    // startDay = true,
     ...otherProps
   } = props;
 
-  const [inputSelectedDays, setInputSelectedDays] = useState(selectedDays || { to: '', from: '' });
+  const [inputSelectedDays, setInputSelectedDays] = useState<string[]|undefined>(selectedDays);
+
+  useEffect(() => {
+    setInputSelectedDays(selectedDays);
+  }, [selectedDays && selectedDays[0]]);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -69,25 +71,20 @@ export const DateInput: React.FC<DateInputProps> = (props) => {
     };
   }, [isFocused, onCloseCalendar, onBlur]);
 
-  const changeDateHandler = useCallback((days: RangePickerSelectedDays) => {
+  const changeDateHandler = useCallback((days: string[]) => {
     setInputSelectedDays(days);
-    if (days.from && days.to) {
-      onChange?.({ from: days.from, to: days.to });
-    } else {
-      onChange?.({ from: days.from, to: days.to });
-    }
+    onChange?.(days);
   }, [onChange]);
 
   const value = useMemo(
-    () => ((selectedDays?.from || selectedDays?.to)
-      ? `С  ${getDateString(new Date(selectedDays?.from ?? ''))}  до  ${getDateString(new Date(selectedDays?.to ?? ''))}`
+    () => ((inputSelectedDays && inputSelectedDays[0])
+      ? `${getDateString(new Date(inputSelectedDays[0]))}`
       : ''),
-    [selectedDays?.from, selectedDays?.to],
+    [inputSelectedDays],
   );
-
   const onClearCalendar = useCallback(() => {
     onClear?.();
-    setInputSelectedDays({ to: '', from: '' });
+    setInputSelectedDays([]);
     onCloseCalendar?.();
     onBlur?.();
   }, [onClear, onCloseCalendar, onBlur]);
@@ -96,17 +93,16 @@ export const DateInput: React.FC<DateInputProps> = (props) => {
     onCloseCalendar?.();
     onBlur?.();
   }, [onCloseCalendar, onBlur]);
-
   return (
     <div className={classNames(cls.dateInput, {}, [className])} ref={ref}>
       <Input placeholder={placeholder} value={value ?? ''} onFocus={onFocusHandler} theme={inputTheme} isError={isError} {...otherProps} />
       <div className={classNames(cls.calendarForm, { [cls.isFocused]: isFocused }, [cls[theme]])}>
         <Calendar
-          selectedDays={inputSelectedDays}
-          startDay={startDay}
-          className={cls.calendar}
-          onChange={changeDateHandler}
           isRangePicker={isRangePicker}
+          selectedDay={inputSelectedDays}
+          onChangeSingleDate={(dates) => {
+            changeDateHandler(dates);
+          }}
         />
         <div className={cls.buttons}>
           <Button className={cls.button} theme={ButtonThemes.CLEAR} onClick={onClearCalendar}>Очистить</Button>

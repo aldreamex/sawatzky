@@ -76,7 +76,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = (props) => {
   }, [dispatch, onClose]);
 
   const downloadPdfReport = useCallback(() => {
-    const url = `${baseUrl}/api/v1/reports_download/${reportId}/`;
+    const url = `${baseUrl}api/v1/reports_download/${reportId}/`;
     window.open(url, '_blank');
   }, [reportId]);
   return (
