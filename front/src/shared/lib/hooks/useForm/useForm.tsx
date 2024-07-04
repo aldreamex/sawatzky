@@ -17,6 +17,7 @@ export enum FormType {
   CHECKBOX = 'checkbox',
   SWITCH = 'switch',
   FILE = 'file',
+  DATEPICKER = 'datepicker',
 }
 
 type FromFieldValue = any;

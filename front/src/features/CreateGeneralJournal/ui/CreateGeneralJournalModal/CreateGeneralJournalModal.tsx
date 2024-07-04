@@ -24,7 +24,7 @@ export const CreateGeneralJournalModal: React.FC<CreateEmployeeModalProps> = (pr
   }, [dispatch, onClose]);
 
   return (
-    <Modal className={cls.createEmployeeModal} isOpen={isOpen} onClose={closeHandler}>
+    <Modal className={cls.createGeneralJournalModal} isOpen={isOpen} onClose={closeHandler}>
       <CreateGeneralJournalForm />
     </Modal>
   );

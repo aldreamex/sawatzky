@@ -11,11 +11,10 @@ export const getCreateGeneralJournalIsEdit = (state: StateSchema) => state.creat
 export const getCreateGeneralJournalIsView = (state: StateSchema) => state.createGeneralJournal?.isView;
 
 export const getCreateGeneralJournalUserFormReceiptDate = (state: StateSchema) => state.createGeneralJournal?.formData?.receiptDate;
-export const getAddReportFormCalendarIsOpen = (state: StateSchema) => state.addReportForm?.calendarIsOpen;
 
 export const getCreateGeneralJournalTotalAmount = (state: StateSchema) => state.createGeneralJournal?.formData.totalAmount;
 export const getCreateGeneralJournalPaymentDocumentNumber = (state: StateSchema) => state.createGeneralJournal?.formData.paymentDocumentNumber;
 export const getCreateGeneralJournalCalendarIsOpen = (state: StateSchema) => state.createGeneralJournal?.calendarIsOpen;
 
-export const getCreateGeneralJournalFormStartWorkDate = (state: StateSchema) => state.addReportForm?.formData?.startWorkDate ?? '';
-export const getCreateGeneralJournalEndWorkDate = (state: StateSchema) => state.addReportForm?.formData?.endWorkDate ?? '';
+export const getCreateGeneralJournalFormStartWorkDate = (state: StateSchema) => state.createGeneralJournal?.formData?.startWorkDate ?? '';
+export const getCreateGeneralJournalEndWorkDate = (state: StateSchema) => state.createGeneralJournal?.formData?.endWorkDate ?? '';

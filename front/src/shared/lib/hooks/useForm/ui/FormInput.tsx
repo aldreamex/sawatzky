@@ -4,6 +4,7 @@ import { Input } from 'shared/ui/Input/Input';
 import { Select } from 'shared/ui/Select/Select';
 import { Switch } from 'shared/ui/Switch/Switch';
 import { Textarea } from 'shared/ui/Textarea/Textarea';
+import { DateInputSingle } from 'widgets/DateInputSingle';
 import { DateInput } from 'widgets/DateInput';
 import {
   FC, useCallback, useEffect, useState,
@@ -210,6 +211,35 @@ export const FormInput: FC<FormInputProps> = ({
             label={label}
             onBlur={onBlurHandler}
             onFileChange={onChangeHandler}
+            isError={isDirty && !checkValidation()}
+            {...otherProps}
+          />
+          <div className={cls.errors}>
+            {
+              isDirty && Object.entries(messages).map(([rule, message]) => (
+                message
+                  ? (
+                    <span key={`${id}_${type}_${rule}_error`} className={cls.error}>
+                      {message}
+                    </span>
+                  )
+                  : null
+              ))
+            }
+          </div>
+        </div>
+      );
+    case FormType.DATEPICKER:
+      return (
+        <div className={cls.inputRow}>
+          <DateInputSingle
+            key={`${id}_${type}_input`}
+            onBlur={onBlurHandler}
+            placeholder={placeholder}
+            selectedDays={[value] ?? [defaultValue] ?? undefined}
+            onChange={(days) => {
+              onChangeHandler(days[0]);
+            }}
             isError={isDirty && !checkValidation()}
             {...otherProps}
           />
