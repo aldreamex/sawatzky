@@ -48,7 +48,7 @@ const DirectoryEmployeePage: React.FC<DirectoryEmployeePageProps> = (props) => {
 
   const dispatch = useAppDispatch();
   // const employees = useSelector(getEmployee.selectAll);
-  const { isSawatzky } = useUserData();
+  const { isSawatzky, sawatzkyEmployee } = useUserData();
 
   useEffect(() => {
     dispatch(fetchGeneralJournalList());
@@ -157,9 +157,10 @@ const DirectoryEmployeePage: React.FC<DirectoryEmployeePageProps> = (props) => {
     const params = {
       ...(employeeOption?.value && employeeOption?.value !== -1 && { legalEntity: employeeOption?.value }),
       ...(date.from && date.to && { periodStart: date.from, periodEnd: date.to }),
+      workingObjects: sawatzkyEmployee?.workingObjects.join(','),
     };
     dispatch(fetchGeneralJournalList({ params }));
-  }, [employeeOption, date.from, date.to]);
+  }, [employeeOption, date.from, date.to, sawatzkyEmployee?.workingObjects]);
 
   return (
     <DynamicModuleLoader reducers={reducers}>
