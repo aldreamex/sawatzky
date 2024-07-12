@@ -1146,6 +1146,13 @@ class GeneralJournalCreateSerializer(ModelSerializer):
         fields = ['id', 'paymentDocumentNumber', 'legalEntity', 'receiptDate', 'totalAmount']
 
 
+    def __init__(self, *args, **kwargs):
+        super(GeneralJournalCreateSerializer, self).__init__(*args, **kwargs)
+        user = self.context['request'].user
+        if hasattr(user, 'sawatzky_employee'):
+            work_object = user.sawatzky_employee.workObject
+            self.fields['legalEntity'].queryset = LegalEntity.objects.filter(workObject=work_object)
+
 class LegalEntityGeneralJournalSerializer(ModelSerializer):
     # Сериализатор модели LegalEntity для вывода генеральных журналов
     class Meta:

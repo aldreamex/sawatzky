@@ -1166,6 +1166,11 @@ class GeneralJournalCreateView(generics.CreateAPIView):
     queryset = GeneralJournal.objects.all()
     # permission_classes = [permissions.IsAuthenticated]
 
+    def get_serializer_context(self):
+        context = super(GeneralJournalCreateView, self).get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
 
 class GeneralJournalListView(generics.ListAPIView):
     # представление на вывод списка счетов
@@ -1175,6 +1180,12 @@ class GeneralJournalListView(generics.ListAPIView):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = GeneralJournalFilter
 
+    def get_queryset(self):
+        user = self.request.user
+        if hasattr(user, 'sawatzky_employee'):
+            work_object = user.sawatzky_employee.workObject
+            return GeneralJournal.objects.filter(legalEntity__workObject=work_object)
+        return GeneralJournal.objects.none()
 
 class GeneralJournalDetailView(generics.RetrieveDestroyAPIView):
     # представление на получение, обновление, удаление журналов по id

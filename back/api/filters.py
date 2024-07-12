@@ -64,10 +64,15 @@ class WorkMaterialFilter(filters.FilterSet):
 class LegalEntityFilter(filters.FilterSet):
     status = filters.BooleanFilter(field_name="status", lookup_expr="exact")
     sawatzky = filters.BooleanFilter(field_name="sawatzky", lookup_expr="exact")
+    workObject = filters.CharFilter(method='filter_by_work_object')
 
     class Meta:
         model = LegalEntity
         fields = ['sawatzky']
+
+    def filter_by_work_object(self, queryset, name, value):
+        workingObjects = value.split(',')
+        return queryset.filter(workObject__id__in=workingObjects)
 
 
 '''Фильтр для SawatzkyEmployee'''
