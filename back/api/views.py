@@ -1183,8 +1183,12 @@ class GeneralJournalListView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         if hasattr(user, 'sawatzky_employee'):
-            work_object = user.sawatzky_employee.workObject
-            return GeneralJournal.objects.filter(legalEntity__workObject=work_object)
+            role = user.sawatzky_employee.role
+            if role in ['dispatcher', 'dispatcherPerformer']:
+                work_objects = user.sawatzky_employee.workingObjects.all()
+                return GeneralJournal.objects.filter(legalEntity__workObject__in=work_objects)
+            elif role == 'admin':
+                return GeneralJournal.objects.all()
         return GeneralJournal.objects.none()
 
 class GeneralJournalDetailView(generics.RetrieveDestroyAPIView):

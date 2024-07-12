@@ -1150,8 +1150,10 @@ class GeneralJournalCreateSerializer(ModelSerializer):
         super(GeneralJournalCreateSerializer, self).__init__(*args, **kwargs)
         user = self.context['request'].user
         if hasattr(user, 'sawatzky_employee'):
-            work_object = user.sawatzky_employee.workObject
-            self.fields['legalEntity'].queryset = LegalEntity.objects.filter(workObject=work_object)
+            role = user.sawatzky_employee.role
+            if role in ['dispatcher', 'dispatcherPerformer']:
+                work_objects = user.sawatzky_employee.workingObjects.all()
+                self.fields['legalEntity'].queryset = LegalEntity.objects.filter(workObject__in=work_objects)
 
 class LegalEntityGeneralJournalSerializer(ModelSerializer):
     # Сериализатор модели LegalEntity для вывода генеральных журналов
