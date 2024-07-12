@@ -114,7 +114,12 @@ class GeneralJournalFilter(filters.FilterSet):
     periodStart = filters.DateFilter(field_name="receiptDate", lookup_expr="gte")
     periodEnd = filters.DateFilter(field_name="receiptDate", lookup_expr="lte")
     legalEntity = filters.CharFilter(field_name='legalEntity__name', lookup_expr='icontains')
+    workObject = filters.CharFilter(method='filter_by_work_object')
 
     class Meta:
         model = GeneralJournal
         fields = ['periodStart', 'periodEnd', 'legalEntity']
+
+    def filter_by_work_object(self, queryset, name, value):
+        workingObjects = value.split(',')
+        return queryset.filter(legalEntity__workObject__id__in=workingObjects)
