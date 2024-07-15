@@ -43,7 +43,9 @@ export const CreateGeneralJournalForm: React.FC<CreateGeneralJournalFormProps> =
 
   const formData = useSelector(getCreateGeneralJournalFormData);
 
-  const { isSawatzky, employee } = useUserData();
+  const {
+    isSawatzky, isAdmin, employee, sawatzkyEmployee,
+  } = useUserData();
 
   const onChangeLegalEntity = useCallback((item: SelectOptionType) => {
     dispatch(createGeneralJournalActions.setLegalEntity(+item.value));
@@ -70,7 +72,6 @@ export const CreateGeneralJournalForm: React.FC<CreateGeneralJournalFormProps> =
         //     ...formData,
         //   }));
         // } else if (formData && user) {
-        console.log(formData, 'formData');
         dispatch(createGeneralJournal({ ...formData }));
       }
     } catch (e) {
@@ -81,7 +82,8 @@ export const CreateGeneralJournalForm: React.FC<CreateGeneralJournalFormProps> =
 
   const legalEntityOptions: SelectOptionType[] | undefined = useMemo(() => (
     legalEntities
-      // .filter((item) => (!isSawatzky ? item.id === Number(employee?.legalEntity) : true))
+      .filter((item) => !!item)
+      .filter((item) => (isAdmin ? true : item?.workObject?.id && sawatzkyEmployee?.workingObjects?.includes(Number(item?.workObject?.id))))
       .map((item) => ({ value: item.id ?? '', text: item.name ?? '' }
       ))), [legalEntities, isSawatzky, employee?.legalEntity]);
 
