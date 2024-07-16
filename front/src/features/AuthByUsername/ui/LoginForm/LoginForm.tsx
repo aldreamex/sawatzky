@@ -64,7 +64,7 @@ export const LoginForm: React.FC<LoginFormProps> = memo((props) => {
         type: FormType.TEXT,
         defaultValue: username,
         value: username,
-        placeholder: 'Логин или email',
+        placeholder: 'Логин',
         onChange: onChangeUsername,
         rules: {
           required: true,
