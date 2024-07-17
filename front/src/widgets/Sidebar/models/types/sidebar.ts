@@ -84,7 +84,7 @@ export const SidebarItemsList: SidebarItemType[] = [
   },
   {
     path: '/general_journal',
-    text: 'Генеральный журнал',
+    text: 'Главный журнал',
     Icon: ReportIcon,
 
     authOnly: true,

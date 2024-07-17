@@ -48,7 +48,9 @@ const DirectoryEmployeePage: React.FC<DirectoryEmployeePageProps> = (props) => {
 
   const dispatch = useAppDispatch();
   // const employees = useSelector(getEmployee.selectAll);
-  const { isSawatzky } = useUserData();
+  const {
+    isSawatzky, isAdmin, sawatzkyEmployee,
+  } = useUserData();
 
   useEffect(() => {
     dispatch(fetchGeneralJournalList());
@@ -100,21 +102,18 @@ const DirectoryEmployeePage: React.FC<DirectoryEmployeePageProps> = (props) => {
   const employees = useSelector(getEmployee.selectAll);
   const [employee, setEmployee] = useState<number|null>(null);
 
-  // uniqueCreators.push({
-  //         value: 0,
-  //         text: t('showAll'),
-  //       });
-  // filters
   const employeeOptions: SelectOptionType[] | undefined = useMemo(() => {
     if (!employees) return undefined;
     const result = [{
       value: -1,
       text: 'Показать все',
     },
-    ...(employees.length ? employees.map((item) => ({
-      value: item.id ?? '',
-      text: item.user.fio ?? '',
-    })) : [])];
+    ...(employees.length ? employees
+      .filter((item) => (isAdmin ? true : item?.legalEntity?.workObject?.id && sawatzkyEmployee?.workingObjects?.includes(Number(item?.legalEntity?.workObject?.id))))
+      .map((item) => ({
+        value: item.id ?? '',
+        text: item.user.fio ?? '',
+      })) : [])];
     return result;
   }, [employees]);
 
