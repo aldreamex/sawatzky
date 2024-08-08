@@ -320,24 +320,36 @@ class ApplicationListView(generics.ListAPIView):
             user = self.request.user
 
             if hasattr(user, 'employee'):
-                employee = self.request.user.employee
-
+                employee = user.employee
                 queryset = queryset.filter(creator__legalEntity__workObject=employee.legalEntity.workObject)
+
             elif hasattr(user, 'sawatzky_employee'):
                 employee = user.sawatzky_employee
-                working_objects = user.sawatzky_employee.workingObjects.all()
-                if employee.role == 'performer':
-                    # for application in queryset:
-                    #     for performer in application.performers.all():
-                    #         for field in performer._meta.get_fields():
-                    #             print(field)
-                    queryset = queryset.filter(performers=employee)
-                else: 
-                    queryset = queryset.filter(creator__legalEntity__workObject__in=working_objects)
+                dispatcher_work_objects = employee.workingObjects.all()
 
-            else:
-                return queryset
+                if employee.role == 'performer':
+                    queryset = queryset.filter(performers=employee)
+
+                elif employee.role == 'dispatcher':
+                    legal_entities_with_dispatcher_work_object = LegalEntity.objects.filter(
+                        workObject__in=dispatcher_work_objects
+                    )
+                    queryset = queryset.filter(creator__legalEntity__in=legal_entities_with_dispatcher_work_object)
+
+                elif employee.role == 'admin':
+                    queryset = queryset
+
+                elif employee.role == 'dispatcherPerformer':
+                    legal_entities_with_dispatcher_work_object = LegalEntity.objects.filter(
+                        workObject__in=dispatcher_work_objects
+                    )
+                    queryset = queryset.filter(
+                        creator__legalEntity__in=legal_entities_with_dispatcher_work_object,
+                        performers=employee
+                    )
+
             return queryset
+
         except Exception as e:
             print(e)
             return Application.objects.none()
