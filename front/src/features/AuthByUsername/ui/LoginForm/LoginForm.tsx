@@ -90,6 +90,7 @@ export const LoginForm: React.FC<LoginFormProps> = memo((props) => {
         onChange: onChangeIsCheck,
         rules: {
           required: true,
+          booleanTrue: true,
         },
       },
     ],

@@ -4,6 +4,7 @@ import { FormField } from './useForm';
 interface ErrorMessaages {
   pattern?: any;
   required?: any;
+  booleanTrue?: any;
 }
 
 export const useValidation = (field: FormField) => {
@@ -13,6 +14,8 @@ export const useValidation = (field: FormField) => {
 
   const [isRequiredError, setIsRequiredError] = useState(false);
   const [requiredErrorText, setRequiredErrorText] = useState('');
+  const [booleanTrueErrorText, setBooleanTrueErrorText] = useState('');
+
   const validateField = useCallback((field: FormField) => {
     let isValid = true;
     let isEmpty = true;
@@ -58,6 +61,12 @@ export const useValidation = (field: FormField) => {
           };
         }
         break;
+      case 'booleanTrue':
+        if (typeof field.value === 'boolean' && !field.value) {
+          isValid = false;
+          errors.booleanTrue = 'Поле должно быть выбрано';
+        }
+        break;
       default:
         isValid = true;
         errors = {
@@ -67,12 +76,15 @@ export const useValidation = (field: FormField) => {
     });
 
     setPatternErrorText(errors.pattern || ''); // Сбрасываем в пустую строку
+
     setIsPatternError(Boolean(errors.pattern));
 
     setRequiredErrorText(errors.required || ''); // Сбрасываем в пустую строку
     setIsRequiredError(Boolean(errors.required));
 
-    setIsValid(!errors.pattern && !errors.required); // Устанавливаем isValid только если обе ошибки равны false
+    setBooleanTrueErrorText(errors.booleanTrue || '');
+
+    setIsValid(!errors.pattern && !errors.required && !errors.booleanTrue); // Устанавливаем isValid только если обе ошибки равны f
 
     return {
       isValid,
@@ -85,10 +97,12 @@ export const useValidation = (field: FormField) => {
     errors: {
       pattern: isPatternError,
       required: isRequiredError,
+      booleanTrue: Boolean(booleanTrueErrorText),
     },
     messages: {
       pattern: requiredErrorText,
       required: patternErrorText,
+      booleanTrue: booleanTrueErrorText,
     },
     checkValidation,
     validateField,
