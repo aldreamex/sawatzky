@@ -30,6 +30,7 @@ interface PatternRule {
 export interface FormRules {
   required?: boolean,
   pattern?: PatternRule,
+  booleanTrue?: boolean;
 }
 
 export interface FormField {
