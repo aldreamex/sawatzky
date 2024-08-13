@@ -1,0 +1,24 @@
+.statisticPage {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin-bottom: 15px;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+
+  @media (max-width: 760px) {
+    flex-direction: column;
+  }
+}
+
+.stat {
+  width: 100%;
+  margin-bottom: 15px;
+}

@@ -1,0 +1,101 @@
+.CreateEmployeeForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: var(--font-size-xl2);
+  margin-bottom: 26px;
+}
+
+.input {
+  &:not(:last-child) {
+    margin-bottom: 6px;
+  }
+
+  &.select {
+    padding: 12px 20px;
+  }
+}
+
+.addBtn {
+  margin-top: 10px;
+  margin-bottom: 32px;
+  align-self: flex-start;
+}
+
+.docList {
+  margin-left: -20px;
+}
+
+.btn {
+  padding: 9px;
+  width: 47%;
+}
+.list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 15px;
+}
+.listItem {
+  text-align: center;
+}
+.listItemTitle {
+  font-family: 'Calibri';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #031332;
+}
+.listItemSubtitle {
+  margin-top: 13px;
+  font-family: 'Calibri';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: #031332;
+}
+
+.buttons {
+  margin-top: 40px;
+  display: flex;
+  gap: 31px;
+  button {
+    min-width: 192px;
+  }
+}
+
+.applicationItem {
+  display: grid;
+  grid-template-columns: 1fr 166px;
+  gap: 25px;
+  align-items: center;
+  gap: 8px;
+  &List {
+    margin-top: 56px;
+    display: grid;
+    gap: 8px;
+  }
+  &Title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #000000;
+  }
+}
+.select {
+  margin-top: 32px;
+}
+.CreateGeneralJournalForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+  flex: 1;
+}
+

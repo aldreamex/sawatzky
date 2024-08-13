@@ -1,0 +1,33 @@
+FROM python:3.9
+
+RUN mkdir -p /home/sawatzky_back_dev
+
+
+# Install pip requirements
+RUN python -m pip install --upgrade pip
+
+
+COPY ./req.txt .
+RUN pip install -r req.txt
+
+
+RUN groupadd sawatzky_back_dev
+RUN useradd -m -g sawatzky_back_dev sawatzky_back_dev -p dfqw12fewefwq
+RUN usermod -aG sawatzky_back_dev sawatzky_back_dev
+
+ENV HOME=/home/sawatzky_back_dev
+ENV APP_HOME=/home/sawatzky_back_dev/back
+
+RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/staticfiles
+RUN mkdir -m=777 $APP_HOME/media
+WORKDIR $APP_HOME
+
+
+COPY . $APP_HOME
+
+RUN chown -R sawatzky_back_dev $APP_HOME
+
+USER sawatzky_back_dev
+
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "config.asgi:application"]

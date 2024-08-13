@@ -1,0 +1,18 @@
+.calendar {
+  max-width: 375px;
+  min-width: 375px;
+  margin: 0 auto;
+}
+
+.icon {
+  fill: var(--dark-gray-bg-color);
+  stroke: var(--dark-gray-bg-color);
+}
+
+.arrowLeft {
+  transform: rotate(180deg);
+}
+
+.button {
+  padding: 10px;
+}

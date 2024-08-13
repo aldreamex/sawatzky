@@ -1,0 +1,15 @@
+.applicationDetailContent {
+  padding-right: 16px;
+
+  @media (max-width: 760px) {
+    padding-right: 0;
+  }
+}
+
+.title {
+  margin-bottom: 15px;
+}
+
+.infoComponent {
+  margin-top: 20px;
+}

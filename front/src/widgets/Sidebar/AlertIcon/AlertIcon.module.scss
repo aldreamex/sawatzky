@@ -1,0 +1,11 @@
+.alertIcon {
+  position: absolute;
+  top: 16px;
+  left: 12px;
+  transition: all 0.3s ease-in-out;
+
+  &.active {
+    top: 26px;
+    left: 20px;
+  }
+}

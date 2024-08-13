@@ -1,0 +1,27 @@
+.navigation {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 15px 15px 0;
+  background: #FFF;
+  box-shadow: 0 4px 10px 0 var(--shadow-color);
+  overflow: hidden;
+  width: var(--sidebar-width);
+  transition: width 0.3s ease-in-out;
+
+  @media (max-width: 760px) {
+    margin: 0 auto;
+    padding: 10px;
+    gap: 8px;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+
+.collapsed {
+  width: var(--sidebar-collapsed-width);
+
+  @media (max-width: 760px) {
+    width: 100%;
+  }
+}

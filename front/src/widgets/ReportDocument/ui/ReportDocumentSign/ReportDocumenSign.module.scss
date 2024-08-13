@@ -1,0 +1,14 @@
+.title {
+  font-weight: bold;
+}
+
+.sign {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+}
+
+.border {
+  width: 270px;
+  border-bottom: 1px solid var(--black-color);
+}

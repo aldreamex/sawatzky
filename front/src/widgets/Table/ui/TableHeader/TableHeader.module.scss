@@ -1,0 +1,10 @@
+.collapsableTableHeader {
+    background: #ffffff;
+    margin-top: -2px;
+    margin-bottom: -1px;
+    > div {
+    background: unset;
+        margin-left: -1px;
+        margin-right: -1px;
+    }
+}

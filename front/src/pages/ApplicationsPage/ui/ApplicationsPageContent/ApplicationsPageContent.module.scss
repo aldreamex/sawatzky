@@ -1,0 +1,32 @@
+.list {
+  margin-top: 20px;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  gap: 15px;
+
+  @media (max-width:540px) {
+    flex-wrap: wrap;
+  }
+}
+
+.select {
+  width: auto;
+  padding-right: 50px;
+
+  @media (max-width:540px) {
+    width: 100%;
+    margin-top: 5px;
+  }
+}
+
+.btn {
+  padding: 5px 20px;
+}
+
+.rotate180 {
+  transform: rotate(180deg);
+}

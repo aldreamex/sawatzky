@@ -1,0 +1,26 @@
+.progressbar {
+  overflow-y: hidden;
+  margin: 24px 0;
+  scrollbar-width: none;
+}
+
+.progressbar::-webkit-scrollbar {
+  display: none;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  gap: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none;
+
+  @media (max-width: 1400px) {
+    width: 1150px;
+  }
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}

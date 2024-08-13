@@ -1,0 +1,25 @@
+.directoryNavigationLinks {
+  margin: 0 -4px;
+  overflow-y: hidden;
+}
+
+.directoryNavigationLinks::-webkit-scrollbar {
+  display: none;
+}
+
+.list {
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 18px 0;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}
+
+.link {
+  margin: 0 4px;
+  white-space: nowrap;
+}

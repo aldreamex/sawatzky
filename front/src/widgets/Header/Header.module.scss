@@ -1,0 +1,9 @@
+.header {
+  padding: 24px 32px 11px 16px;
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 760px) {
+    padding: 16px;
+  }
+}

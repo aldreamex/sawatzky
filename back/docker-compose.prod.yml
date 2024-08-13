@@ -1,0 +1,49 @@
+version: '3'
+
+services: 
+
+  sawatzky_back_prod: 
+    build: 
+      context: ./
+      dockerfile: Dockerfile.prod
+    command: daphne -b 0.0.0.0 -p 8001 config.asgi:application
+    ports:
+      - 8001:8001
+    restart: unless-stopped
+    volumes:
+    - sawatzky_back_prod_static:/home/sawatzky_back_prod/back/staticfiles
+    - sawatzky_back_prod_media:/home/sawatzky_back_prod/back/media 
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - sawatzky_db_prod
+      # - redis
+    networks:
+      - app-network
+
+
+  sawatzky_db_prod:
+    image: postgres:12-alpine
+    volumes:
+      - sawatzky_prod_db_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.prod.db
+    restart: unless-stopped
+
+    networks:
+      - app-network
+
+
+
+
+volumes:
+  sawatzky_back_prod_static:
+    external: true
+  sawatzky_back_prod_media:
+    external: true
+  sawatzky_prod_db_data:
+
+
+networks:
+  app-network:
+    external: true
