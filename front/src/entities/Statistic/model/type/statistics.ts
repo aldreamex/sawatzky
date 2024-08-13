@@ -2,6 +2,7 @@ import { EntityState } from '@reduxjs/toolkit';
 import { WorkObject } from 'entities/WorkObject';
 
 export interface Statistic {
+  id: string;
   title: string;
   workObject?: WorkObject;
   startWorkDate: string;
