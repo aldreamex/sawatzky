@@ -4,7 +4,7 @@ import { Statistic, StatisticSchema } from '../type/statistics';
 import { fetchStatistic } from '../services/fetchStatistic';
 
 const statisticAdapter = createEntityAdapter<Statistic>({
-  selectId: (statistic) => statistic.title,
+  selectId: (statistic) => statistic.id,
 });
 
 export const getStatistic = statisticAdapter.getSelectors<StateSchema>(

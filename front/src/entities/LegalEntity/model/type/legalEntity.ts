@@ -21,6 +21,9 @@ export interface LegalEntity {
     prepayment?: boolean;
     status?: boolean;
     totalInvoicedSum?: string;
+    totalAmountOfDebt?: string;
+    paidInvoicesPercentage?: string;
+    overdueInvoicesPercentage?: string;
 
     workObject?: WorkObject;
     workObjectsGroup?: WorkObjectGroup;

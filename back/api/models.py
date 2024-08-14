@@ -36,7 +36,6 @@ class LegalEntity(models.Model):
     correspondentAccount = models.CharField(("Корреспондентский счёт"), max_length=50, blank=True, null=True)
     bank = models.CharField(("Банк"), max_length=50, blank=True, null=True)
     bik = models.CharField(("БИК"), max_length=50, blank=True, null=True)
-
     balance = models.DecimalField(("Баланс"), max_digits=15, decimal_places=2, default=0)
     totalInvoicedSum = models.DecimalField(
         ("Сумма выставленных счетов"),
@@ -44,9 +43,25 @@ class LegalEntity(models.Model):
         decimal_places=2,
         default=0
     )
-
+    totalAmountOfDebt = models.DecimalField(
+        ("Сумма задолженности"),
+        max_digits=15,
+        decimal_places=2,
+        default=0
+    )
+    paidInvoicesPercentage = models.DecimalField(
+        ("Процент оплаченных счетов"),
+        max_digits=5,
+        decimal_places=2,
+        default=0
+    )
+    overdueInvoicesPercentage = models.DecimalField(
+        ("Процент просроченных счетов"),
+        max_digits=5,
+        decimal_places=2,
+        default=0
+    )
     sawatzky = models.BooleanField(("Относится к Sawatzky"), default=False)
-
     status = models.BooleanField(("Статус контрагента"), default=True, blank=True, null=True)
     prepayment = models.BooleanField(("Работа по предоплате"), default=False, blank=True, null=True)
     workObjectsGroup = models.ForeignKey(
@@ -79,6 +94,19 @@ class LegalEntity(models.Model):
 
     def __str__(self):
         return f"{self.id}: {self.name} "
+
+    def save(self, *args, **kwargs):
+        if self.totalInvoicedSum > 0:
+            self.paidInvoicesPercentage = (self.totalInvoicedSum - self.totalAmountOfDebt) / self.totalInvoicedSum * 100
+        else:
+            self.paidInvoicesPercentage = 0
+
+        if self.totalInvoicedSum > 0:
+            self.overdueInvoicesPercentage = self.totalAmountOfDebt / self.totalInvoicedSum * 100
+        else:
+            self.overdueInvoicesPercentage = 0
+
+        super(LegalEntity, self).save(*args, **kwargs)
 
 
 
