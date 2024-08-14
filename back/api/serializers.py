@@ -831,7 +831,7 @@ class ApplicationWithWorkTasksWorkMaterialsUpdateSerializer(ModelSerializer):
         percent = total_sum * 0.2
         total_sum_percent = total_sum + percent
 
-        instance.totalSum = total_sum
+        instance.totalSum = total_sum_percent
         instance.percent = percent
         instance.totalSumWithPercent = total_sum_percent
         instance.save()
@@ -1340,6 +1340,15 @@ class GeneralJournalUpdateAPLSerializer(serializers.ModelSerializer):
 
                         journal.amountByInvoices = updated_amount_by_invoices
                         journal.save()
+
+                        # Обновление totalAmountOfDebt для юридического лица
+                        legal_entity = application.creator.legalEntity
+                        total_debt_for_legal_entity = ApplicationJournal.objects.filter(
+                            application__creator__legalEntity=legal_entity
+                        ).aggregate(total_debt=Sum('totalDebt'))['total_debt'] or Decimal('0.0')
+
+                        legal_entity.totalAmountOfDebt = total_debt_for_legal_entity
+                        legal_entity.save()
 
             except Application.DoesNotExist:
                 raise serializers.ValidationError(f"Заявка с id {application_id} не существует")
