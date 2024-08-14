@@ -4,7 +4,8 @@ import { USER_LOCALSTORAGE_DATA, USER_LOCALSTORAGE_TOKENS } from 'shared/const/l
 
 const isDev = false;
 // export const baseUrl = isDev ? 'http://localhost:8000/' : 'http://77.223.126.233/';
-export const baseUrl = isDev ? 'https://sw-dev.uitdep.ru/' : 'https://sw-prod.uitdep.ru/';
+export const baseUrl = isDev ? 'https://sw-dev.uitdep.ru/' : 'https://servicedesk.sawatzky.ru/';
+
 
 export const $api = axios.create({
   baseURL: baseUrl,
