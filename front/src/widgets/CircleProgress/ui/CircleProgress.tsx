@@ -4,17 +4,17 @@ import cls from './CircleProgress.module.scss';
 
 interface CircleProgressPorps {
   className?: string;
-  percent: number;
+  percent?: string | number;
   title?: string;
 }
 
 export const CircleProgress: React.FC<CircleProgressPorps> = (props) => {
-  const { className, percent, title } = props;
+  const { className, percent = 0, title } = props;
 
   const modsItem: Mods = {
-    [cls.red]: percent < 50,
-    [cls.yellow]: percent >= 50 && percent < 75,
-    [cls.blue]: percent >= 75,
+    [cls.red]: +percent < 50,
+    [cls.yellow]: +percent >= 50 && +percent < 75,
+    [cls.blue]: +percent >= 75,
   };
 
   return (

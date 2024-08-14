@@ -32,6 +32,9 @@ const StatisticPage: React.FC<StatisticPageProps> = (props) => {
   const legalEntity = useSelector((state: StateSchema) => getLegalEntity.selectById(state, id!!));
   const stats = useSelector(getStatistic.selectAll);
 
+  const paidInvoicesPercentage = legalEntity ? legalEntity.paidInvoicesPercentage : '0';
+  const overdueInvoicesPercentage = legalEntity ? legalEntity.overdueInvoicesPercentage : '0';
+
   useEffect(() => {
     dispatch(fetchLegalEntityList());
     dispatch(fetchStatistic(`${id}`));
@@ -65,11 +68,11 @@ const StatisticPage: React.FC<StatisticPageProps> = (props) => {
       <Title className={cls.title}>Статистика Юр лица {legalEntity?.name}</Title>
       <div className={cls.info}>
         <Stats className={cls.stat} title="Сумма выставленных счетов" stat={`${legalEntity?.totalInvoicedSum} руб.`} />
-        <Stats className={cls.stat} theme={StatThemes.RED} title="Сумма задолженности" stat={`${0} руб.`} />
+        <Stats className={cls.stat} theme={StatThemes.RED} title="Сумма задолженности" stat={`${legalEntity?.totalAmountOfDebt} руб.`} />
       </div>
       <div className={cls.info}>
-        <CircleProgress className={cls.stat} title="Процент оплаченных счетов" percent={0} />
-        <CircleProgress className={cls.stat} title="Процент просроченных счетов" percent={0} />
+        <CircleProgress className={cls.stat} title="Процент оплаченных счетов" percent={paidInvoicesPercentage} />
+        <CircleProgress className={cls.stat} title="Процент просроченных счетов" percent={overdueInvoicesPercentage} />
       </div>
       {Table}
     </DynamicModuleLoader>
