@@ -96,15 +96,24 @@ class LegalEntity(models.Model):
         return f"{self.id}: {self.name} "
 
     def save(self, *args, **kwargs):
+        if isinstance(self.totalInvoicedSum, float):
+            self.totalInvoicedSum = Decimal(self.totalInvoicedSum)
+
+        if isinstance(self.totalAmountOfDebt, float):
+            self.totalAmountOfDebt = Decimal(self.totalAmountOfDebt)
+
+        # Теперь выполняем арифметику
         if self.totalInvoicedSum > 0:
-            self.paidInvoicesPercentage = (self.totalInvoicedSum - self.totalAmountOfDebt) / self.totalInvoicedSum * 100
+            self.paidInvoicesPercentage = (
+                self.totalInvoicedSum - self.totalAmountOfDebt) / self.totalInvoicedSum * Decimal(
+                100)
         else:
-            self.paidInvoicesPercentage = 0
+            self.paidInvoicesPercentage = Decimal(0)
 
         if self.totalInvoicedSum > 0:
-            self.overdueInvoicesPercentage = self.totalAmountOfDebt / self.totalInvoicedSum * 100
+                self.overdueInvoicesPercentage = self.totalAmountOfDebt / self.totalInvoicedSum * Decimal(100)
         else:
-            self.overdueInvoicesPercentage = 0
+                self.overdueInvoicesPercentage = Decimal(0)
 
         super(LegalEntity, self).save(*args, **kwargs)
 
