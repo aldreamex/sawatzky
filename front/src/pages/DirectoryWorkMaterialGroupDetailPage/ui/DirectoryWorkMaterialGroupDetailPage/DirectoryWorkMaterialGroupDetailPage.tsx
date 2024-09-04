@@ -72,7 +72,7 @@ const DirectoryWorkMaterialGroupDetailPage: React.FC<DirectoryObjectsGroupPagePr
       id: item.id,
       groupName: groupName ?? '',
       name: item.name,
-      price: `${item.price} ₽`,
+      price: `${item.price} руб.`,
       count: `${item.count} шт.`,
     })),
   };

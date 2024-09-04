@@ -268,7 +268,7 @@ export const CreateLegalEntitySawatzkyForm: React.FC<CreateLegalEntitySawatzkyFo
 
   return (
     <div className={classNames(cls.createLegalEntitySawatzkyForm, {}, [className])}>
-      <Text title="Создать Юр. лицо Sawatzky" textAlign={TextAlign.CENTER} className={cls.title} />
+      <Text title="Создать юрлицо Sawatzky" textAlign={TextAlign.CENTER} className={cls.title} />
       {
         Form
       }

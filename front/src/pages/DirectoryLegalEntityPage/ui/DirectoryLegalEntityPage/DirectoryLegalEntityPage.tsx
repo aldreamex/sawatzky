@@ -104,10 +104,10 @@ const DirectoryLegalEntityPage: React.FC<DirectoryLegalEntityPageProps> = (props
     <DynamicModuleLoader reducers={reducers}>
       <DirectoryPageWrapper className={classNames(cls.directoryLegalEntityPage, {}, [className])}>
         <div className={cls.buttons}>
-          <Button helpInfo="Добавить юр. лицо" onClick={onLegalEntityFormOpenHandler} className={cls.button} theme={ButtonThemes.ICON}>
+          <Button helpInfo="Добавить юрлицо" onClick={onLegalEntityFormOpenHandler} className={cls.button} theme={ButtonThemes.ICON}>
             <AddIcon />
           </Button>
-          <Button helpInfo="Удалить юр. лицо" className={cls.button} onClick={onButtonDeleteHandler} theme={ButtonThemes.ICON}>
+          <Button helpInfo="Удалить юрлицо" className={cls.button} onClick={onButtonDeleteHandler} theme={ButtonThemes.ICON}>
             <DeleteIcon />
           </Button>
         </div>

@@ -74,9 +74,9 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
       return {
         id: item.workTask.id,
         name: item.workTask.name,
-        price: `${item.workTask.price} ₽/час`,
+        price: `${item.workTask.price} руб./час`,
         time: timeString,
-        sum: `${sum} руб`,
+        sum: `${sum} руб.`,
       };
     }),
 
@@ -95,9 +95,9 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
       return {
         id: item.workMaterial.id,
         name: item.workMaterial.name,
-        price: `${item.workMaterial.price} ₽/шт`,
-        count: `${item.actualCount}  шт`,
-        sum: `${sum} руб`,
+        price: `${item.workMaterial.price} руб./шт.`,
+        count: `${item.actualCount}  шт.`,
+        sum: `${sum} руб.`,
       };
     }),
   };
@@ -444,7 +444,7 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
 
             <div className={cls.total}>
               <b className={cls.totalPrice}>
-                {totalPrice.clear} ₽
+                {totalPrice.clear} руб.
               </b>
 
               <p className={cls.text}> без  НДС</p>
@@ -459,7 +459,7 @@ export const ApplicationDetailWorkPrice: React.FC<ApplicationDetailWorkPriceProp
 
             <div className={cls.total}>
               <b className={cls.totalPrice}>
-                {totalPrice.tax} ₽
+                {totalPrice.tax} руб.
               </b>
 
               <p className={cls.text}>  с НДС</p>

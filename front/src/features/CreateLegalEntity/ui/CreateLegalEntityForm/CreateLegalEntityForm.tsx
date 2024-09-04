@@ -339,7 +339,7 @@ export const CreateLegalEntityForm: React.FC<CreateLegalEntityFormProps> = (prop
 
   return (
     <div className={classNames(cls.createLegalEntityForm, {}, [className])}>
-      <Text title={`${isEdit ? 'Изменить' : isView ? 'Карточка' : 'Создать'} контрагента (Юр. лиц Заказчиков)`} textAlign={TextAlign.CENTER} className={cls.title} />
+      <Text title={`${isEdit ? 'Изменить' : isView ? 'Карточка' : 'Создать'} контрагента (Юрлиц Заказчиков)`} textAlign={TextAlign.CENTER} className={cls.title} />
       <div className={cls.body}>
         <div className={classNames(cls.column, {}, [cls.formColumn])}>
           {Form}

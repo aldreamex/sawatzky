@@ -44,7 +44,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = (props) => {
       describe: 'Описание',
       status: 'Статус',
       created: 'Создан',
-      entity: 'Юр. лицо',
+      entity: 'Юрлицо',
       requisites: 'Реквизиты договора',
     },
     items: applications?.map((application) => ({
