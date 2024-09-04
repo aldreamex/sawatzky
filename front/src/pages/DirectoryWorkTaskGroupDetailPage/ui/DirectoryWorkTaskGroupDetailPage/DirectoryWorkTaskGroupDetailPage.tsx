@@ -74,7 +74,7 @@ const DirectoryWorkTaskGroupDetailPage: React.FC<DirectoryObjectsGroupPageProps>
       id: item.id,
       groupName: groupName ?? '',
       name: item.name,
-      price: `${item.price} ₽`,
+      price: `${item.price} руб.`,
       time: `${getTime(item.time).hours} ч ${getTime(item.time).minuts} мин`,
     })),
   };

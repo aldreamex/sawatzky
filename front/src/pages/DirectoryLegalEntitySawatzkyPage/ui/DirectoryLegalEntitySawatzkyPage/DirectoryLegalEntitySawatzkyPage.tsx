@@ -54,7 +54,7 @@ const DirectoryLegalEntitySawatzkyPage: React.FC<DirectoryLegalEntitySawatzkyPag
   const tableData: TableType = {
     header: {
       id: 'Код',
-      name: 'Наименование Юр. лица',
+      name: 'Наименование юрлица',
       group: 'Группа',
       // object: 'Объект',
     },
@@ -98,10 +98,10 @@ const DirectoryLegalEntitySawatzkyPage: React.FC<DirectoryLegalEntitySawatzkyPag
     <DynamicModuleLoader reducers={reducers}>
       <DirectoryPageWrapper className={classNames(cls.directoryLegalEntitySawatzkyPage, {}, [className])}>
         <div className={cls.buttons}>
-          <Button helpInfo="Добавить юр. лицо Sawatzky" className={cls.button} theme={ButtonThemes.ICON} onClick={onLegalEntitySawatzkyFormOpenHandler}>
+          <Button helpInfo="Добавить юрлицо Sawatzky" className={cls.button} theme={ButtonThemes.ICON} onClick={onLegalEntitySawatzkyFormOpenHandler}>
             <AddIcon />
           </Button>
-          <Button helpInfo="Удалить юр. лицо Sawatzky" className={cls.button} onClick={onButtonDeleteHandler} theme={ButtonThemes.ICON}>
+          <Button helpInfo="Удалить юрлицо Sawatzky" className={cls.button} onClick={onButtonDeleteHandler} theme={ButtonThemes.ICON}>
             <DeleteIcon />
           </Button>
         </div>

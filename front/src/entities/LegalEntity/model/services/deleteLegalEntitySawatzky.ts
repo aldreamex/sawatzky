@@ -15,7 +15,7 @@ export const deleteLegalEntitySawatzky = createAsyncThunk<
       dispatch(deleteLegalEntity(userId))
         .then(() => dispatch(fetchLegalEntityList(true)))
         .catch(() => {
-          throw new Error('Ошибка удаления юр. лица');
+          throw new Error('Ошибка удаления юрлица');
         });
     } catch (e: any) {
       if (e.response.status === 401) {

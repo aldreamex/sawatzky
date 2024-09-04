@@ -20,9 +20,9 @@ export const ReportDocumentTable: React.FC<ReportDocumentTableProps> = (props) =
           <th>Доверенность</th>
           <th>Описание запроса</th>
           <th>Фактическая дата выполнения запроса</th>
-          <th>Сумма без НДС, руб</th>
-          <th>В т. числе НДС 20%, руб</th>
-          <th>Сумма с учётом НДС, руб</th>
+          <th>Сумма без НДС, руб.</th>
+          <th>В т. числе НДС 20%, руб.</th>
+          <th>Сумма с учётом НДС, руб.</th>
         </tr>
         <tr>
           <td>КН-001</td>
@@ -31,9 +31,9 @@ export const ReportDocumentTable: React.FC<ReportDocumentTableProps> = (props) =
           <td>№1091 от 02.03.2023</td>
           <td>Прошу выполнить комплектацию с/у расходными материалами в августе 2023</td>
           <td>19.09.2023</td>
-          <td>1500.00 ₽</td>
-          <td>300.00 ₽</td>
-          <td>1800.00 ₽</td>
+          <td>1500.00 руб.</td>
+          <td>300.00 руб.</td>
+          <td>1800.00 руб.</td>
         </tr>
         <tr>
           <td>КН-002</td>
@@ -42,9 +42,9 @@ export const ReportDocumentTable: React.FC<ReportDocumentTableProps> = (props) =
           <td>№1091 от 02.03.2023</td>
           <td>Прошу выполнить комплектацию с/у расходными материалами в августе 2023</td>
           <td>19.09.2023</td>
-          <td>1500.00 ₽</td>
-          <td>300.00 ₽</td>
-          <td>1800.00 ₽</td>
+          <td>1500.00 руб.</td>
+          <td>300.00 руб.</td>
+          <td>1800.00 руб.</td>
         </tr>
         <tr>
           <td>КН-003</td>
@@ -53,13 +53,13 @@ export const ReportDocumentTable: React.FC<ReportDocumentTableProps> = (props) =
           <td>№1091 от 02.03.2023</td>
           <td>Прошу выполнить комплектацию с/у расходными материалами в августе 2023</td>
           <td>19.09.2023</td>
-          <td>1500.00 ₽</td>
-          <td>300.00 ₽</td>
-          <td>1800.00 ₽</td>
+          <td>1500.00 руб.</td>
+          <td>300.00 руб.</td>
+          <td>1800.00 руб.</td>
         </tr>
         <tr>
           <td colSpan={8} className={cls.bigCell}>Итого</td>
-          <td className={cls.total}>1800.00 ₽</td>
+          <td className={cls.total}>1800.00 руб.</td>
         </tr>
       </table>
     </div>

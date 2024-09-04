@@ -13,7 +13,7 @@ export const deleteLegalEntity = createAsyncThunk<
     try {
       const response = await extra.api.delete<LegalEntity>(`/api/v1/entities/${legalEntityId}`);
       if (response.status !== 204) {
-        throw new Error('Ошибка удаления юр. лица');
+        throw new Error('Ошибка удаления юрлица');
       }
     } catch (e: any) {
       if (e.response.status === 401) {

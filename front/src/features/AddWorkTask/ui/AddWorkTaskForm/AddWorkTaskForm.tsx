@@ -109,7 +109,7 @@ export const AddWorkTaskForm: React.FC<AddWorkTaskFormProps> = (props) => {
         type: FormType.TEXT,
         defaultValue: price,
         value: price,
-        placeholder: '500 ₽',
+        placeholder: '500 руб.',
         label: 'Стоимость часа',
         onChange: onPriceChangeHandler,
         rules: {

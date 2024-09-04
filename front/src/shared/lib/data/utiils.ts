@@ -1,1 +1,1 @@
-export const formatCurrency = (value: string | number = '') => `${Number(value).toLocaleString('ru-RU')} ₽`;
+export const formatCurrency = (value: string | number = '') => `${Number(value).toLocaleString('ru-RU')} руб.`;

@@ -65,7 +65,7 @@ const StatisticPage: React.FC<StatisticPageProps> = (props) => {
 
   return (
     <DynamicModuleLoader reducers={reducers} className={classNames(cls.statisticPage, {}, [className])}>
-      <Title className={cls.title}>Статистика Юр лица {legalEntity?.name}</Title>
+      <Title className={cls.title}>Статистика юрлица {legalEntity?.name}</Title>
       <div className={cls.info}>
         <Stats className={cls.stat} title="Сумма выставленных счетов" stat={`${legalEntity?.totalInvoicedSum} руб.`} />
         <Stats className={cls.stat} theme={StatThemes.RED} title="Сумма задолженности" stat={`${legalEntity?.totalAmountOfDebt} руб.`} />

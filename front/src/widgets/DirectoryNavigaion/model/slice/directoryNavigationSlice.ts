@@ -34,13 +34,13 @@ export const directoryNavigationSlice = createSlice({
       },
       [DirectoryPath.legal_entity]: {
         path: DirectoryPath.legal_entity,
-        text: 'Контрагенты (Юр. лиц заказчиков)',
+        text: 'Контрагенты (юрлица заказчиков)',
         sawatzkyOnly: routeConfig.legal_entity.sawatzkyOnly ?? false,
         permittedRoles: routeConfig.legal_entity.permittedRoles ?? [],
       },
       [DirectoryPath.legal_entity_sawatzky]: {
         path: DirectoryPath.legal_entity_sawatzky,
-        text: 'Юр. лица Sawatzky',
+        text: 'Юрлица Sawatzky',
         sawatzkyOnly: routeConfig.legal_entity_sawatzky.sawatzkyOnly ?? false,
         permittedRoles: routeConfig.legal_entity_sawatzky.permittedRoles ?? [],
       },

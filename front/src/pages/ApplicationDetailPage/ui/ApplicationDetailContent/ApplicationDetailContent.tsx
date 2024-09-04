@@ -107,7 +107,7 @@ export const ApplicationDetailContent: React.FC<ApplicationDetailContentProps> =
             <ApplicationDetailInfoComponent className={cls.infoComponent} info={info} />
             <Progressbar prepayment={prepayment ?? false} step={info.step} />
             <ApplicationDetailWorkPrice workTasks={workTasks} workMaterials={workMaterials} applicationId={applicationId} />
-            <ApplicationDetailComments title="Комментарии к заявке" applicationId={applicationId} commentList={comments} />
+            <ApplicationDetailComments title="Комментарии к запросу" applicationId={applicationId} commentList={comments} />
             {
               Boolean(prepayment ? ((info.step >= 4 && isSawatzky)) : ((info.step >= 3 && isSawatzky)))
               && <ApplicationDetailPerformer applicationId={applicationId} performers={applicationPerformers} />
@@ -116,7 +116,14 @@ export const ApplicationDetailContent: React.FC<ApplicationDetailContentProps> =
             <ApplicationDetailActs applicationId={applicationId} acts={detail?.acts} />
 
             {
-              (isSawatzky) && <ApplicationDetailComments isSawatzkyBlock title="Комментарии Sawatzky" applicationId={applicationId} commentList={sawatzkyComments} />
+              (isSawatzky) && (
+                <ApplicationDetailComments
+                  isSawatzkyBlock
+                  title="Внутренние комментарии сотрудников Sawatzky"
+                  applicationId={applicationId}
+                  commentList={sawatzkyComments}
+                />
+              )
             }
             {
               logs && <ApplicationDetailHistory historyList={logs} />

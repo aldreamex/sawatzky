@@ -84,7 +84,7 @@ const PaymentDocument: React.FC<DirectoryEmployeePageProps> = (props) => {
         </div>
       ),
       counterparty: info?.legalEntity?.name,
-      createdAt: info?.receiptDate || '-', // '1 000 000 ₽',
+      createdAt: info?.receiptDate || '-', // '1 000 000 руб.',
       totalAmount: formatCurrency(info?.totalAmount),
       totalApplicationsSum,
       restOfThePayment,
