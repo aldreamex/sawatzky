@@ -119,7 +119,7 @@ export const ApplicationDetailContent: React.FC<ApplicationDetailContentProps> =
               (isSawatzky) && (
                 <ApplicationDetailComments
                   isSawatzkyBlock
-                  title="Внутренние комментарии сотрудников Sawatzky"
+                  title="Внутренние комментарии сотрудников"
                   applicationId={applicationId}
                   commentList={sawatzkyComments}
                 />

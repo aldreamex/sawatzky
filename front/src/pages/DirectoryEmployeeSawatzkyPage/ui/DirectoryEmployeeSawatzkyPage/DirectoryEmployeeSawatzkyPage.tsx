@@ -95,14 +95,14 @@ const DirectoryEmployeeSawatzkyPage: React.FC<DirectoryEmployeeSawatzkyPageProps
       <DirectoryPageWrapper className={classNames(cls.directoryEmployeeSawatzkyPage, {}, [className])}>
         <div className={cls.buttons}>
           <Button
-            helpInfo="Добавить сотрудника Sawatzky"
+            helpInfo="Добавить сотрудника"
             onClick={() => dispatch(createEmployeeActions.openCreateModal())}
             className={cls.button}
             theme={ButtonThemes.ICON}
           >
             <AddIcon />
           </Button>
-          <Button helpInfo="Удалить сотрудника Sawatzky" className={cls.button} onClick={onButtonDeleteHandler} theme={ButtonThemes.ICON}>
+          <Button helpInfo="Удалить сотрудника" className={cls.button} onClick={onButtonDeleteHandler} theme={ButtonThemes.ICON}>
             <DeleteIcon />
           </Button>
         </div>

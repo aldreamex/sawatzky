@@ -14,7 +14,7 @@ import { DirectoryWorkMaterialGroupDetailPage } from 'pages/DirectoryWorkMateria
 import { DirectoryWorkMaterialGroupPage } from 'pages/DirectoryWorkMaterialGroupPage';
 import { DirectoryWorkTaskGroupDetailPage } from 'pages/DirectoryWorkTaskGroupDetailPage';
 import { DirectoryWorkTaskGroupPage } from 'pages/DirectoryWorkTaskGroupPage';
-import { ForbiddenPage } from 'pages/ForbiddenPage';
+// import { ForbiddenPage } from 'pages/ForbiddenPage';
 import { NotFoundPage } from 'pages/NotFoundPage';
 import { ReportsPage } from 'pages/ReportsPage';
 import { StatisticPage } from 'pages/StatisticPage';
@@ -35,7 +35,7 @@ export enum AppRoutes {
   STATISTIC = 'statistic',
   AUTHORIZATION = 'authorization',
   HOME = 'home',
-  FORBIDDEN = 'forbidden',
+  // FORBIDDEN = 'forbidden',
   NOT_FOUND = 'not_found',
   GENERAL_JOURNAL = 'general_journal'
 }
@@ -50,7 +50,7 @@ export const RoutePath: Record<AppRoutes, string> = {
 
   [AppRoutes.GENERAL_JOURNAL]: '/general_journal',
 
-  [AppRoutes.FORBIDDEN]: '/forbidden',
+  // [AppRoutes.FORBIDDEN]: '/forbidden',
   [AppRoutes.NOT_FOUND]: '/*',
 };
 //-----------------------------------------------------------------------------------
@@ -217,12 +217,12 @@ export const routeConfig: Record<AppRoutes | DirectoryRoutes, AppRouteProps> = {
     sawatzkyOnly: false,
 
   },
-  [AppRoutes.FORBIDDEN]: {
-    path: RoutePath.forbidden,
-    element: <ForbiddenPage />,
-    authOnly: false,
-    sawatzkyOnly: false,
-  },
+  // [AppRoutes.FORBIDDEN]: {
+  //   path: RoutePath.forbidden,
+  //   element: <ForbiddenPage />,
+  //   authOnly: false,
+  //   sawatzkyOnly: false,
+  // },
   [AppRoutes.HOME]: {
     path: RoutePath.home,
     element: <Navigate

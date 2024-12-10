@@ -40,7 +40,7 @@ export const directoryNavigationSlice = createSlice({
       },
       [DirectoryPath.legal_entity_sawatzky]: {
         path: DirectoryPath.legal_entity_sawatzky,
-        text: 'Юрлица Sawatzky',
+        text: 'Юрлица',
         sawatzkyOnly: routeConfig.legal_entity_sawatzky.sawatzkyOnly ?? false,
         permittedRoles: routeConfig.legal_entity_sawatzky.permittedRoles ?? [],
       },
@@ -70,7 +70,7 @@ export const directoryNavigationSlice = createSlice({
       },
       [DirectoryPath.employee_sawatzky]: {
         path: DirectoryPath.employee_sawatzky,
-        text: 'Сотрудники Sawatzky',
+        text: 'Сотрудники',
         sawatzkyOnly: routeConfig.employee_sawatzky.sawatzkyOnly ?? false,
         permittedRoles: routeConfig.employee_sawatzky.permittedRoles ?? [],
       },

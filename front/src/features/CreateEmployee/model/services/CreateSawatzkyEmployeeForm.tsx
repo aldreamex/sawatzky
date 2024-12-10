@@ -279,7 +279,7 @@ export const CreateSawatzkyEmployeeForm: React.FC<CreateSawatzkyEmployeeFormProp
 
   return (
     <div className={classNames(cls.addEmployeeForm, {}, [className])}>
-      <Text title="Создать Сотрудника Sawatzky" textAlign={TextAlign.CENTER} className={cls.title} />
+      <Text title="Создать Сотрудника" textAlign={TextAlign.CENTER} className={cls.title} />
 
       {Form}
     </div>

@@ -48,7 +48,7 @@ export const DirectoryObjectTreeSubBranch: React.FC<DirectoryObjectTreeSubBranch
           </ul>
         </div>
         <div className={cls.names}>
-          <div className={classNames(cls.name, {}, [cls.blue])}>Сотрудники Sawatzky</div>
+          <div className={classNames(cls.name, {}, [cls.blue])}>Сотрудники</div>
           <ul className={classNames(cls.name, {}, [cls.list, cls.blue])}>
             {employee.map((item, i) => (
               // eslint-disable-next-line react/no-array-index-key

@@ -42,7 +42,7 @@ export const ReportDocument: React.FC<ReportDocumentProps> = (props) => {
     <Document>
       <Page orientation="landscape" size="A4" style={styles.page}>
         <Logo width={250} />
-        <Text style={styles.text}>*Данная форма реализована при использовании системы приёма заявок Service Desk в компании SAWATZKY</Text>
+        <Text style={styles.text}>*Данная форма реализована при использовании системы приёма заявок Service Desk</Text>
 
         <ReportDocumentTitle report={report} />
         <ReportDocumentTable report={report} />
